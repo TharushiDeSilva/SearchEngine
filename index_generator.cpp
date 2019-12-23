@@ -14,10 +14,10 @@ static std::map<string, int> keyword_map;
 
 const std::string index_file_name  ="index_file.txt"; 
 const std::string search_path = "search_space/url"; 
-const int dimesion = 3;                                 // number of URL files to read 
+const int dimesion = 60;                                 // number of URL files to read 
 
 std::string ignore_words[11] = {"the", "and", "that", "which", "are", "was", "were", "will", "then", "when", "what"}; 
-char ignore_chars[18] = {'&', '.', '>', '<', '?', '#', '@', '~', '!', '$', '%', '*', '(', ')', '[', ']', ',', ' '}; 
+char ignore_chars[22] = {'&', '.', '>', '<', '?', '#', '@', '~', '!', '$', '%', '*', '(', ')', '[', ']', ',', ' ', '{', '}', ':', ';'}; 
 
 
 void add_word_to_local_index(std::string word){
@@ -42,23 +42,29 @@ void update_global_index(std::string url){                      // adding the gl
     std::map<std::string, int>::iterator itr_local;
     for(itr_local = keyword_map.begin(); itr_local != keyword_map.end(); itr_local++){
         std::string pre_keyword = itr_local->first; 
-        // for(int k=0; k < 11; k++){
-        //     if(pre_keyword == ignore_words[k]){
-        //         std::cout<<"break word detected: "<<pre_keyword<<std::endl; 
-        //         break;                                       //stop word detected
-        //     }
-        // }
+        bool valid = true; 
+        for(int k=0; k < 11; k++){
+            if(pre_keyword == ignore_words[k]){
+                //std::cout<<"break word detected: "<<pre_keyword<<std::endl;
+                valid = false;  
+                break;                                       //stop word detected
+            }
+        }
         
         std::map<std::string, string>::iterator itr; 
-        itr = index_map.find(pre_keyword); 
+
+        if(valid){
+            itr = index_map.find(pre_keyword); 
         
-        if(itr != index_map.end()){                     //if the keyword exists
-            std::string url_list = itr->second; 
-            url_list += ", " + url; 
-            itr->second = url_list; 
-        }else{
-            index_map.insert(std::pair<string, string>(pre_keyword, url));
+            if(itr != index_map.end()){                     //if the keyword exists
+                std::string url_list = itr->second; 
+                url_list += ", " + url; 
+                itr->second = url_list; 
+            }else{
+                index_map.insert(std::pair<string, string>(pre_keyword, url));
+            }
         }
+        
                       
     }
 }
@@ -139,6 +145,15 @@ void write_reverse_index_to_file(std::string filename){                 //write 
 int main(){
     generate_inverse_index(); 
     write_reverse_index_to_file(index_file_name); 
+
+
+    // search engine part 
+    //index_map.find("computer")
     
     return 0; 
 }
+
+
+
+
+
