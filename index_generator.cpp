@@ -4,6 +4,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <map> 
+#include <boost/lexical_cast.hpp>
 
 using namespace std; 
 
@@ -15,7 +16,7 @@ const std::string search_path = "search_space/url";
 const int dimesion = 2;                                 // number of URL files to read 
 
 std::string ignore_words[11] = {"the", "and", "that", "which", "are", "was", "were", "will", "then", "when", "what"}; 
-char ignore_chars[18] = {'&', '.',' >',' <', '?', '#', '@', '~', '!', '“', '$', '%',' *','(', ')','[', ']', ','}; 
+char ignore_chars[17] = {'&', '.', '>', '<', '?', '#', '@', '~', '!', '$', '%', '*', '(', ')', '[', ']', ','}; 
 
 /*
 void write_index_to_file(string keyword, string matching_query){
@@ -45,9 +46,18 @@ void read_file(){
 
 void generate_inverse_index(){
     
+    for(int i=0; i<=dimesion; i++){                                                          // Read each URL in the search space 
+        std::string file_name = search_path + boost::lexical_cast<string>(i) + ".txt";      //create the file name
+        std::cout<<file_name<<endl; 
+        
+        ifstream ifile;
+        ifile.open (file_name.c_str(), ios::app);
+
+        ifile.close(); 
+    }
 }
 
 int main(){
-    
+    generate_inverse_index(); 
     return 0; 
 }
