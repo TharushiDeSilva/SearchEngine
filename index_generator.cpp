@@ -20,18 +20,47 @@ std::string ignore_words[11] = {"the", "and", "that", "which", "are", "was", "we
 char ignore_chars[18] = {'&', '.', '>', '<', '?', '#', '@', '~', '!', '$', '%', '*', '(', ')', '[', ']', ',', ' '}; 
 
 
+void add_word_to_local_index(std::string word){
+    std::map<std::string, int>::iterator itr; 
+    itr = keyword_map.find(word); 
+    if(itr != keyword_map.end()){
+                                                            // if the word is found previously in the map 
+        itr->second = itr->second+1;                        // increse the number of occurances 
+    }else{
+        keyword_map.insert(std::pair<string, int>(word, 1));    // first time the word is found in the file 
+    }
+
+}
+
+void clear_local_index(){
+    keyword_map.clear(); 
+}
+
+void update_global_index(std::string url){                      // adding the global keyword indices into index map 
+    std::map<std::string, int>::iterator itr_local;
+    for(itr_local = keyword_map.begin(); itr_local != keyword_map.end(); itr_local++){
+        std::string pre_keyword = itr_local->first; 
+        if(pre_keyword == "the"){
+            std::cout<<" the"<<pre_keyword<<std::endl; 
+        }
+    }
+}
+
 void generate_inverse_index(){
     
     for(int i=0; i<=dimesion; i++){                                                          // Read each URL in the search space 
+
+        clear_local_index(); 
+
         std::string file_name = search_path + boost::lexical_cast<string>(i) + ".txt";      //create the file name
         //std::cout<<file_name<<endl; 
         
         ifstream ifile;
         ifile.open (file_name.c_str(), ios::app);                                           //Open the UR
+        std::string url ="";                                                                // URL of the webpage can be read from the first line
         
         if(ifile.is_open()) {
-            std::string line; 
-            std::string url ="";                                                            // URL of the webpage can be read from the first line 
+            std::string line;                                                             
             bool firstline = true; 
             while (std::getline(ifile, line)) {
 
@@ -52,7 +81,7 @@ void generate_inverse_index(){
                             if(line[i] == ignore_chars[j]){
                                 word.erase(0, word.find_first_not_of("& \'\"\t.><?#@~!$%*()[],"));
                                 if(word.length() >2){                                                   // can remove simple stop words, and empty lines
-                                    std::cout<<word<<endl;
+                                    add_word_to_local_index(word); 
                                 }
                                 
                                 word = ""; 
@@ -63,13 +92,17 @@ void generate_inverse_index(){
                     } 
                     word.erase(0, word.find_first_not_of("& \'\"\t.><?#@~!$%*()[],"));
                     if(word.length() >2){                                                           // can remove simple stop words, and empty lines
-                        std::cout<<word<<endl;
+                        add_word_to_local_index(word); 
                     }
                 }
             }
 	    }
 
         ifile.close(); 
+
+        //Update the reverse_index map
+        update_global_index(url); 
+
     }
 }
 
