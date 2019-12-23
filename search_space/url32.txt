@@ -1,0 +1,141 @@
+http://technet.microsoft.com/en-us/library/jj574169.aspx
+
+
+    TechNet
+    Products
+    IT Resources
+    Downloads
+    Training
+    Support
+
+TechNet
+United States (English)
+Sign in
+Home Library Learn Downloads Support
+Export (0) Print
+TechNet Library
+Windows Server
+Windows Server 2012 R2 and Windows Server 2012
+Server Roles and Technologies
+Networking
+Network Subsystem Performance Tuning
+Choosing a Network Adapter
+Performance Tuning Network Adapters
+Network-Related Performance Counters
+Performance Tools for Network Workloads
+Expand
+Network Subsystem Performance Tuning
+5 out of 6 rated this helpful - Rate this topic
+
+Updated: August 15, 2012
+
+Applies To: Windows Server 2012
+
+
+Performance tuning the network subsystem, particularly for network intensive workloads, can involve each layer of the network architecture, which is also called the network stack. These layers are broadly divided into the following sections.
+
+    Network interface. This is the lowest layer in the network stack, and contains the network driver that communicates directly with the network adapter.
+
+    Network Driver Interface Specification (NDIS). NDIS exposes interfaces for the driver below it and for the layers above it, such as the Protocol Stack.
+
+    Protocol Stack. The protocol stack implements protocols such as TCP/IP and UDP/IP. These layers expose the transport layer interface for layers above them.
+
+    System Drivers. These are typically clients that use a transport data extension (TDX) or Winsock Kernel (WSK) interface to expose interfaces to user-mode applications. The WSK interface was introduced in Windows Server® 2008 and Windows Vista, and it is exposed by AFD.sys. The interface improves performance by eliminating the switching between user mode and kernel mode.
+
+    User-Mode Applications. These are typically Microsoft solutions or custom applications.
+
+The table below provides a vertical illustration of the layers of the network stack, including examples of items that run in each layer.
+ 
+
+5
+	
+
+User-Mode Applications
+	
+
+WMS
+	
+
+DNS
+	
+
+IIS
+
+4
+	
+
+System Drivers
+	
+
+AFD.sys
+	
+
+HTTP.sys
+	
+
+3
+	
+
+Protocol Stack
+	
+
+TCP/IP
+	
+
+UDP/IP
+	
+
+VPN
+
+2
+	
+
+NDIS
+	
+
+Network Driver Interface Specification (NDIS)
+	
+
+	
+
+1
+	
+
+Network interface
+	
+
+Network driver
+	
+
+	
+
+The following sections of this guide provide performance tuning recommendations for network devices and the network stack.
+
+    Choosing a Network Adapter
+
+    Performance Tuning Network Adapters
+
+    Network-Related Performance Counters
+
+    Performance Tools for Network Workloads
+
+Was this page helpful?
+Yes
+No
+Community Additions
+ADD
+© 2014 Microsoft
+Manage Your Profile
+
+    Newsletter
+    |
+    Contact Us
+    |
+    Privacy Statement
+    |
+    Terms of Use
+    |
+    Trademarks
+
+|
+Site Feedback Site Feedback

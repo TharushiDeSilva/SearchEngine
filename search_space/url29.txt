@@ -1,0 +1,525 @@
+https://calomel.org/network_performance.html
+Network Tuning and Performance
+a simple guide to enhancing network speeds
+
+Many of today's desktop systems and servers come with on board gigabit network controllers. After some simple speeds tests you will soon find out that you are not be able to transfer data over the network much faster than you did with a 100MB link. There are many factors which affect network performance including hardware, operating systems and network stack options. The purpose of this page is to explain how you can achieve up to 930 megabits per second transfer rates over a gigabit link using OpenBSD as a firewall or transparent bridge.
+
+It is important to remember that you can not expect to reach gigabit speeds using slow hardware or an unoptimized firewall rule set. Speed and efficiency are key to our goal. Lets start with the most important aspect of the equation, hardware.
+Hardware
+
+No matter what operating system you choose, the machine you run on will determine the theoretical speed limit you can expect to achieve. When people talk about how fast a system is they always mention CPU clock speed. We would expect an AMD64 2.4GHz to run faster than a Pentium3 1.0 GHz, but CPU speed is not the key, motherboard bus speed is.
+
+In terms of a firewall or bridge we are looking to move data through the system as fast as possible. This means we need to have a PCI bus that is able to move data quickly between network interfaces. To do this the machine must have a wide bus and high bus speed. CPU clock speed is a very minor part of the equation.
+
+The quality of a network card is key to high though put. As a very general rule, using the on-board network card is going to be much slower than an add in PCI or PCIe card. The reason is that most desktop motherboard manufacturers use cheap on-board network chip sets that use CPU processing time instead of handling TCP traffic by themselves. This leads to very slow network performance and high CPU load.
+
+A gigabit network controller built on board using the CPU will slow the entire system down. More than likely the system will not even be able to sustain 100MB speeds while also pegging the CPU at 100%. A network controller that is able to negotiate as a gigabit is _very_ different from a controller that can transfer a gigabit of data per second.
+
+Ideally you want to use a server based add on card with a TCP offload engine or TCP accelerator. We have seen very good speeds with the Intel Pro/1000 MT series (em4) cards. They are not too expensive and all OS's have support.
+
+Not to say that all on-board chip sets are bad. Supermicro server boards use an Intel 82546EB Gigabit Ethernet Controller on their server motherboards. It offers two(2) copper gigabit ports through a single chip set offering a 133MHz PCI-X, 128 bit wide bus, pre-fetching up to 64 packet descriptors and has two 64 KB on-chip packet buffers. This is an exceptionally fast chip and it saves space by being built onto the server board.
+
+Now, in order to move data in and out of the network cards as fast as possible we need a bus with a wide bit rate and high clock speed. For example, a PCI-X 64bit slot is wider than a PCI-X 32bit as is a 66MHz bus is faster than a 33MHz bus. Wide is good, fast is good, but wide and fast are better.
+
+The equation to calculate the theoretical speed of a PCI slot is the following:
+
+ (bus speed in MHz) * (bus width in bits) / 8 = speed in Megabytes/second
+       66 MHz       *       32 bit        / 8 = 264 Megabytes/second
+
+For example, if we have a motherboard with a 32bit wide bus running at 66MHz then the theoretical max speed we can push data through the slot is 66*32/8= 264 Megabytes/second. With a server class board we could use a 64bit slot running at 133MHz and reach speeds of 133*64/8= 1064 Megabytes/second.
+
+Need to simulate packet loss or a high latency network connection? Take a look at our Network Latency and Packet Loss Emulation page for theories and examples.
+
+Now that you have the max speed of the single PCI slot we need to understand this number represents the max speed of the bus if nothing else is using the PCI bus. Since all PCI cards and built on-board chips use the same bus then they must also be taken into account. If we have two network cards each using a 64bit, 133MHz slot then each slot will get to use 50% of the total speed of the PCI bus. Each card can do 133*64/8= 1064 Megabytes/second and if both network cards are being used at once, like on a firewall, then each card can use 1064/2= 532 Megabytes/second max. This is still well above the maximum speed of a gigabit connection which can move 1000/8= 128 Megabytes/second.
+
+PCI Express is a newer technology which elevates bus bandwidth from hundreds of megabytes per second to many gigabytes per second. This allows a single machine to support multiple gigabit ports per interface card or even multiple 10 gigabit ports. The PCIe link is built around dedicated unidirectional couples of serial (1-bit), point-to-point connections known as lanes. This is in sharp contrast to the earlier PCI connection, which is a bus-based system where all the devices share the same bidirectional, 32-bit or 64-bit parallel bus. PCIe's dedicated lanes allow for an incredible increase in bandwidth.
+
+Lets take a look at some of the new PCI Express (PCIe) interface speeds compared to the older PCI bus. These values were collected from the PCIe Wikipedia page:
+
+(type)      (bus speed) *  (bus width)    = (speed in Megabits/second)
+PCI            33 MHz      32 bit         = 1,064 Mb/sec
+PCI            33 MHz      64 bit         = 2,128 Mb/sec
+PCI            66 MHz      32 bit         = 2,128 Mb/sec
+PCI            66 MHz      64 bit         = 4,256 Mb/sec
+PCI-X         100 MHz      64 bit         = 6,400 Mb/sec
+PCI-X         133 MHz      64 bit         = 8,192 Mb/sec
+
+While PCIe is significantly faster...
+
+  PCIe Per lane (each direction):
+     v1.x:  250 MB/s ( 2.5 GT/s)
+     v2.x:  500 MB/s ( 5 GT/s)
+     v3.0:  985 MB/s ( 8 GT/s)
+     v4.0: 1969 MB/s (16 GT/s)
+
+PCIe v2 x1  =  0.5 GB/s (  5 GT/s)   Fine for  1 Gbit firewall
+PCIe v2 x4  =  2   GB/s ( 20 GT/s)   Fine for 10 Gbit firewall
+PCIe v2 x8  =  4   GB/s ( 40 GT/s)   -
+PCIe v2 x16 =  8   GB/s ( 80 GT/s)   Fine for  40 Gbit Firewall
+
+PCIe v3 x1  =  0.9 GB/s (  8 GT/s)   Fine for   1 Gbit firewall
+PCIe v3 x4  =  3.9 GB/s ( 32 GT/s)   Fine for  10 Gbit firewall
+PCIe v3 x8  =  7.8 GB/s ( 64 GT/s)   Fine for  40 Gbit Firewall
+PCIe v3 x16 = 15.7 GB/s (128 GT/s)   Fine for 100 Gbit firewall
+
+PCIe v4 x1  =  1.9 GB/s ( 16 GT/s)   Fine for  10 Gbit firewall
+PCIe v4 x4  =  7.8 GB/s ( 64 GT/s)   Fine for  40 Gbit firewall
+PCIe v4 x8  = 11.7 GB/s (128 GT/s)   -
+PCIe v4 x16 = 31.5 GB/s (256 GT/s)   Fine for 250 Gbit firewall
+
+We highly recommend getting an interface card supporting PCIe due to their high bandwidth and low power usage. Note, PCIe version 2.x has a 20% bandwidth overhead which PCIe version 3.x does not. PCIe 2.0 delivers 5 GT/s (GT/s is Gigatransfers per second), but employs an 8b/10b encoding scheme which results in a 20 percent overhead on the raw bit rate. PCIe 3.0 removes the requirement for encoding and uses a technique called "scrambling" in which "a known binary polynomial" is applied to a data stream in a feedback topology. Because the scrambling polynomial is known, the data can be recovered by running it through a feedback topology using the inverse polynomial and also uses a 128b/130b encoding scheme, reducing the overhead to approximately 1.5%, as opposed to the 20% overhead of 8b/10b encoding used by PCIe 2.0.
+
+Look at the specifications or motherboard you expect to use and the above equation to get a rough idea of the speeds you can expect out of the box. Hardware speed is the key to a fast firewall. Before setting up your new system and possibly wasting hours wondering why it is not reaching your speed goals, make sure you understand the limitations of the hardware. Do not expect throughput out of your system hardware that it is _not_ capable of.
+
+For example, when using a four port network card on a machine, consider the bandwidth of the adapter slot you put it into. Standard PCI is a 32 bit wide interface and the bus speed is 66MHz or 133 MHz. This bandwidth is shared across all devices on the same bus. PCIe v1 is a serial connection with 2.5 GHz frequency in both directions for a 1x slot. The effective maximum bandwidth is 250MB/s bidirectional. So, if you decide to support 4, 1Gbps connections on one card it might be best to do it with a PCIe x2 or faster slot and card.
+What about RAM in a firewall?
+
+For a standard FreeBSD or OpenBSD firewall one(1) gigabyte of ram is more than enough. Unless you are running many memory hungry services you will actually use less than 100 megabytes of ram at any one time. With that being said we highly recommend putting as much ram as you can afford in a system. Today you can buy 8 gigabytes (consisting of two 4gig sticks) of Kingston HyperX DDR3 ram for as little as $45 US.
+
+FreeBSD is very efficient at using a lot of ram and the kernel will be able to see all the ram you put in the machine. One of the few times you may need more ram is if your firewall is going to load tables in Pf with tens of thousands of entries. This may be the case if you are running 10gig interfaces for a company or ISP firewall. Also, if you install FreeBSD with a ZFS file system you want as much ram as you can afford as ZFS will use memory for its ARC cache. We love FreeBSD on ZFS.
+
+For OpenBSD on our testing system we had eight(8) gig available, but the OpenBSD kernel will only recognize 3.1 gig of that no matter if you use the i386 or AMD64 kernel. In fact, having too much RAM in your box will COST you memory on OpenBSD, as more kernel memory is used up tracking all your RAM. So cutting your ram to 2 GB will probably improve the upper limit. Strange but true.
+
+Next, you want the fastest speed ram the motherboard will support. Firewall processing is more concerned with memory speed then cpu speed. If you have a choice of getting DDR3 at 1333 or DDR3 at 2400, pick 2400.
+
+What is the bottom line? Buy as much ram as you are comfortable with. For the highest performance it is recommended to use the highest memory speed with fewest number of DIMMs and you should populate all memory channels for every CPU socket installed. Make sure all the ram sticks are the same speed and specification. Ram will run only as fast as the slowest, highest latency DIMMs installed.
+What about Intel Hyper threading or simultaneous multithreading (SMT) ?
+
+Disable Hyper-Threading.
+
+When you have a single operation or thread generating high CPU utilization, Hyper-Threading does not increase performance. Hyper-Threading can only help when you have high CPU utilization caused by a number of separate threads trying to execute at the same time where the number of threads is at least twice the amount of real cpu cores. This is where you trade increased latency for increased throughput as explained and tested by Intel in the paper titled,Performance Insights to Intel® Hyper-ThreadingTechnology According to Intel the most you will gain is a 20% throughput advantage with added thread processesing latency.
+
+Hyper-Threading, also called simultaneous multithreading in the BIOS, can increase message rate for multi process applications by having more logical cores. This increases the latency of a single process due to lower frequency of a single logical core when hyper-threading is enabled. This means interrupt processing of the NICs will be slower, load will be higher and packet rate will decrease.
+
+According to Wikipedia, "there is also a security concern with certain simultaneous multithreading implementations. Intel's hyperthreading implementation has a vulnerability through which it is possible for one application to steal a cryptographic key from another application running in the same processor by monitoring its cache use."
+
+We highly recommend disabling Hyper-Threading for latency and message rate sensitive applications like firewalls, routers, storage, dns and ntp servers.
+What kind of hardware would you recommend for a firewall ?
+
+Keep in mind that if you are looking for a small home firewall any old hardware will do. You do not have to spend a lot of money to get a very decent firewall these days. Something like a Intel Core 2 Duo or an AMD Athlon and DDR ram would work fine. If you are in a pinch even a Intel P3 will have more than enough bandwidth for a small home office of 5 to 10 people. Old hardware that is stable is a great solution.
+
+If you are looking to use more modern hardware and want detailed specifics, here is the setup which we use for home or office use. It is extremely fast, practically silent and incredibly power efficient. This box is able to sustain full gigabit speeds (~112MB/sec data throughput) bidirectionally using this hardware as well a run other software like packet sniffers and analysis programs. It is a quad core box running at 2.4Ghz and uses DDR3 ram at 1333MHz. All the parts are very power efficient and the entire system running at idle uses only fifty six (56) watts; sixty two (62) watts at full load. On average the CPU and motherboard run at eleven(11) degrees Celsius over ambient room temperature. Also check out our FreeBSD Tuning and Optimization guide where we talk about performance modifications for one(1) gigabit and ten(10) gigabit networks.
+
+Processor    : AMD Athlon II X4 610e Propus 2.4GHz 45watt
+CPU Cooler   : Zalman 9500A-LED 92mm 2 Ball CPU Cooler (fan off)
+Motherboard  : Asus M4A89GTD Pro/USB3 AM3 AMD 890GX
+Memory       : Kingston 4GB DDR3 KVR1333D3N9K2/4G
+Hard Drive   : Western Digital Caviar Green WD30EZRX
+Power Supply : Antec Green 380 watts EA-380D
+Case         : Antec LanBoy Air (completely fan-less)
+
+Network Card : Intel PRO/1000 GT PCI PWLA8391GT PCI
+                  -OR-
+               Intel I350-T2 Server Adapter (PCIe x4)
+
+NOTE: FreeBSD can use the Intel I350-T2 with the igb(4) driver. This card is
+incredibly fast and stable. 
+
+You can reduce the power consumption of your firewall and keep track of system temperatures by using Power Management with apmd and Sensorsd hardware monitor (sensorsd.conf).
+Can we achieve higher transfer rates with a Maximum Transmission Unit (MTU) of 9000 ?
+
+It is recommend to set the MTU of your network interface over a default value of 1500. Users of "jumbo frames" can set the MTU as high as 9000 if all of your network equipment supports "Jumbo Frames." The MTU value tells the network card to send a Ethernet frame of the value specified in bytes. While this may be useful when connecting two hosts directly together using the same MTU, it is a lot less useful when connecting through a switch or network which does not support a larger MTU.
+
+When a switch or a machine receives a MTU that is larger then they are able to forward they must fragment the packets. This takes time and is very inefficient. The throughput you may gain when connecting to similar high MTU machines you will loose when connecting to any 1500 MTU machine.
+
+Either way, increasing the MTU is _may_ not be necessary depending on your situation. two(2) gigabits per second can be attained using a 10Gbit card at the normal 1500 byte MTU setting with the following network tweaks listed on this page. Understand that a MTU of 9000 would significantly reduce the network overhead of a TCP connection compared to a MTU of 1500, but we can still sustain a high transfer rates. If you are in need of transferring speeds over 2 gigabits per second then you will definitely need to look at setting your MTU to 9000. Take a look at the section on this page titled, "Can we achieve 10 gigabit speeds using OpenBSD and FreeBSD ?" for details.
+What TTL (Time to live) should we use ?
+
+Time to live is the limit on the period of time or number of iterations a packet can experience before it should be discarded. Note that the TTL you use is for the one way trip to the remote machine. That remote machine will then have its own TTL set when they try to return packets to you. A packet's TTL is reduced by one for every router it goes through. Once the TTL reaches zero(0) the packet is discarded no matter were it is in the network.
+
+Understand that most modern OSs like OpenBSD, FreeBSD, Ubuntu and RHEL set the default TTL at 64 hops. This should be plenty to reach through the Internet to the other side of the world. If you use traceroute and give an ip, traceroute will show you how many hops it takes to reach your destination. For example, we can go from the eastern United States to a university in Asia in 23 hops. If our TTL was set to 64 then the packet would still of had 41 more hops it could have used before the packet was dropped.
+
+Lets do a quick test by seeing how many hops (routers) we need to go through to get to the other side of the world. We are located in the north eastern United States. The other side of the globe is located in the ocean just west of Geraldton, Australia. If we do a icmp based traceroute to the tourist board at geraldtontourist.com.au (202.191.55.184) it is only 16 hops away. BTW, according to Geoip "202.191.55.184" might be located in Sydney Australia, but we are definitely on the same continent. So, possibly five(5) more hops to Geraldton on the west coast.
+
+# traceroute -I 202.191.55.184
+
+traceroute to 202.191.55.184 (202.191.55.184), 64 hops max, 60 byte packets
+ 1  L100.BLTMMD-VFTTP-16.verizon-gni.net (71.166.35.1)  6.72 ms  4.721 ms  4.947 ms
+ 2  G11-0-0-316.BLTMMD-LCR-03.verizon-gni.net (130.81.49.8)  7.505 ms  7.282 ms  7.485 ms
+ 3  so-9-2-0-0.LCC1-RES-BB-RTR1-RE1.verizon-gni.net (130.81.28.80)  9.933 ms  9.809 ms  9.975 ms
+ 4  0.ae1.BR2.IAD8.ALTER.NET (152.63.34.21)  49.952 ms  9.865 ms  9.961 ms
+ 5  ae6.edge1.washingtondc4.level3.net (4.68.62.133)  12.630 ms 0.xe-0-0-0.XL3.IAD8.ALTER.NET (152.63.32.214)  12.479 ms ae7.edge1.washingtondc4.level3.net (4.68.62.137)  24.850 ms
+ 6  GigabitEthernet4-0-0.GW8.IAD8.ALTER.NET (152.63.33.93)  9.829 ms GigabitEthernet6-0-0.GW8.IAD8.ALTER.NET (152.63.33.13)  14.865 ms GigabitEthernet4-0-0.GW8.IAD8.ALTER.NET (152.63.33.93)  12.363 ms
+ 7  ae-84-84.ebr4.Washington1.Level3.net (4.69.134.185)  14.751 ms ae-94-94.ebr4.Washington1.Level3.net (4.69.134.189)  12.356 ms  17.356 ms
+ 8  ae-4-4.ebr3.LosAngeles1.Level3.net (4.69.132.81)  87.438 ms  82.472 ms ge-7-0-0.lax22.ip4.tinet.net (89.149.185.222)  92.395 ms
+ 9  singtel-gw.ip4.tinet.net (77.67.79.14)  84.833 ms  84.900 ms *
+10  203.208.148.18 (203.208.148.18)  301.232 ms  229.793 ms  232.466 ms
+11  * * *
+12  203.208.148.18 (203.208.148.18)  228.924 ms  229.758 ms *
+13  * * 119.225.2.166 (119.225.2.166)  241.682 ms
+14  * 203-22-107-13.ico.com.au (203.22.107.13)  236.695 ms *
+15  119.225.2.166 (119.225.2.166)  236.767 ms  237.288 ms 202.191.55.202 (202.191.55.202)  239.965 ms
+16  202.191.55.184 (202.191.55.184)  239.966 ms 203-22-107-13.ico.com.au (203.22.107.13)  237.264 ms  234.789 ms
+
+Can you set the TTL higher? Yes the highest value is 254. This is normally considered too high for any network. A TTL of 64 should be fine for most instances.
+Can we achieve 10 gigabit speeds using OpenBSD or FreeBSD ?
+
+Yes. In fact, with the right hardware and a little knowledge we can achieve over 9.2 gigabits per second with simultaneous bi-directional transfers through a Pf firewall. Understand that there are some limitations you need to be aware of, not with the transfer speeds, but with the choice or hardware and operating system.
+10g firewall hardware
+
+The critical parts of any firewall is going to be the network card, motherboard bus bandwidth and the memory speeds of the machine.i No matter how good your Os is, if you can not actually move the data through the hardware you will never be able to reach 10 gigabit speeds. The list below is exactly the hardware we tested with for the FreeBSD firewall and both linux machines. Notice that this is _not_ the fastest or most expensive, bleeding edge Intel Core i7 Nehalem CPU or hardware. A firewall does not need to be exotic to be fast. What we have is a 2U server which uses 65 watts of power at idle and 80 watts at full load (measured with a Kill-A-Watt) and it can support 10G speeds. The network card is a dual port 10g fiber card in a PCI Express x8 motherboard slot. The memory speeds are 1333MHz using DDR3 ECC ram. Also, the CPU, motherboard and OS support the Advanced Encryption Standard (AES) Instruction Set or AES-NI for hardware accelerated AES encryption and decryption in the CPU in case you decide to setup and VPN.
+
+Processor    : Intel Xeon L5630 Westmere 2.13GHz 12MB L3 Cache LGA 1366 40 Watt Quad-Core
+Motherboard  : Supermicro X8ST3-F
+Chassis      : SuperChassis 825TQ-R700LPV 2U rackmount (Revision K)
+Memory       : KVR1333D3E9SK2/4G 4GB 1333MHz DDR3 ECC CL9 DIMM (Kit of 2) w/ Thermal Sensor
+Hard Drive   : Western Digital Black Caviar 2TB (SATA)
+Network Card : Myricom Myri-10G "Gen2" 10G-PCIE2-8B2-2S (PCI Express x8)
+ Transceiver : Myricom Myri-10G SFP+ 10GBase-SR optical fiber transceiver (850nm wavelength)
+
+The Operating System
+
+We prefer to use OpenBSD due to the newer version of Pf and CARP. The problem is OpenBSD does not have a wide range of 10g card drivers available. The newer higher performance cards which achieve full line speeds, low system load and are widely available are just not supported by OpenBSD at this time, but FreeBSD does offer support. If you want to stick with OpenBSD please take a look at the Intel X520-SR2 Dual Port 10GbE Adapter which worked fine in our tests, but was hard to find a seller.
+
+FreeBSD (latest stable or -current) has support for many of the newest 10g fiber and copper based cards and many vendors openly support the OS. FreeBSD also has Pf, though using the older OpenBSD 4.1 rules syntax, and supports CARP and ALTQ. This is the OS we decided to use since we could also use the Myricom Myri-10G "Gen2" optical 10g cards which perform at full 10g speeds bidirectionally. Myricom supports the FreeBSD OS and its newest firmware drivers are included with the basic system install. The Myri10GE FreeBSD driver is named mxge, and has been integrated in FreeBSD since 6.3.
+
+The latest version of FreeBSD v9.1 is a great OS out of the box. But, we can optimize FreeBSD to be even faster. At this point, please check our Freebsd tuning to optimize network performance page for complete details including an example /boot/load.conf and /etc/sysctl.conf files. Those are the modifications and configuration changes we made to the system to exceed 10 gigabit speeds. All of the speed tweaks we found helpful are included there.
+10g bidirectional network speed test #1
+
+To test, we set up the FreeBSD firewall in the middle of two Ubuntu Linux servers. Pf is enabled on the firewall and its only rule is "pass all keep state". All three machines are using the exact same hardware as stated above. The testing tool "iperf" was configured to do a bidirectional test. A connection is be made from Ubuntu Linux #1 though the firewall to Ubuntu Linux #2. Simultaneously, another connection was made from Ubuntu Linux #2 through the firewall to Ubuntu Linux #1. The results were a speed average of 1.15 gigabytes per second (GB/s) in each direction simultaneously. An impressive result.
+
+ubuntu linux #1   <->   BSD firewall  <->   ubuntu linux #2
+10.10.10.100      10.10.10.1 - 172.16.16.1         172.16.16.100
+      Flow 1 ->                                 <- Flow 2
+
+box1$ iperf -c box2 -i 1 -t 60 -d
+box2$ iperf -s
+   [flow 1]  0.0-30.0 sec  32.7 GBytes  9.35 Gbits/sec
+   [flow 2]  0.0-30.0 sec  31.8 GBytes  9.12 Gbits/sec
+
+Average Speed: 9.2 Gbits/sec or 1.15 gigabytes per second (GB/s) in each direction simultaneously.
+
+10g unidirectional network speed test #2
+
+Netperf is also an excellent testing tool. With this test we setup the machine as we would for a public firewall. The FreeBSD box in firewall mode with NAT, scrubbing and tcp sequence number randomization enabled can still get 9.892 gigabits per second from one linux box to the other. Most importantly at an MTU of 9000 (jumbo packets) we can achieve 8,294,531 packets over sixty seconds _through_ the NAT'ed firewall at 9.922 gigabits per second. When the MTU is limited to 1500 (standard MTU for most of the Internet) we hit almost 10 million packets over sixty seconds (9,666,777 packets or 161,112 pps) and 1.9333 gigabits per second. Notice that the FreeBSD machine is using 12.5% of the 4 cores for interrupt processing during these tests and the rest of the machine is sitting 86.4% idle.
+
+## Interrupts during the Netperf tests average 12%-14%
+CPU:  0.0% user,  0.0% nice,  1.0% system, 12.5% interrupt, 86.4% idle
+
+##### TCP stream test at an MTU of 8972 (~9000)
+:~# netperf -H 10.10.10.100 -t TCP_STREAM -C -c -l 60
+Recv   Send    Send                          Utilization       Service Demand
+Socket Socket  Message  Elapsed              Send     Recv     Send    Recv
+Size   Size    Size     Time     Throughput  local    remote   local   remote
+bytes  bytes   bytes    secs.    10^6bits/s  % S      % S      us/KB   us/KB
+
+ 87380  65536  65536    60.01      9892.83   7.12     5.60     0.472   0.371  
+
+##### UDP stream test at an MTU of 8972 (~9000)
+:~# netperf -H 172.16.16.100 -t UDP_STREAM -l 60 -C -c -- -m 8972 -s 128K -S 128K
+Socket  Message  Elapsed      Messages                   CPU      Service
+Size    Size     Time         Okay Errors   Throughput   Util     Demand
+bytes   bytes    secs            #      #   10^6bits/sec % SS     us/KB
+
+262144    8972   60.00     8294531      0     9922.4     11.14    inf
+
+##### UDP stream test at an MTU of 1500 
+:~# netperf -H 172.16.16.100 -t UDP_STREAM -l 60 -C -c -- -m 1500 -s 128K -S 128K
+Socket  Message  Elapsed      Messages                   CPU      Service
+Size    Size     Time         Okay Errors   Throughput   Util     Demand
+bytes   bytes    secs            #      #   10^6bits/sec % SS     us/KB
+
+262144    1500   60.00     9666777      0     1933.3     6.74     inf
+
+10g Summary information
+
+Other important items to note about the firewall:
+
+    Doing a TCP SYN attack, the firewall can make an average of 4000 new states per second at 25% CPU interrupt utilization on a quad core machine. This _may_ be a limit induced by the single CPU core used.
+    currently, you can not use ALTq to support your 10 gigabit interfaces. The parent bandwidth value in Altq is a 32bit int and thus can not support values over 2^32 or 4294Mb (4.29Gb). The second problem is ALTQ can reduce the speed of your network by as much as 10% which is not what you need when trying to get to 10Ge. We have reported this "bug" to the developers and they have acknowledged the problem. From what we gather the devs solution is to get rid of ALTQ at some time in the future but no time frame was given.
+
+If you need to support a 10 gigabit network and have an external connection which can also support 10g or even 40 gigabit then FreeBSD with the right hardware will do perfectly.
+When trying to attain maximum throughput, the most important options involve TCP window sizes and send/receive space buffers.
+Any tips on FreeBSD Tuning and Optimization ?
+
+The default install of FreeBSD 9.1 is quite fast and will work well the majority of the time. If you installed FreeBSD without any modifications you will not be disappointed. But, what if you wanted to get the most out of your install? Check out our FreeBSD Tuning and Optimization guide where we talk about performance modifications for 1gig and 10gig networks.
+Should we use the OpenBSD GENERIC or GENERIC.MP kernel?
+
+As of OpenBSD v5.1 you are welcome to use either one. Both kernels performed exceptionally well in our speeds tests. Generic is the single CPU kernel while generic.mp is the multi CPU kernel.
+
+Despite the recent development of multiple processors support in the OpenBSD, the kernel still operates as if were running on a single processor system. On a SMP system only one processor is able to run the kernel at any point in time, a semantic which is enforced by a Big Giant Lock. The Big Giant Lock (BGL) works like a token. If the kernel is being run under one CPU then it has the BGL and thus the kernel can _not_ be run on a second CPU. The network stack and thus pf and pfsync run in the kernel and so under the Big Giant Lock.
+
+If you have access to a multi core machine and are expecting to use programs that will take advantage of the cores then the multi core board is a good choice. PF is _not_ a multi core program so it will not benefit from multi core kernel. For example an intrusion detection app, monitoring script or real time network reporting tool. Truthfully, if you have multiple cores then use them.
+OpenBSD v5.1 and later network stack "speed_tweaks"
+
+These tweaks are for OpenBSD v5.1 and later. The network stack in 5.1 and later will dynamically adjust the TCP send and receive window sizes. There have been a lot of work done to remove many of the bottlenecks in the network code and how Pf handles traffic compared to earlier releases.
+
+We tested TCP bandwidth rates with iperf and found 5.1 to be quite good with rfc1323 enabled and using the built in dynamic TCP window sizing. The default send and receive space for UDP was fine for connections up to 25Mbit/sec sending and receiving on the OpenBSD box. This means that if you have a 25/25 FIOS Internet connection you do NOT have to change anything. But, for testing we wanted to see what size buffer was necessary for 100 Mbits/sec network flooded with UDP traffic. We increased the net.inet.udp.recvspace and net.inet.udp.sendspace values to support 128Kbit buffer sizes. iperf was able to support speeds of 200Mbit/sec without packet loss. This is an excellent trade of just 128KByte for a nicely sized overflow buffer which a 100Mbit network would not overflow.
+
+NOTE: It is very important to remember to use "keep state" or "modulate state" on ever single one of your pf rules. OpenBSD 5.1 and later use Dynamic Adjustment of TCP Window Sizes. If your rules do note keep state and pass the initial SYN packet from the client to the server the window size can not be negotiated. This means your networks speeds will be very, very slow in the hundreds of kilobytes per second instead of tens of megabytes per second. Check out our PF Config (pf.conf) page for more detailed information.
+
+### Calomel.org  OpenBSD v5.1 and later /etc/sysctl.conf
+##
+ddb.panic=0                    # do not enter ddb console on kernel panic, reboot if possible
+kern.bufcachepercent=90        # Allow the kernel to use up to 90% of the RAM for cache (default 10%)
+machdep.allowaperture=2        # Access the X Window System (if you use X on the system)
+net.inet.ip.forwarding=1       # Permit forwarding (routing) of packets through the firewall
+net.inet.ip.ifq.maxlen=512     # Maximum allowed output queue length (256*number of physical interfaces)
+net.inet.ip.mtudisc=0          # TCP MTU (Maximum Transmission Unit) discovery off since our mss is small enough
+net.inet.tcp.rfc3390=1         # Enable RFC3390 TCP window increasing so larger CWND can take affect
+net.inet.tcp.mssdflt=1440      # maximum segment size (1440 from scrub pf.conf match statement)
+#net.inet.udp.recvspace=131072 # Increase UDP "receive" buffer size. Good for 200Mbit without packet drop.
+#net.inet.udp.sendspace=131072 # Increase UDP "send" buffer size. Good for 200Mbit without packet drop.
+
+OpenBSD v4.8 and earlier network stack "speed_tweaks"
+
+First, make sure you are running OpenBSD v4.8 or earlier. These setting will significantly increase the network transfer rates of the machine. Next, make sure you have applied any patches to the system according to OpenBSD.
+
+The following options are put in the /etc/sysctl.conf file. They will increase the network buffer sizes and allow TCP window scaling. Understand that these settings are at the upper extreme. We found them perfectly suited in a production environment which can saturate a gigabit link. You may not need to set each of the values this high, but that is up to your environment and testing methods. Summery explanations of each line follow each option.
+
+### Calomel.org  OpenBSD v4.8 and earlier /etc/sysctl.conf
+##
+ddb.panic=0                    # do not enter ddb console on kernel panic, reboot if possible
+kern.bufcachepercent=90        # Allow the kernel to use up to 90% of the RAM for cache (default 10%)
+kern.maxclusters=128000        # Cluster allocation limit
+machdep.allowaperture=2        # Access the X Window System
+machdep.kbdreset=1             # permit console CTRL-ALT-DEL to do a nice halt
+net.bpf.bufsize=1048576        # Internal kernel buffer for storing packet captured packets received from the network
+net.inet.icmp.errppslimit=1000 # Maximum number of outgoing ICMP error messages per second
+net.inet.icmp.rediraccept=0    # Deny icmp redirects
+net.inet.ip.forwarding=1       # Permit forwarding (routing) of packets
+net.inet.ip.ifq.maxlen=512     # Maximum allowed input queue length (256*number of interfaces)
+net.inet.ip.mtudisc=0          # TCP MTU (Maximum Transmission Unit) discovery off since our mss is small enough
+net.inet.ip.ttl=64             # the TTL should match what we have for "min-ttl" in scrub rule in pf.conf
+net.inet.ipcomp.enable=1       # IP Payload Compression protocol (IPComp) reduces the size of IP datagrams
+net.inet.tcp.ackonpush=0       # acks for packets with the push bit set should not be delayed
+net.inet.tcp.ecn=0             # Explicit Congestion Notification enabled
+net.inet.tcp.mssdflt=1440      # maximum segment size (1440 from scrub pf.conf match statement)
+net.inet.tcp.recvspace=262144  # Increase TCP "receive" windows size to increase performance
+net.inet.tcp.rfc1323=1         # RFC1323 enable optional TCP protocol features (window scale and time stamps)
+net.inet.tcp.rfc3390=1         # RFC3390 increasing TCP's Initial Congestion Window to 14600 for SPDY
+net.inet.tcp.sack=1            # TCP Selective ACK (SACK) Packet Recovery
+net.inet.tcp.sendspace=262144  # Increase TCP "send" windows size to increase performance
+net.inet.udp.recvspace=262144  # Increase UDP "receive" windows size to increase performance
+net.inet.udp.sendspace=262144  # Increase UDP "send" windows size to increase performance
+vm.swapencrypt.enable=1        # encrypt pages that go to swap
+
+### CARP options if needed
+# net.inet.carp.arpbalance=0     # CARP load-balance
+# net.inet.carp.log=2            # Log CARP state changes
+# net.inet.carp.preempt=1        # Enable CARP interfaces to preempt each other (0 -> 1)
+# net.inet.ip.forwarding=1       # Enable packet forwarding through the firewall (0 -> 1)
+
+You can apply each of these settings manually by using sysctl on the command line. For example, "sysctl kern.maxclusters=128000" will set the kern.maxclusters variable until the machine is rebooted. By setting the variables manually you can test each of them to see if they will help your machine.
+For more information about OpenBSD's Pf firewall and HFSC quality of service options check out our PF Config (pf.conf) and PF quality of service HFSC "how to's".
+Testing and verifying network speeds
+
+Continuing with OpenBSD v5.1, a lot of work has been done on the single and multi-core kernels focused on speed and efficiency improvements. Since many OpenBSD machines will be used as a firewall or bridge we wanted to see what type of speeds we could expect passing through the machine. Lets take a look at the single and multi core kernel, the effects of using PF enabled or disabled and the effect of the our "speed tweaks" listed in the section above.
+The testing hardware
+
+To do our testing we will use the latest patches applied to the latest distribution. Our test setup consists of two(2) identical boxes containing an Intel Core 2 Quad (Q9300), eight(8) gigs of ram and an Intel PRO/1000 MT (CAT5e copper) network card. The cards were put in a 64bit PCI-X slot running at 133 MHz. The boxes are connected to each other by an Extreme Networks Summit X450a-48t gigabit switch using 12' unshielded CAT6 cable.
+The testing software
+
+The following iperf options were used on the machines we will call test0 and test1. We will be sustaining a full speed transfer for 30 seconds and take the average speed in Mbits/sec as the result. Iperf is available through the OpenBSD repositories using "pkg_add iperf".
+
+## iperf listening server
+ root@test1: iperf -s
+
+## iperf sending client
+ root@test0: iperf -i 1 -t 30 -c test1
+
+The PF rules
+
+The following minimal PF rules were used if PF was enabled (pf=YES)
+
+# pfctl  -sr                                                                                                                         
+scrub in all fragment reassemble
+pass in all flags S/SA keep state
+block drop in on ! lo0 proto tcp from any to any port = 6000
+
+Test 1: No Speed Tweaks. Using the GENERIC and GENERIC.MP kernel (patched -stable) with the default tcp window sizes we are able to sustain over 300 Mbits/sec (37 Megabytes/sec). Since the link was at gigabit (1000 Mbits/sec maximum) we are using less then 40% of our network line speed.
+
+bsd.single_processor_patched
+   pf=YES
+   speed_tweaks=NO
+   [  1]  0.0-30.0 sec  1.10 GBytes    315 Mbits/sec
+
+bsd.single_processor_patched
+   pf=NO
+   speed_tweaks=NO
+   [  1]  0.0-30.0 sec  1.24 GBytes    356 Mbits/sec
+
+bsd.multi_processor_patched
+   pf=YES
+   speed_tweaks=NO
+   [  4]  0.0-30.2 sec  1.13 GBytes    321 Mbits/sec
+
+bsd.multi_processor_patched
+   pf=NO
+   speed_tweaks=NO
+   [  4]  0.0-30.0 sec  1.28 GBytes    368 Mbits/sec
+
+According to the results the network utilization was quite poor. We are able to push data across the network at less than half of its capacity (Gigabit=1000Mbit/s and we used 368Mbit/s or 36%). For most uses on a home network with a cable modem or FIOS you will not notice. But, what if you have access to a high speed gigabit or 10 gigabit network?
+
+Test 2: Calomel.org Speed Tweaks. Using the GENERIC and GENERIC.MP (patched -stable) kernel we are able to sustain around 800 Mbits/sec, almost three(3) times the default speeds.
+
+bsd.single_processor_patched
+   pf=YES
+   speed_tweaks=YES
+   [  1]  0.0-30.0 sec  2.95 GBytes    845 Mbits/sec
+
+bsd.single_processor_patched
+   pf=NO
+   speed_tweaks=YES
+   [  1]  0.0-30.0 sec  3.25 GBytes    868 Mbits/sec
+
+bsd.multi_processor_patched
+   pf=YES
+   speed_tweaks=YES
+   [  4]  0.0-30.0 sec  2.69 GBytes    772 Mbits/sec
+
+bsd.multi_processor_patched
+   pf=NO
+   speed_tweaks=YES
+   [  4]  0.0-30.2 sec  2.82 GBytes    803 Mbits/sec
+
+These results are much better. We are utilizing more than 80% of a gigabit network. This means we can sustain over 100 megabytes per second on our network. Both the single processors and multi processor kernels performed efficiently. The use of PF reduced our throughput only minimally.
+
+Why do these "speed tweaks" work? What is the theory?
+
+The dominant protocol used on the Internet today is TCP, a "reliable" "window-based" protocol. The best possible network performance is achieved when the network pipe between the sender and the receiver is kept full of data. Take a look at the excellent study done at the Pittsburgh Supercomputing Center titled, "Enabling High Performance Data Transfers". They cover bandwidth delay products (BDP), buffers, maximum TCP buffer (memory) space, socket buffer sizes, TCP large window extensions (RFC1323), TCP selective acknowledgments option (SACK, RFC2018) and path MTU theory.
+Your firewall is one of the most important machines on the network. Keep the system time up to date with OpenNTPD "how to" (ntpd.conf), monitor your hardware with S.M.A.R.T. - Monitoring hard drive health and keep track of any changed files with a custom Intrusion Detection (IDS) using mtree. If you need to verify a hard drive for bad sectors check out Badblocks hard drive validation/wipe.
+Other Operating System Software
+
+The next few sections are going to be dedicated to different operating systems Other then OpenBSD. Each OS has some way in which you can increase the overall throughput of the system. Just scroll to the OS you are most interested in.
+Ubuntu 10gig Linux network stack
+
+The following is for tuning the latest Ubuntu for ten(10) gigabit as well as one(1) gigabit networks. These settings are currently being used in production and are owrking quite well.
+
+### Calomel.org  Ubuntu 10gig Speed Tweaks
+##  /etc/rc.local
+
+# use deadline schedualer
+echo deadline > /sys/block/sda/queue/scheduler
+
+## start random number seeder. Increases the entropy pool from ~120 to ~4096
+## to check: watch -n 1 cat /proc/sys/kernel/random/entropy_avail
+/usr/sbin/rngd -r /dev/urandom -o /dev/random -W 90% -t 1
+
+## nic off-loading 
+# ethtool -k eth0
+# ethtool -K $interface rx on tx on sg on tso on ufo on gso on gro on lro on rxhash on
+for i in rx tx sg tso ufo gso gro lro rxhash; do ethtool -K eth0 $i on; done
+
+## disable flow control for mix-speed networks
+## ethtool -a eth0
+ethtool -A eth0 autoneg off rx off
+
+#### EOF #####
+
+### Calomel.org  Ubuntu 10gig Speed Tweaks
+##  /etc/network/interfaces
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+iface eth0 inet static
+    address 192.168.1.100
+    netmask 255.255.255.0
+    network 192.168.1.0
+    broadcast 192.168.1.255
+    gateway 192.168.1.1
+   #mtu 9000
+    dns-nameservers 192.168.1.1 192.168.1.2
+    dns-search domain.lan domain.homeb domain.work
+    post-up /sbin/ifconfig eth0 txqueuelen 10000
+    post-up /sbin/ip route change default via 192.168.1.1 dev eth0 metric 100 initcwnd 128 initrwnd 128
+
+#### EOF #####
+
+### Calomel.org  Ubuntu 10gig Speed Tweaks
+##  /etc/sysctl.conf
+
+# congestion control (default cubic)
+# /sbin/modprobe tcp_htcp
+# sysctl net.ipv4.tcp_available_congestion_control
+net.ipv4.tcp_congestion_control=htcp
+
+# Set maximum TCP window sizes
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+
+# Set minimum, default, and maximum TCP buffer limits
+net.ipv4.tcp_rmem = 4096 524288 16777216
+net.ipv4.tcp_wmem = 4096 524288 16777216
+
+# Set maximum network input buffer queue length
+net.core.netdev_max_backlog = 250000
+
+# Disable caching of TCP congestion state (2.6 only)
+net.ipv4.tcp_no_metrics_save = 1
+
+# increase port range
+net.ipv4.ip_local_port_range = 1024 65000
+
+#net.ipv4.tcp_ecn=2
+net.ipv4.tcp_slow_start_after_idle=0
+net.ipv4.tcp_tw_reuse=1
+net.ipv4.tcp_syncookies=0
+net.ipv4.ip_no_pmtu_disc=1
+#net.ipv4.tcp_base_mss=1460
+#net.ipv4.tcp_adv_win_scale=14
+net.ipv4.tcp_sack=1
+net.ipv4.tcp_timestamps=1
+
+#kernel.domainname = example.com
+
+# Uncomment the following to stop low-level messages on console
+#kernel.printk = 3 4 1 3
+
+##############################################################3
+# Functions previously found in netbase
+#
+
+# Uncomment the next two lines to enable Spoof protection (reverse-path filter)
+# Turn on Source Address Verification in all interfaces to
+# prevent some spoofing attacks
+net.ipv4.conf.default.rp_filter=1
+net.ipv4.conf.all.rp_filter=1
+
+# Uncomment the next line to enable TCP/IP SYN cookies
+# See http://lwn.net/Articles/277146/
+# Note: This may impact IPv6 TCP sessions too
+#net.ipv4.tcp_syncookies=1
+
+# Uncomment the next line to enable packet forwarding for IPv4
+#net.ipv4.ip_forward=1
+
+# Uncomment the next line to enable packet forwarding for IPv6
+#  Enabling this option disables Stateless Address Autoconfiguration
+#  based on Router Advertisements for this host
+#net.ipv6.conf.all.forwarding=1
+
+###################################################################
+# Additional settings - these settings can improve the network
+# security of the host and prevent against some network attacks
+# including spoofing attacks and man in the middle attacks through
+# redirection. Some network environments, however, require that these
+# settings are disabled so review and enable them as needed.
+#
+# Do not accept ICMP redirects (prevent MITM attacks)
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv6.conf.all.accept_redirects = 0
+# _or_
+# Accept ICMP redirects only for gateways listed in our default
+# gateway list (enabled by default)
+# net.ipv4.conf.all.secure_redirects = 1
+#
+# Do not send ICMP redirects (we are not a router)
+net.ipv4.conf.all.send_redirects = 0
+#
+# Do not accept IP source route packets (we are not a router)
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv6.conf.all.accept_source_route = 0
+#
+# Log Martian Packets
+net.ipv4.conf.all.log_martians = 1
+
+### EOF ####
+
+Questions?
+
+How can I find performance bottlenecks and display real time statistics about the firewall hardware? On any Unix based system run the command "systat vmstat" to give you a top like display of memory totals, paging amount, swap numbers, interrupts per second and much more. Systat is incredible useful to determine where the performance bottleneck is on a machine.

@@ -1,0 +1,40 @@
+http://msdn.microsoft.com/en-us/library/ms166575.aspx
+
+Tutorial: Database Engine Tuning Advisor
+SQL Server 2014
+Other Versions
+0 out of 3 rated this helpful - Rate this topic
+
+Welcome to the Database Engine Tuning Advisor tutorial. Database Engine Tuning Advisor examines how queries are processed in the databases you specify, and then recommends how you can improve query processing performance by modifying database structures such as indexes, indexed views, and partitioning.
+
+Database Engine Tuning Advisor provides two user interfaces: a graphical user interface (GUI) and the dta command prompt utility. The GUI makes it easy to quickly view the results of tuning sessions, and the dta utility makes it easy to incorporate Database Engine Tuning Advisor functionality into scripts for automated tuning. In addition, Database Engine Tuning Advisor can take XML input, which offers more control over the tuning process. For more information about Database Engine Tuning Advisor features, see Database Engine Tuning Advisor Features.
+What You Will Learn
+
+This tutorial will teach you how to navigate the Database Engine Tuning Advisor GUI, and how to perform some basic tasks with both the GUI and the dta utility. It contains the following lessons:
+
+Lesson 1: Basic Navigation in Database Engine Tuning Advisor
+
+    In this lesson, you will familiarize yourself with the new Database Engine Tuning Advisor GUI and learn how to set display options and layout.
+Lesson 2: Using Database Engine Tuning Advisor
+
+    In this lesson, you will learn how to perform basic tuning tasks with the Database Engine Tuning Advisor GUI.
+Lesson 3: Using the dta Command Prompt Utility
+
+    In this lesson, you learn how to start the dta command prompt utility and how to run some simple tuning commands.
+
+Requirements
+
+This tutorial is intended for database administrators who are not familiar with the Database Engine Tuning Advisor GUI or the dta command prompt utility, but who are experienced with database concepts and structures, such as indexes and indexed views.
+
+You must install SQL Server 2014 (or a later version) with the AdventureWorks2012 sample database. To enhance security, the sample databases are not installed by default. To install the sample databases, see Installing SQL Server Samples and Sample Databases.
+After You Finish This Tutorial
+
+After you finish the lessons in this tutorial, refer to the following topics for more information about Database Engine Tuning Advisor:
+
+    Database Engine Tuning Advisor for descriptions of how to perform tasks with this tool.
+
+    dta Utility for reference material on the command prompt utility and the optional XML file you can use to control the operation of the utility.
+
+Next Lesson
+
+Lesson 1: Basic Navigation in Database Engine Tuning Advisor

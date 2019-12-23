@@ -1,0 +1,125 @@
+https://www.nersc.gov/users/science-gateways/
+
+Science Gateways
+| Tags: Astrophysics, Climate Research, Data, Lattice QCD, Materials Science, Science Gateways
+Table of Contents
+
+    About Science Gateways
+    Gateway Demos
+    Gateway Technologies
+    Science Gateways in Production
+    Getting Started
+    Moving beyond simple gateway functions:
+
+About Science Gateways
+
+A science gateway is a web based interface to access HPC computers and storage systems.  Gateways allow science teams to access  data, perform shared computations and generally interact with NERSC resources over the web. Common gateway goals are
+
+    to improve ease of use in HPC so that more scientists can benefit from NERSC
+    creating collaborative workspaces around data and computing for NERSC science teams
+    to make your data accessible and useful to the broader scientific community.
+
+NERSC  engages with science teams interested in using web services, assists with deployment, accepts feedback, and tries to recycle sucessful approaches into methods that other teams can benefit from. Below is a list of current projects and methods. Building blocks are available to NERSC users interested in creating new science gateways. If you would like to participate, or if you have questions, please contact consult@nersc.gov.
+Back to Top
+Gateway Demos
+
+Let's get started. If you login to the NERSC web site you can run the quickstart examples in your own account, otherwise they will run in a demo space. These examples don't do a lot but are meant to quickly show some of what is possible through hands on experience. The NEWT documentation also has many short examples.
+Back to Top
+Gateway Technologies
+
+NERSC provides  science teams with the building blocks to create their own science gateways and web interfaces into  NERSC. Many of these interfaces are built on web and database technologies.
+Web Methods for Data
+
+Science gateways can be configured to provide public unauthenticated access to data sets and services as well as authenticated access if needed. The following features are available to projects that wish to enable gateway access to their data through the web. Other features can be made available on request. Direct access to the NGF "project" filesystem and HPSS tape archives are described in the table below.
+
+There are two science gateway nodes that are available to all NERSC users. These are portal and portal-auth. They function very similarly but the former is for port 80 unauthenitcated traffic and the latter is for https. These two gateway nodes are available for users to do general devleopment on. Service level agreements are possible along with dedicated resrouces for projects that wish to build robustly monitored web services.
+
+Web Methods for Computing
+
+Science gateways can use a REST-based web API (NEWT) to access the NERSC center, including authentication, file management, job submission and accounting interfaces. These interfaces allow you to run simulations, large or small, through the web. The NEWT demos show how to submit a parallel batch job through a simple HTML form. Other programming language and webtoolkit level building blocks include.
+
+        Full-featured backend programming environments in the language of your choice (PHP, Python, Ruby, Java).
+        Support for LDAP and Shibboleth authentication.
+        Conduits to PostGRESQL/MySQL/NoSQL Databases.
+        Modern Web 2.0 interfaces with AJAX front-ends such as Google maps and visualization kits.
+        OpenDAP access to large data sets (netcdf and HDF5)
+        Access to NERSC filesystems and HPSS through the NEWT API, grid tools or other custom interfaces
+
+Database Methods
+
+Science gateways can also access data from NERSC's science database nodes. These are specially configured nodes which support MySQL, Postgres, and MongoDB for high-performance access. More details on the science gateway database services is provided here. Some exmples of database methods used by gateways are
+
+    Access file catalogs and other persistently stored collections from your batch jobs
+    Connect a web-based gateway to datasets stored in a database (read and read-write)
+    Store, search and analyze data objects, e.g. job output, through mapreduce-like MongoDB methods
+    Expose public read-only data collections through database protocols
+
+For more information on databases for user science data please submit a question or request here
+Back to Top
+Science Gateways in Production
+
+Science gateways that have moved from development to providing services to broader communities are listed here.
+
+Nagios monitoring and service level checks of gateway functions are available.
+Back to Top
+Getting Started
+
+A project directory is a good place to host a science gateway. Both NGF and HPSS allow users to create a special web directory within a project directory. You can publish data through a publicly accessible URL by simply making an appropriate subdirectory called "www". The procedure differs slightly depending on which file system you choose, as detailed below. You can also use the NEWT API to make web applications that use NERSC resources.
+
+How to publish your data on NGF to the web:
+
+ssh portal-auth.nersc.gov 
+
+In the above example, you can replace portal-auth with any other NERSC compute platform that has access to /project. Create a www directory in your project directory:
+
+mkdir /project/projectdirs/yourproject/www
+
+Make sure your project directory and the www directory are world readable:
+
+chmod 755 /project/projectdirs/yourproject/
+chmod 755 /project/projectdirs/yourproject/www
+
+Copy your data to this www directory. Any public data will need to be world readable. Add PHP and HTML files to this directory to build custom gateway interfaces to the data. Any data under /project/projectdirs/yourproject/www will be publicly accessible through http://portal.nersc.gov/project/yourproject/
+
+How to publish data in HPSS to the web:
+
+You can also publish data in the archive HPSS system directly to a public URL on the web. Note that  this is not intended to be a high-performance interface; it is just a quick way to make data publicly available. 
+
+Login to archive via hsi:
+
+hsi -h archive.nersc.gov
+
+Create a www directory
+
+mkdir /home/projects/DIRNAME/www
+
+Make sure the parent directory and the www directory are world readable:
+
+chmod 755 /home/projects/DIRNAME
+chmod 755 /home/projects/DIRNAME/www
+
+The data in the www directory will now be available at a URL of the form 
+http://portal.nersc.gov/archive/home/projects/DIRNAME/www/{FILE|DIR} where DIRNAME is the project directory and FILE|DIR is the name of a file.
+
+Files will be downloaded directly, while directories will give you a listing. Note that all files and directories in the path must be world readable.
+
+Here is an example: 
+http://portal.nersc.gov/archive/home/projects/incite11/www/1935 
+Please note that the time to download files from tape may take some time to start as the tape robot finds and mounts the correct tape.
+
+How to get started with NEWT
+
+To build more sophisticated web apps, we recommend using the NEWT API, which allows you to build rich interactive JavaScript applications that can communicate directly with NERSC HPC resources via a RESTful Web API. This includes access to authentication, jobs, files, interactive commands, system information, NIM accounting information and object storage.
+
+To get started, insert the following in your HTML files to give you access to all NERSC compute and data resources through NEWT:
+
+<script src="http://newt.nersc.gov/js/jquery-1.7.2.js" />
+<script src="http://newt.nersc.gov/js/newt.js" />
+
+Follow the "Hello World" example at https://newt.nersc.gov/ or work through some of the fuller examples at https://newt.nersc.gov/examples/ to get a feel for how NEWT works. The complete NEWT API docs can be found at https://newt.nersc.gov/api.
+
+ 
+Back to Top
+Moving beyond simple gateway functions:
+
+If you are building a web gateway to your science at NERSC, please contact us at consult@nersc.gov. We are interested in engagaing directly with science teams so that you can build a gateway that meets your specific needs.

@@ -1,0 +1,84 @@
+http://windows.microsoft.com/en-us/windows/improve-computers-performance#1TC=windows-7
+
+Ways to improve your computer's performance
+Windows 7 More
+In this page
+
+    Tasks that can help improve performance
+    View details about your computer's capability
+    Speed up your computer with ReadyBoost
+    Try a troubleshooter
+
+Performance Information and Tools, the Windows Experience Index, and ReadyBoost all offer ways to help improve the performance of your computer.
+Tasks that can help improve performance
+
+Tasks in the left pane of Performance Information and Tools can help you improve your computer's performance.
+To open Performance Information and Tools
+
+    Open Performance Information and Tools by clicking the Start button Picture of the Start button, and then clicking Control Panel. In the search box, type Performance Information and Tools, and then, in the list of results, click Performance Information and Tools.
+
+Task 	Description
+
+Adjust visual effects
+	
+
+Optimize performance by changing how menus and windows appear.
+
+Adjust indexing options
+	
+
+Indexing options can help you find what you're looking for quickly and easily on your computer.
+
+You can search more efficiently by narrowing your search to focus on those files and folders that you commonly use. For more information, see Improve Windows searches using the index: frequently asked questions.
+
+Adjust power settings
+	
+
+Change power-related settings so that your computer resumes from power-saving settings more efficiently, and adjust battery usage for portable computers.
+
+Open Disk Cleanup
+	
+
+This tool deletes unnecessary or temporary files on your hard disk so you can increase the amount of storage space you have. For more information, see Delete files using Disk Cleanup.
+
+Advanced tools
+	
+
+Access advanced system tools, such as Event Viewer, Disk Defragmenter, and System Information, that system administrators and IT professionals often use to solve problems. You can also view notifications about performance-related issues and what to do about them. For example, if Windows detects that a driver is reducing performance, click the notification to learn which driver is causing the problem and view help on how to update the driver. Issues listed at the beginning of the list are impacting the system more than issues listed further down the list.
+Top of page
+View details about your computer's capability
+
+The Windows Experience Index measures the capability of your computer's hardware and software configuration and expresses this measurement as a number called a base score. A higher base score generally means that your computer will perform better and faster than a computer with a lower base score, especially when performing more advanced and resource-intensive tasks.
+To view your computer's base score
+
+    Open Performance Information and Tools by clicking the Start button Picture of the Start button, and then clicking Control Panel. In the search box, type Performance Information and Tools, and then, in the list of results, click Performance Information and Tools.
+
+    The Windows Experience Index base score and subscores for your computer are displayed on this page. If you don't see subscores and a base score, click Rate this computer. Administrator permission required If you're prompted for an administrator password or confirmation, type the password or provide confirmation. If you recently upgraded your hardware and want to find out if your score has changed, click Re-run the assessment. Administrator permission required If you're prompted for an administrator password or confirmation, type the password or provide confirmation.
+
+The Windows Experience Index is used by other software makers, so you can buy programs that are matched to your computer's base score. For more information, see What is the Windows Experience Index?
+
+To view detailed information about the hardware on your computer, such as processor speed, the amount of random access memory (RAM) installed, and hard disk size, click View and print detailed performance and system information.
+Top of page
+Speed up your computer with ReadyBoost
+
+ReadyBoost can speed up your computer by using storage space on most USB flash drives and flash memory cards. When you plug a ReadyBoost -compatible storage device into your computer, the AutoPlay dialog box gives you the option to use ReadyBoost . If you select this option, you can choose how much memory on the device to use for this purpose.
+
+For more information, see Turn ReadyBoost on or off for a storage device.
+Top of page
+Try a troubleshooter
+
+Windows includes two troubleshooting programs that you can use to automatically fix some common problems with your computer's performance or with maintenance of your system.
+
+    Open the Performance troubleshooter by clicking the Start button Picture of the Start button, and then clicking Control Panel. In the search box, type troubleshooter, and then click Troubleshooting. Under System and Security, click Check for performance issues.
+
+    Open the System Maintenance troubleshooter by clicking the Start button Picture of the Start button, and then clicking Control Panel. In the search box, type troubleshooter, and then click Troubleshooting. Under System and Security, click Run maintenance tasks.
+
+Top of page
+
+Article ID: MSW700035
+Need more help?
+		
+
+    See all support pages for performance & maintenance.
+
+    Ask a question in the community forums. 

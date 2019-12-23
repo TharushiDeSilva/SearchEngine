@@ -1,0 +1,24 @@
+https://www.xsede.org/gateways-overview
+
+Overview
+
+A Science Gateway is a community-developed set of tools, applications, and data that are integrated via a portal or a suite of applications, usually in a graphical user interface, that is further customized to meet the needs of a specific community. Gateways enable entire communities of users associated with a common discipline to use national resources through a common interface that is configured for optimal use. Researchers can focus on their scientific goals and less on assembling the cyberinfrastructure they require. Gateways can also foster collaborations and the exchange of ideas among researchers.
+How to Turn Your Project into a Science Gateway
+
+    Get an XSEDE allocation; Start-up and Educational allocations require only a one paragraph project description. For more information visit the Allocations section of the web site.
+    Register your project as an XSEDE Gateway
+    Build a portal
+    Set up your developer accounts by Adding users to an existing allocation. Also, set up your Gateway community accounts.
+
+Using Existing Gateways
+
+Gateways are independent projects, each with its own guidelines for access. Most gateways are available for use by anyone, although they usually target a particular research audience. XSEDE Science Gateways are portals to computational and data services and resources across a wide range of science domains for researchers, engineers, educators, and students. Depending on the needs of the communities, a gateway may provide any of the following features:
+
+    High-performance computation resources
+    Workflow tools
+    General or domain-specific analytic and visualization software
+    Collaborative interfaces
+    Job submission tools
+    Education modules
+
+See the List of Gateways, which is sortable by science domain, to explore the current XSEDE gateways projects.

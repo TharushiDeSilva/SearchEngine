@@ -1,0 +1,24 @@
+https://fasterdata.es.net/network-tuning/router-switch-buffer-size-issues/
+
+Router/Switch Buffer Size Issues
+
+Router Interface Queues
+
+In most cases, switches and routers are configured for "best-effort" packet forwarding. This means that the router forwards all packets it receives to the best of its ability. The router forwards a packet as soon as it can perform the table lookup necessary to determine the appropriate egress interface(es) for the packet. If the router is unable to send a packet immediately, the packet is queued. If the queue is full, the packet is dropped. Packets are typically processed on a first-come, first-served (or FIFO, First In First Out) basis. This adds up to best-effort forwarding.
+
+Everything is typically fine with best-effort forwarding until an interface is oversubscribed. Once that happens, even if the oversubscription is momentary, the router must queue packets to avoid dropping them. Therefore, the amount of queuing available on an interface determines the amount of momentary oversubscription that the router is able to tolerate on that interface without dropping packets and causing performance degradation. Note that, in most Research and Education (R&E) networks, oversubscription of 1Gbps or 10Gbps interfaces is typically momentary - the bulk of the network traffic is composed of science flows which consume a large amount of bandwidth in a small number of flows, and once those flows encounter packet loss they collapse and stop consuming bandwidth. This is very different from web browsing, email, YouTube, and so on where a very large number of flows consume a relatively small amount of bandwidth each. R&E networks are sized for the science flows, so the smaller flows do not typically saturate interfaces. However, there is often enough background traffic that the bursts associated with high-speed transfers can cause those transfers to collapse as the large transfers momentarily oversubscribe an interface and overflow its output queue. Since TCP performs poorly in the face of even a tiny amount of packet loss, it is very important to configure routers and switches with sufficient output queuing to accommodate the momentary oversubscription of interfaces that comes with the bursty traffic patterns inherent in wide-area, high-performance, TCP-based data transfers.
+
+The following diagram illustrates a common cluster configuration and the locations where packet loss typically occurs due to inadequate queue resources:
+
+Some vendors will tell you not to increase the output queue depth on an interface, because they base all their assumptions on a traffic profile that is very different from an R&E traffic profile. They will tell you that it's not good to increase the output queue depth, because traffic will fill that queue and this will result in increased RTT for traffic that traverses the interface. This may be true for steady-state traffic (e.g. 10G of videoconferencing or VOIP, or millions of web browsers), but this is typically not true for R&E traffic, especially the large data flows associated with the transfer of large-scale science data sets (e.g. supercomputer simulation data, high energy physics data, high-resolution telescope data, etc).
+
+High-throughput TCP flows as seen in an R&E network typically burst at wire speed even though the flow will not run at wire speed in steady state over the duration of the transfer. So, the network needs to be able to accommodate high-speed bursts during connection start-up, but the link (and certainly the output queue) will not remain full because steady-state load is not a full 10G. The goal of increasing the output queue depth is to give the network enough "elasticity" to allow TCP to ramp up and smooth out without encountering packet loss early in the transfer.
+Optimum Buffer Size
+
+Network gear with more buffer space typically is more expensive. Just how much buffering is enough?
+
+The general rule of thumb is that you need 50ms of line-rate output queue buffer, so for for a 10G switch, there should be around 60MB of buffer. This is particularly important if you have a 10G host sending to a 1G host across the WAN. But there are a number of switch design issues that make it hard to quantify exactly how much buffering is actually required.
+
+Unfortunately, it can be quite difficult to track down how much buffer space is in a given switch. Fortunately Jim Warner, UCSC, has collected much of this information here: http://people.ucsc.edu/~warner/buffer.html
+
+Note that in the network community there has been a lot of discussion lately about "Buffer Bloat". While too much buffering can be a big problem on networks with speeds less than 100 Mbps (e.g.: Cable, DSL, Wifi, 3G/4G, WiMAX, etc.), the problem at 10Gbps or higher is usually not enough buffering.

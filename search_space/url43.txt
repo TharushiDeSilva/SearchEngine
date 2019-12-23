@@ -1,0 +1,111 @@
+http://en.wikipedia.org/wiki/Bit_manipulation
+Bit manipulation
+From Wikipedia, the free encyclopedia
+
+Bit manipulation is the act of algorithmically manipulating bits or other pieces of data shorter than a word. Programming tasks that require bit manipulation include low-level device control, error detection and correction algorithms, data compression, encryption algorithms, and optimization. For most other tasks, modern programming languages allow the programmer to work directly with abstractions instead of bits that represent those abstractions. Source code that does bit manipulation makes use of the bitwise operations: AND, OR, XOR, NOT, and bit shifts.
+
+Bit manipulation, in some cases, can obviate or reduce the need to loop over a data structure and can give many-fold speed ups, as bit manipulations are processed in parallel, but the code can become rather more difficult to write and maintain.
+
+Contents
+
+    1 Terminology
+    2 Bitwise operation
+    3 Masks
+    4 Example of bit manipulation
+    5 Bit manipulation in the C programming language
+    6 See also
+    7 References
+    8 Further reading
+    9 External links
+
+Terminology
+
+Bit twiddling and bit bashing are often used interchangeably with bit manipulation, but sometimes exclusively refer to clever or non-obvious ways or uses of bit manipulation, or tedious or challenging low-level device control data manipulation tasks.
+
+The term bit twiddling dates from early computing hardware, where computer operators would make adjustments by tweaking or twiddling computer controls. As computer programming languages evolved, programmers adopted the term to mean any handling of data that involved bit-level computation.
+Bitwise operation
+Main article: bitwise operation
+
+A bitwise operation operates on one or more bit patterns or binary numerals at the level of their individual bits. It is a fast, primitive action directly supported by the processor, and is used to manipulate values for comparisons and calculations. On simple low-cost processors, typically, bitwise operations are substantially faster than division, several times faster than multiplication, and sometimes significantly faster than addition. While modern processors usually perform addition and multiplication just as fast as bitwise operations due to their longer instruction pipelines and other architectural design choices, bitwise operations do commonly use less power because of the reduced use of resources.
+Masks
+Main article: mask (computing)
+
+A mask is data that is used for bitwise operations, particularly in a bit field.
+
+Using a mask, multiple bits in a Byte, nibble, word (etc.) can be set either on, off or inverted from on to off (or vice versa) in a single bitwise operation.
+Example of bit manipulation
+
+The following two code samples, written in the C++ programming language, both determine if the given unsigned integer x is a power of two.
+
+ // The obvious method
+ unsigned int x = ...;
+ bool isPowerOfTwo;
+ if (x > 0) {
+     while ((x % 2) == 0) {
+         x = x / 2;
+     }
+     isPowerOfTwo = (x==1);
+ }
+ else
+     isPowerOfTwo = false;
+
+ 
+ // A method using bit manipulation
+ bool isPowerOfTwo = x && !(x & (x - 1));
+
+The second method uses the fact that powers of two have one and only one bit set in their binary representation:
+
+x         == 0...010...0
+x-1       == 0...001...1
+x & (x-1) == 0...000...0
+
+If the number is neither zero nor a power of two, it will have '1' in more than one place:
+
+x         == 0...1...010...0
+x-1       == 0...1...001...1
+x & (x-1) == 0...1...000...0
+
+If inline assembler code is used, then an instruction that counts the number of 1's or 0's might be available (for example, the POPCNT instruction from the x86 instruction set). Such instructions may have greater latency, however, than the bit-twiddling solution.
+Bit manipulation in the C programming language
+
+C has direct support for bitwise operations that can be used for bit manipulation. In the following examples, n is the index of the bit to be manipulated within the variable bit_fld, which is an unsigned char being used as a bit field. Bit indexing begins at 0, not 1. Bit 0 is the least significant bit.
+
+Set a bit
+
+bit_fld |= (1 << n)
+
+Clear a bit
+
+bit_fld &= ~(1 << n)
+
+Toggle a bit
+
+bit_fld ^= (1 << n)
+
+Test a bit
+
+bit_fld & (1 << n)
+
+When using an array of bytes to represent set of bits, i.e., a bit array or bitset, the index of the byte in the array associated with a bit n can be calculated using division:
+
+n / CHAR_BIT
+
+where n is the index of the given bit and CHAR_BIT gives the number of bits in a C char.
+
+The index of the bit within the byte indexed by the above can be calculated via a modulo operation:
+
+n % CHAR_BIT
+
+Note: unsigned char is typically used in C to represent a byte and CHAR_BIT is most often 8 on modern processors. % is the C modulo operator.
+See also
+
+    Bit twiddler (disambiguation)
+    Bit specification (disambiguation)
+    Find first set
+    Flag — a bit representing a boolean value
+    Nibble — unit of data consisting of 4 bits, or half a byte
+    Mask (computing)
+    bit-banging
+    Bit array
+    BIT predicate
+    Bit Manipulation Instruction Sets bit manipulation extensions for the x86 instruction set.

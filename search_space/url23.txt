@@ -1,0 +1,453 @@
+http://java-performance.info/
+
+Java Performance Tuning Guide
+Java performance tuning guide – various tips on improving performance of your Java code
+Skip to content
+
+    Home
+
+Large HashMap overview: JDK, FastUtil, Goldman Sachs, HPPC, Koloboke, Trove
+2 Replies	
+
+by Mikhail Vorontsov
+Introduction
+
+This article will give you an overview of hash map implementations in 5 well known libraries and JDK HashMap as a baseline. We will test separately:
+
+    Primitive to primitive maps
+    Primitive to object maps
+    Object to primitive maps
+    Object to Object maps (JDK participates only in this section)
+
+This article will overview a single test – map read access for a random set of keys (a set of keys is shared for all collections of a given capacity).
+
+We will also pay attention to the way the data is stored inside these collections and to some pretty interesting implementation details.
+Participants
+JDK 8
+
+JDK HashMap is the oldest hash map implementation in this test. It got a couple of major updates recently – a shared underlying storage for the empty maps in Java 7u40 and a possibility to convert underlying hash bucket linked lists into tree maps (for better worse case performance) in Java 8.
+FastUtil 6.5.15
+
+FastUtil provides a developer a set of all 4 options listed above (all combinations of primitives and objects). Besides that, there are several other types of maps available for each parameter type combination: array map, AVL tree map and RB tree map. Nevertheless, we are only interested in hash maps in this article.
+Goldman Sachs Collections 5.1.0
+
+Goldman Sachs has open sourced its collections library about 3 years ago. In my opinion, this library provides the widest range of collections out of box (if you need them). You should definitely pay attention to it if you need more than a hash map, tree map and a list for your work :) For the purposes of this article, GS collections provide a normal, synchronized and unmodifiable versions of each hash map. The last 2 are just facades for the normal map, so they don’t provide any performance advantages.
+HPPC 0.6.1
+
+HPPC provides array lists, array dequeues, hash sets and hash maps for all primitive types. HPPC provides normal hash maps for primitive keys and both normal and identity hash maps for object keys.
+Koloboke 0.6
+
+Koloboke is the youngest of all libraries in this article. It is developed as a part of an OpenHFT project by Roman Leventov. This library currently provides hash maps and hash sets for all primitive/object combinations. This library was recently renamed from HFTC, so some artifacts in my tests will still use the old library name.
+Trove 3.0.3
+
+Trove is available for a long time and quite stable. Unfortunately, not much development is happening in this project at the moment. Trove provides you the list, stack, queue, hash set and map implementations for all primitive/object combinations. I have already written about Trove.
+
+Continue reading →
+This entry was posted in CPU optimization, Intermediate, Memory optimization, Overviews and tagged FastUtil, GS collections, hashmap, hppc, jdk8, Koloboke, map, trove on November 1, 2014.
+Introduction to JMH
+8 Replies	
+
+by Mikhail Vorontsov
+
+11 Sep 2014: Article was updated for JMH 1.0.
+
+10 May 2014: Original version.
+Introduction
+
+This article will give you an overview of basic rules and abilities of JMH. The second article will give you an overview of JMH profilers.
+
+JMH is a new microbenchmarking framework (first released late-2013). Its distinctive advantage over other frameworks is that it is developed by the same guys in Oracle who implement the JIT. In particular I want to mention Aleksey Shipilev and his brilliant blog. JMH is likely to be in sync with the latest Oracle JRE changes, which makes its results very reliable.
+
+You can find JMH examples here.
+
+JMH has only 2 requirements (everything else are recommendations):
+
+    You need to create a maven project using a command from the JMH official web page
+    You need to annotate test methods with @Benchmark annotation
+
+In some cases, it is not convenient to create a new project just for the performance testing purposes. In this situation you can rather easily add JMH into an existing project. You need to make the following steps:
+
+    Ensure your project directory structure is recognizable by Maven (your benchmarks are at src/main/java at least)
+    Copy 2 JMH maven dependencies and maven-shade-plugin from the JMH archetype. No other plugins mentioned in the archetype are required at the moment of writing (JMH 1.0).
+
+How to run
+
+Run the following maven command to create a template JMH project from an archetype (it may change over the time, check for the latest version near the start of the the official JMH page):
+
+    $ mvn archetype:generate \
+              -DinteractiveMode=false \
+              -DarchetypeGroupId=org.openjdk.jmh \
+              -DarchetypeArtifactId=jmh-java-benchmark-archetype \
+              -DgroupId=org.sample \
+              -DartifactId=test \
+              -Dversion=1.0
+
+Alternatively, copy 2 JMH dependencies and maven-shade-plugin from the JMH archetype (as described above).
+
+Create one (or a few) java files. Annotate some methods in them with @Benchmark annotation – these would be your performance benchmarks.
+
+You have at least 2 simple options to run your tests::
+Follow the procedure from the official JMH page):
+
+    $ cd your_project_directory/
+    $ mvn clean install
+    $ java -jar target/benchmarks.jar
+
+The last command should be entered verbatim – regardless of your project settings you will end up with target/benchmarks.jar sufficient to run all your tests. This option has a slight disadvantage – it will use the default JMH settings for all settings not provided via annotations ( @Fork, @Warmup and @Measurement annotations are getting nearly mandatory in this mode). Use java -jar target/benchmarks.jar -h command to see all available command line options (there are plenty).
+Or use the old way: add main method to some of your classes and write a JMH start script inside it. Here is an example:
+
+    1
+    2
+    3
+    4
+    5
+
+    	
+
+    Options opt = new OptionsBuilder()
+                    .include(".*" + YourClass.class.getSimpleName() + ".*")
+                    .forks(1)
+                    .build();
+    new Runner(opt).run();
+
+After that you can run it with target/benchmarks.jar as your classpath:
+
+    $ cd your_project_directory/
+    $ mvn clean install
+    $ java -cp target/benchmarks.jar your.test.ClassName
+
+Now after extensive “how to run it” manual, let’s look at the framework itself.
+
+Continue reading →
+This entry was posted in CPU optimization, Intermediate, Memory optimization, Overviews and tagged JMH, micrbenchmarking, Oracle on September 13, 2014.
+String deduplication feature (from Java 8 update 20)
+4 Replies	
+
+by Mikhail Vorontsov
+
+This article will provide you a short overview of a string deduplication feature added into Java 8 update 20.
+
+String objects consume a large amount of memory in an average application. Some of these strings may be duplicated – there exist several distinct instances of the same String (a != b, but a.equals(b)). In practice, a lot of Strings could be duplicated due to various reasons.
+
+Originally, JDK offered String.intern() method to deal with the string duplication. The disadvantage of this method is that you have to find which strings should be interned. This generally requires a heap analysis tool with a duplicate string lookup ability, like YourKit profiler. Nevertheless, if used properly, string interning is a powerful memory saving tool – it allows you to reuse the whole String objects (each of whose is adding 24 bytes overhead to the underlying char[]).
+
+Starting from Java 7 update 6, each String object has its own private underlying char[]. This allows JVM to make an automatic optimization – if an underlying char[] is never exposed to the client, then JVM can find 2 strings with the same contents, and replace the underlying char[] of one string with an underlying char[] of another string.
+
+That’s done by the string deduplication feature added into Java 8 update 20. How it works:
+
+Continue reading →
+This entry was posted in Intermediate, Memory optimization and tagged deduplication, Java 8, memory optimization, string on September 3, 2014.
+Trove library: using primitive collections for performance
+3 Replies	
+
+by Mikhail Vorontsov
+
+
+19 July 2014: article text cleanup, added a chapter on JDK to Trove migration.
+16 July 2012: original version.
+
+This article would describe Trove library, which contains a set of primitive collection implementations. The latest version of Trove (3.1a1 at the time of writing) would be described here.
+
+Why should you use Trove? Why not to keep using well known JDK collections? The answer is performance and memory consumption. Trove doesn’t use any java.lang.Number subclasses internally, so you don’t have to pay for boxing/unboxing each time you want to pass/query a primitive value to/from the collection. Besides, you don’t have to waste memory on the boxed numbers (24 bytes for Long/Double, 16 bytes for smaller types) and reference to them. For example, if you want to store an Integer in JDK map, you need 4 bytes for a reference (or 8 bytes on huge heaps) and 16 bytes for an Integer instance. Trove, on the other hand, uses just 4 bytes to store an int. Trove also doesn’t create Map.Entry for each key-value pair unlike java.util.HashMap, further reducing the map memory footprint. For sets, it doesn’t use a Map internally, just keeping set values.
+
+There are 3 main collection types in Trove: array lists, sets and maps. There are also queues, stacks and linked lists, but they are not so important (and usually instances of these collections tend to be rather small).
+Array lists
+
+All array lists are built on top of an array of corresponding data type (for example, int[] for TIntArrayList). There is a small problem which you should deal with: a value for the absent elements (default value). It is zero by default, but you can override it using
+
+    1
+    2
+
+    	
+
+    public TIntArrayList(int capacity, int no_entry_value);
+    public static TIntArrayList wrap(int[] values, int no_entry_value);
+
+There are 2 useful methods called getQuick/setQuick – they just access the underlying array without any additional checks. As a side-effect they would allow to access elements between list size and capacity (don’t use it too much – it is still better to add values legally and when getQuick values as long as you are inside array list boundaries.
+
+Each Trove array list has several helper methods which implement the java.util.Collections functionality:
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+
+    	
+
+    public void reverse()
+    public void reverse(int from, int to)
+    public void shuffle(java.util.Random rand)
+    public void sort()
+    public void sort(int fromIndex, int toIndex)
+    public void fill(int val)
+    public void fill(int fromIndex, int toIndex, int val)
+    public int binarySearch(int value)
+    public int binarySearch(int value, int fromIndex, int toIndex)
+    public int max()
+    public int min()
+    public int sum()
+
+Continue reading →
+This entry was posted in CPU optimization, Intermediate, Memory optimization and tagged collections, cpu optimization, JDK to Trove migration, memory optimization, primitive collections, trove on July 19, 2014.
+Creating an exception in Java is very slow
+5 Replies	
+
+by Mikhail Vorontsov
+
+
+29 June 2014 update – now using JMH for testing. Added 2 ways to avoid the cost of exceptions. Made some editorial changes to the original text to reflect JMH usage.
+Filling in the stack trace is slow…
+
+Creating an exception in Java is a very slow operation. Expect that throwing an exception will cost you around 1-5 microseconds. Nearly all this time is spent on filling in the exception thread stack. The deeper the stack trace is, the more time it will take to populate it.
+
+Usually we throw an exception in case of unexpected problems. This means that we don’t expect exceptions to be thrown at a rate of thousands per second per process. But sometimes you will encounter a method which uses exceptions for more likely events. We have already seen a good (actually bad) example of such behavior in Base 64 encoding and decoding performance article: sun.misc.BASE64Decoder is extremely slow due to using an exception for “give me more data” requests:
+
+    at java.lang.Throwable.fillInStackTrace(Throwable.java:-1)
+    at java.lang.Throwable.fillInStackTrace(Throwable.java:782)
+    - locked <0x6c> (a sun.misc.CEStreamExhausted)
+    at java.lang.Throwable.<init>(Throwable.java:250)
+    at java.lang.Exception.<init>(Exception.java:54)
+    at java.io.IOException.<init>(IOException.java:47)
+    at sun.misc.CEStreamExhausted.<init>(CEStreamExhausted.java:30)
+    at sun.misc.BASE64Decoder.decodeAtom(BASE64Decoder.java:117)
+    at sun.misc.CharacterDecoder.decodeBuffer(CharacterDecoder.java:163)
+    at sun.misc.CharacterDecoder.decodeBuffer(CharacterDecoder.java:194)
+
+You may encounter the same problem if you try to run pack method from String packing part 2: converting Strings to any other objects with a string starting with a digit, but followed by letters. Let’s see how long does it take to pack ‘12345’ and ‘12345a’ with that method:
+
+    Benchmark                        (m_param)   Mode   Samples         Mean   Mean error    Units
+    t.StringPacking2Tests.testPack      12345a  thrpt        10        0.044        0.000   ops/us
+    t.StringPacking2Tests.testPack       12345  thrpt        10        7.934        0.154   ops/us
+
+As you can see, we were able to convert “12345” from String about 200 times faster than “12345a”. Most of processing time is again being spent filling in stack traces:
+
+    at java.lang.Throwable.fillInStackTrace(Throwable.java:-1)
+    at java.lang.Throwable.fillInStackTrace(Throwable.java:782)
+    - locked <0x87> (a java.lang.NumberFormatException)
+    at java.lang.Throwable.<init>(Throwable.java:265)
+    at java.lang.Exception.<init>(Exception.java:66)
+    at java.lang.RuntimeException.<init>(RuntimeException.java:62)
+    at java.lang.IllegalArgumentException.<init>(IllegalArgumentException.java:53)
+    at java.lang.NumberFormatException.<init>(NumberFormatException.java:55)
+    at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+    at java.lang.Long.parseLong(Long.java:441)
+    at java.lang.Long.valueOf(Long.java:540)
+    at tests.StringPacking2Tests.pack(StringPacking2Tests.java:69)
+    ...
+
+Continue reading →
+This entry was posted in Advanced, CPU optimization, Memory optimization and tagged avoiding worst practices, cpu optimization, data compression, datatype optimization, exceptions, memory optimization on June 29, 2014.
+String switch performance
+Leave a reply	
+
+by Mikhail Vorontsov
+
+Suppose we have a large number of commands. For simplicity of writing this article, they all would be implemented as methods of one class. We should be able to call any of these commands by a string name. We will allow case-insensitive calls. Our “class with commands” would look like:
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+
+    	
+
+    public class ObjectWithCommands {
+        public Object Command1( final Object arg ) { return arg; }
+        public Object Command2( final Object arg ) { return arg; }
+        ...
+        public Object Command9( final Object arg ) { return arg; }
+        public Object Command10( final Object arg ) { return arg; }
+        ...
+        public Object Command99( final Object arg ) { return arg; }
+        public Object Command100( final Object arg ) { return arg; }
+    }
+
+This article will check the performance of various ways of calling these commands.
+
+But first of all, a quiz :) Suppose you are going to call your commands using the following class:
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+
+    	
+
+    public class EqualsIgnoreCaseCaller {
+        public static Object call( final ObjectWithCommands obj, final String commandName, final Object arg )
+        {
+            if ( commandName.equalsIgnoreCase( "Command1" ) )
+                return obj.Command1( arg );
+            if ( commandName.equalsIgnoreCase( "Command2" ) )
+                return obj.Command2( arg );
+            ...
+            if ( commandName.equalsIgnoreCase( "Command99" ) )
+                return obj.Command99( arg );
+            if ( commandName.equalsIgnoreCase( "Command100" ) )
+                return obj.Command100( arg );
+        }
+    }
+
+Which of the following method calls will be the fastest (after warmup)?
+
+    EqualsIgnoreCaseCaller.call( obj, "Command9", arg );
+    EqualsIgnoreCaseCaller.call( obj, "Command99", arg );
+    EqualsIgnoreCaseCaller.call( obj, "Command100", arg );
+
+Continue reading →
+This entry was posted in CPU optimization, Trivial and tagged Java 8, lambda, string, switch on June 23, 2014.
+Book review: Java Performance: The Definitive Guide by Scott Oaks
+2 Replies	
+
+I have just finished reading this book. This is a must-have book for this website visitors. This book covers all the JVM facets: structure (what to tune), options (how to tune), writing proper code. All the books I have seen before lack at least one of these. Most lack two.
+
+This book starts from an overview of Java Performance toolkit – OS and JRE tools useful for performance engineers. This chapter may be a bit boring, but it contains a very useful list of commands for many-many common situations. Besides, it gives you a taste of Java Flight Recorder and Java Mission Control added in Java 7u40, which have unique capabilities amongst other monitoring tools.
+
+The next chapter covers JIT compilers, their architecture and tuning tips. This chapter will start showing you that you (likely) don’t know a lot of useful JDK parameters.
+
+Chapters 5 and 6 will tell you about 3 most useful garbage collectors bundled in JRE: throughput, CMS and G1. You will know how each of them operates under different conditions, how to monitor them and how to tune them.
+
+At this point you may think that Java Performance: The Definitive Guide is similar to Java Performance by Charlie Hunt – it just tells you how to tune JVM instead of writing the properly performing code. No! The following chapters will emphasize the best practices of writing the fast code.
+Buy on amazon.com
+
+Chapter 7 is about the heap analysis and optimization – first of all it will tell you how to make heap dumps and histograms and then describe several generic ways to decrease your application memory footprint (including string interning I have also written about).
+
+Chapter 8 will describe the native memory consumption: heap, thread stacks, code cache and direct memory buffers. You will find out what Java 8 has added for native memory tracking, how to enable and configure large memory pages on Windows / Linux / Solaris, why it is a generally bad idea to allocate heaps with size between 32 and 38Gb (I have scratched the surface here)
+
+Chapter 9 covers threading issues: how to manage a thread pool, what is ForkJoinPool added in Java 7 and how it is used by the new Streams API in Java 8, costs of thread synchronization (including the cost of memory barriers caused by synchronization), false sharing (I have touched it here). Finally it will describe how to tune the JVM threads: set the stack size, configure biased locking, thread spinning and thread priorities.
+
+Chapter 10 is dedicated to Java EE performance (or to be more precise – to the non-DB related part of your web server code). It discusses what and how to store in the session state, how to configure the web server thread pool, session beans pitfalls, possible issues with XML and JSON parsing, object serialization and finally choosing coarse or fine grained interface with client based on the network throughput.
+
+Chapter 11 describes JDBC and JPA. Surprisingly, it does not teach you how to write the proper SQL :) Instead it shows you how choosing the proper JDBC / JPA methods may far outweigh the gains from the SQL queries tuning.
+
+Chapter 12 describes Java SE tuning: buffered I/O, class loading, random number generation, JNI, exceptions, String performance ( 1, 2, 3, 4, 5, 6 ), logging, Java Collections API, Java 8 lambdas vs anonymous classes and finally Java 8 stream and filter performance.
+
+Finally, the appendix lists JVM flags useful for performance tuning. Just ten pages of flags :)
+
+I would recommend this book as a reference book for any performance related investigations in Java 7 and Java 8.
+Buy on amazon.com
+This entry was posted in Review and tagged book review on June 6, 2014.
+Introduction to JMH Profilers
+2 Replies	
+
+by Mikhail Vorontsov
+
+This article follows Introduction to JMH article, which should be read prior to reading this article.
+
+This article will give you an overview of profilers available inside the JMH framework.
+List of available profilers
+Name 	Description
+CL 	Classloader profiling via standard MBeans
+COMP 	JIT compiler profiling via standard MBeans
+GC 	GC profiling via standard MBeans
+HS_CL 	HotSpot ™ classloader profiling via implementation-specific MBeans
+HS_COMP 	HotSpot ™ JIT compiler profiling via implementation-specific MBeans
+HS_GC 	HotSpot ™ memory manager (GC) profiling via implementation-specific MBeans
+HS_RT 	HotSpot ™ runtime profiling via implementation-specific MBeans
+HS_THR 	HotSpot ™ threading subsystem via implementation-specific MBeans
+STACK 	Simple and naive Java stack profiler
+
+You can specify which profiler to use via JMH API:
+
+    1
+    2
+    3
+    4
+    5
+
+    	
+
+    Options opt = new OptionsBuilder()
+            .include(".*" + YourClass.class.getSimpleName() + ".*")
+            .forks(1)
+            .addProfiler( StackProfiler.class )
+            .build();
+
+Continue reading →
+This entry was posted in Advanced, Overviews and tagged JMH, profiler on May 31, 2014.
+Charset encoding and decoding in Java 7/8
+2 Replies	
+
+by Mikhail Vorontsov
+
+We will take a look at Charset encoder and decoder performance in Java 7/8. We will check the performance of the 2 following String methods with various charsets:
+
+    1
+    2
+    3
+    4
+    5
+
+    	
+
+    /* String to byte[] */
+    public byte[] getBytes(Charset charset);
+    /* byte[] to String */
+    public String(byte bytes[], Charset charset);
+        
+
+I have translated phrase “Develop with pleasure” into German, Russian, Japanese and traditional Chinese using Google Translate. We will build chunks of given size from these phrases by concatenating them using “\n” as a separator until we reach the required length (in most cases the result will be slightly longer). After that we will convert 100 million characters of such data to byte[] and back to String (100M is the total data length in Java chars). We will convert data 10 times in order to make results more reliable (as a result, times in the following table are the times to convert 1 billion chars).
+
+We will use 2 chunk sizes: 100 chars to test the performance of short string conversion and 100M chars to test the raw conversion performance. You can find the source code at the end of this article. We will compare encoding into a “national” charset (US-ASCII for English; ISO-8859-1 for German; windows-1251 for Russian; Shift_JIS for Japanese; GB18030 for Traditional Chinese) with UTF-8 encoding, which could be used as a universal encoding (at a possible price of a longer binary representation). We will also compare Java 7u51 with Java 8 (original release). All tests were run on my Xeon-2650 (2.8Ghz) workstation with -Xmx32G setting (to avoid GC).
+
+Here are the test results. Each cell has two times: Java7_time (Java8_time). “UTF-8″ line, which follows every “national” charset line contains conversion times for the data from the previous line (for example, the last line contains times to encode/decode a string in the traditional Chinese into UTF-8).
+
+Continue reading →
+This entry was posted in Trivial and tagged charset, Java 8 on April 22, 2014.
+Base64 encoding and decoding performance
+14 Replies	
+
+by Mikhail Vorontsov
+
+02 Apr 2014 update: added Guava implementation and byte[] < -> byte[] section.
+
+21 Mar 2014 update: major rewrite + added javax.xml.bind.DatatypeConverter class description.
+
+21 Feb 2014 update: added MiGBase64 class description.
+
+25 Dec 2013 update: added Java 8 java.util.Base64 class description.
+
+We will discuss what is Base64 algorithm and what is the performance of several different well-known libraries implementing Base64 encoding/decoding.
+
+Base64 is an algorithm mapping all 256 byte values to 64 printable byte values (printable means that those bytes are printed in US-ASCII encoding). This is done by packing 3 input bytes to 4 output bytes. Base64 is generally used in text-based data exchange protocols when there is still a need to transfer some binary data. The best known example is encoding of e-mail attachments.
+JDK Base64 implementations
+
+Surprisingly, there was no Base64 implementation in the core JDK classes before Java 6. Some web forums advise to use two non-public sun.* classes which are present in all Sun/Oracle JDK: sun.misc.BASE64Encoder and sun.misc.BASE64Decoder. The advantage of using them is that you don’t need to ship any other libraries with your application. The disadvantage is that those classes are not supposed to be used from outside JDK classes (and, of course, they can be removed from JDK implementation… in theory, at least).
+
+Sun has added another Base64 implementation in Java 6 (thanks to Thomas Darimont for his remainder!): it was hidden in javax.xml.bind package and was unknown to many developers. javax.xml.bind.DatatypeConverter class has 2 static methods – parseBase64Binary and printBase64Binary, which are used for Base64 encoding and decoding.
+
+Java 8 has finally added a Base64 implementation in the java. namespace – java.util.Base64. This static factory class provides you with the basic/MIME/URL and filename safe encoder and decoder implementations.
+
+Surprisingly (or may be not), all these implementations do not share any logic even in Java 8.
+Third party Base64 implementations
+
+I will also mention 4 quite well known Base64 third party implementations.
+
+    The first one is present in the Apache Commons Codec library and called org.apache.commons.codec.binary.Base64.
+    The next one is present in the Google Guava library and accessible via com.google.common.io.BaseEncoding.base64() static method.
+    Another one was written by Robert Harder and available from his website: http://iharder.net/base64. This is a single class which you will have to add to your project.
+    The last one was written by Mikael Grev nearly 10 years ago. It is available from http://migbase64.sourceforge.net/. This is also a single class you have to add into your project. This implementation claims to be the fastest Base64 implementation, but unfortunately this is not true any longer. Besides, it has a strictest limit on the maximal length of byte[] to decode (see below).

@@ -1,0 +1,164 @@
+http://www.morganclaypool.com/toc/cac/6/3
+Synthesis Lectures on Computer Architecture
+Lectures available online | Lectures under development | Order print copies
+Editor
+Margaret Martonosi, Princeton University
+Founding Editor Emeritus: Mark D. Hill, University of Wisconsin, Madison
+
+Annual Subscription Pricing for this Series
+
+Synthesis Lectures on Computer Architecture publishes 50- to 100-page publications on topics pertaining to the science and art of designing, analyzing, selecting and interconnecting hardware components to create computers that meet functional, performance and cost goals. The scope will largely follow the purview of premier computer architecture conferences, such as ISCA, HPCA, MICRO, and ASPLOS.
+
+Information for prospective authors
+
+Series ISSNs: 1935-3235 (print) and 1935-3243 (electronic)
+  What is RSS?
+FPGA-Accelerated Simulation of Computer Systems
+Hari Angepat , Derek Chiou , Eric S. Chung , James C. Hoe
+August 2014
+Abstract | PDF (3951 KB) | PDF Plus (3447 KB) | Supplementary Material 
+A Primer on Hardware Prefetching
+Babak Falsafi, Thomas F. Wenisch
+May 2014
+Abstract | PDF (1055 KB) | PDF Plus (1056 KB) | Supplementary Material 
+On-Chip Photonic Interconnects: A Computer Architect's Perspective
+Christopher J. Nitta, Matthew K. Farrens, Venkatesh Akella
+October 2013
+Abstract | PDF (4786 KB) | PDF Plus (4341 KB) | Supplementary Material 
+Optimization and Mathematical Modeling in Computer Architecture
+Tony Nowatzki, Michael Ferris, Karthikeyan Sankaralingam, Cristian Estan, Nilay Vaish, David Wood
+September 2013
+Abstract | PDF (6049 KB) | PDF Plus (4988 KB) | Supplementary Material 
+Security Basics for Computer Architects
+Ruby B. Lee
+September 2013
+Abstract | PDF (5683 KB) | PDF Plus (3487 KB) | Supplementary Material 
+The Datacenter as a Computer: An Introduction to the Design of Warehouse-Scale Machines, Second edition
+Luiz André Barroso, Jimmy Clidaras, Urs Hölzle
+July 2013
+Abstract | PDF (11607 KB) | PDF Plus (5685 KB) 
+Shared-Memory Synchronization
+Michael L. Scott
+June 2013
+Abstract | PDF (1118 KB) | PDF Plus (1120 KB) | Supplementary Material 
+Resilient Architecture Design for Voltage Variation
+Vijay Janapa Reddi , Meeta Sharma Gupta
+June 2013
+Abstract | PDF (5360 KB) | PDF Plus (4977 KB) | Supplementary Material 
+Multithreading Architecture
+Mario Nemirovsky, Dean M. Tullsen
+January 2013
+Abstract | PDF (1005 KB) | PDF Plus (1153 KB) 
+Performance Analysis and Tuning for General Purpose Graphics Processing Units (GPGPU)
+Hyesoon Kim, Richard Vuduc, Sara Baghsorkhi, Jee Choi, Wen-mei Hwu
+November 2012
+Abstract | PDF (14102 KB) | PDF Plus (15290 KB) 
+Automatic Parallelization: An Overview of Fundamental Compiler Techniques
+Samuel P. Midkiff
+January 2012
+Abstract | PDF (2684 KB) | PDF Plus (2216 KB) 
+Phase Change Memory: From Devices to Systems
+Moinuddin K. Qureshi, Sudhanva Gurumurthi, Bipin Rajendran
+November 2011
+Abstract | PDF (2014 KB) | PDF Plus (1949 KB) 
+Multi-Core Cache Hierarchies
+Rajeev Balasubramonian, Norman P. Jouppi, Naveen Muralimanohar
+November 2011
+Abstract | PDF (1562 KB) | PDF Plus (1850 KB) 
+A Primer on Memory Consistency and Cache Coherence
+Daniel J. Sorin, Mark D. Hill, David A. Wood
+November 2011
+Abstract | PDF (4006 KB) | PDF Plus (4007 KB) | Supplementary Material 
+Dynamic Binary Modification: Tools, Techniques, and Applications
+Kim Hazelwood
+March 2011
+Abstract | PDF (1505 KB) | PDF Plus (1221 KB) 
+Quantum Computing for Computer Architects, Second Edition
+Tzvetan S. Metodi, Arvin I. Faruque, Frederic T. Chong
+March 2011
+Abstract | PDF (2216 KB) | PDF Plus (2217 KB) 
+High Performance Datacenter Networks: Architectures, Algorithms, and Opportunities
+Dennis Abts, John Kim
+March 2011
+Abstract | PDF (3388 KB) | PDF Plus (2873 KB) 
+Processor Microarchitecture: An Implementation Perspective
+Antonio González, Fernando Latorre, Grigorios Magklis
+December 2010
+Abstract | PDF (2205 KB) | PDF Plus (1400 KB) 
+Transactional Memory, 2nd edition
+Tim Harris , James Larus , Ravi Rajwar
+December 2010
+Abstract | PDF (1851 KB) | PDF Plus (1852 KB) 
+Computer Architecture Performance Evaluation Methods
+Lieven Eeckhout
+December 2010
+Abstract | PDF (1669 KB) | PDF Plus (1670 KB) 
+Introduction to Reconfigurable Supercomputing
+Marco Lanzagorta, Stephen Bique, Robert Rosenberg
+2009
+Abstract | PDF (1169 KB) | PDF Plus (1170 KB) 
+On-Chip Networks
+Natalie Enright Jerger, Li-Shiuan Peh
+2009
+Abstract | PDF (2472 KB) | PDF Plus (2733 KB) 
+The Memory System: You Can't Avoid It, You Can't Ignore It, You Can't Fake It
+Bruce Jacob
+2009
+Abstract | PDF (1695 KB) | PDF Plus (1406 KB) 
+Fault Tolerant Computer Architecture
+Daniel J. Sorin
+2009
+Abstract | PDF (1097 KB) | PDF Plus (1098 KB) 
+The Datacenter as a Computer: An Introduction to the Design of Warehouse-Scale Machines
+Luiz André Barroso, Urs Hölzle
+2009
+Abstract | PDF (2829 KB) | PDF Plus (1325 KB) 
+Computer Architecture Techniques for Power-Efficiency
+Stefanos Kaxiras, Margaret Martonosi
+2008
+Abstract | PDF (5368 KB) | PDF Plus (2161 KB) 
+Chip Multiprocessor Architecture: Techniques to Improve Throughput and Latency
+Kunle Olukotun, Lance Hammond, James Laudon
+2007
+Abstract | PDF (5693 KB) | PDF Plus (2661 KB) 
+Transactional Memory
+James R. Larus, Ravi Rajwar
+2006
+Abstract | PDF (1496 KB) | PDF Plus (1496 KB) 
+Quantum Computing for Computer Architects
+Tzvetan S. Metodi, Frederic T. Chong
+2006
+Abstract | PDF (936 KB) | PDF Plus (949 KB) 
+Lectures under development
+
+Accelerators: Architectures, Tools, and Opportunities
+Yakun Sophia Shao and David Brooks
+
+Analyzing Analytics for Computer Architects
+Rajesh Bordawekar, Bob Blainey, and Ruchir Puri
+IBM T. J. Watson Research Center, IBM Software Group, IBM T. J. Watson Research Center
+
+Architecture Design in Emerging 3D Die-stacking Technologies
+Yuan Xie
+Pennsylvania State University
+
+Customizable Computing
+Yu-Ting Chen, Jason Cong, Michael Gill, Glenn Reinman, and Bingjun Xiao
+
+Dark Silicon's Impact on Computer Architecture
+Michael B. Taylor
+University of California, San Diego
+
+On-Chip Networks, Second Edition
+Natalie Enright Jerger, Li-Shiuan Peh and Tushar Krishna
+
+Power-Efficient Computer Architectures: Recent Advances
+Magnus Sjalander, Margaret Martonosi and Stefanos Kaxiras
+
+Single-Instruction Multiple-Data Execution
+Christopher J. Hughes
+Intel
+
+Technology and Circuits for Computer
+Nam Sung Kim
+University of Wisconsin-Madison

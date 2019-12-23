@@ -1,0 +1,202 @@
+http://stackoverflow.com/questions/1922249/c-cache-aware-programming
+
+C++ cache aware programming
+up vote 38 down vote favorite
+20
+	
+
+is there a way in C++ to determine the CPU's cache size? i have an algorithm that processes a lot of data and i'd like to break this data down into chunks such that they fit into the cache. Is this possible? Can you give me any other hints on programming with cache-size in mind (especially in regard to multithreaded/multicore data processing)?
+
+Thanks!
+c++ optimization caching cpu-cache
+share|improve this question
+	
+edited Jul 30 '10 at 9:25
+Ian Ringrose
+20.1k17126225
+	
+asked Dec 17 '09 at 14:46
+Mat
+286135
+	
+add a comment
+11 Answers
+active oldest votes
+up vote 28 down vote
+	
+
+This a copy of my answer to another question, but here goes:
+
+Here's a link to a really good paper on caches/memory optimization by Christer Ericsson (of God of War I/II/III fame).
+
+It's a couple of years old but it's still very relevant.
+share|improve this answer
+	
+answered Dec 17 '09 at 14:51
+Andreas Brinck
+25.1k84688
+	
+   	 
+	
++1 Paper looks good –  Tom Dec 18 '09 at 5:21
+   	 
+	
+Link to the other question? –  dmckee Dec 19 '09 at 2:38
+1 	 
+	
+Presentation slides don't contain much information. This would be much better if it were written out in more detail. –  haydenmuhl Nov 5 '11 at 10:24
+add a comment
+up vote 11 down vote
+	
+
+C++ itself doesn't "care" about CPU caches, so there's no support for querying cache-sizes built into the language. If you are developing for Windows, then there's the GetLogicalProcessorInformation()-function, which can be used to query information about the CPU caches.
+share|improve this answer
+	
+answered Dec 17 '09 at 14:54
+kusma
+3,9481122
+	
+add a comment
+up vote 10 down vote
+	
+
+According to "What every programmer should know about memory", by Ulrich Drepper you can do the following on Linux:
+
+    Once we have a formula for the memory requirement we can compare it with the cache size. As mentioned before, the cache might be shared with multiple other cores. Currently {There definitely will sometime soon be a better way!} the only way to get correct information without hardcoding knowledge is through the /sys filesystem. In Table 5.2 we have seen the what the kernel publishes about the hardware. A program has to find the directory:
+
+    /sys/devices/system/cpu/cpu*/cache
+
+This is listed in Section 6: What Programmers Can Do.
+
+He also describes a short test right under Figure 6.5 which can be used to determine L1D cache size if you can't get it from the OS.
+
+There is one more thing I ran across in his paper: sysconf(_SC_LEVEL2_CACHE_SIZE) is a system call on Linux which is supposed to return the L2 cache size although it doesn't seem to be well documented.
+share|improve this answer
+	
+edited Dec 24 '09 at 17:54
+
+	
+answered Dec 24 '09 at 9:36
+Robert S. Barnes
+18.3k1285126
+	
+add a comment
+up vote 6 down vote
+	
+
+Preallocate a large array. Then access each element sequentially and record the time for each access. Ideally there will be a jump in access time when cache miss occurs. Then you can calculate your L1 Cache. It might not work but worth trying.
+share|improve this answer
+	
+answered Aug 29 '10 at 20:13
+ben
+6111
+	
+add a comment
+up vote 4 down vote
+	
+
+read the cpuid of the cpu (x86) and then determine the cache-size by a look-up-table. The table has to be filled with the cache sizes the manufacturer of the cpu publishes in its programming manuals.
+share|improve this answer
+	
+answered Dec 17 '09 at 14:49
+Tobias Langner
+6,48422151
+	
+2 	 
+	
+hey that sounds interesting! are there any such precomposed tables available online? –  Mat Dec 17 '09 at 14:55
+   	 
+	
+x86-guide.com/en/index.html Might have such tables. However, the problem with this is what do you do with an unidentified cpu and do you want to have to update the program every time a new cpu comes out? –  Robert S. Barnes Dec 24 '09 at 9:38
+1 	 
+	
+Doesn't this solution break down though if your program is used on a CPU released after your program is released? –  Billy ONeal Aug 29 '10 at 20:43
+   	 
+	
+@Billy ONeal: Not necessarily. CPUID has a "sub-identification" feature that can be used to query cache sizes/associativities/line-sizes on every CPU that supports the query, see en.wikipedia.org/wiki/… –  FrankH. Aug 19 '12 at 8:13
+   	 
+	
+@FrankH: Tobias' answer says use a lookup table, not use the sub-identification feature of CPUID. –  Billy ONeal Aug 19 '12 at 23:11
+add a comment
+up vote 4 down vote
+	
+
+Depending on what you're trying to do, you might also leave it to some library. Since you mention multicore processing, you might want to have a look at Intel Threading Building Blocks.
+
+TBB includes cache aware memory allocators. More specifically, check cache_aligned_allocator (in the reference documentation, I couldn't find any direct link).
+share|improve this answer
+	
+answered Dec 17 '09 at 15:48
+Steph
+1,2022812
+	
+add a comment
+up vote 3 down vote
+	
+
+Interestingly enough, I wrote a program to do this awhile ago (in C though, but I'm sure it will be easy to incorporate in C++ code).
+
+http://github.com/wowus/CacheLineDetection/blob/master/Cache%20Line%20Detection/cache.c
+
+The get_cache_line function is the interesting one, which returns the location of right before the biggest spike in timing data of array accesses. It correctly guessed on my machine! If anything else, it can help you make your own.
+
+It's based off of this article, which originally piqued my interest: http://igoro.com/archive/gallery-of-processor-cache-effects/
+share|improve this answer
+	
+answered Aug 29 '10 at 20:40
+Clark Gaebel
+4,95163366
+	
+add a comment
+up vote 3 down vote
+	
+
+You can see this thread: http://software.intel.com/en-us/forums/topic/296674
+
+The short answer is in this other thread:
+
+    On modern IA-32 hardware, the cache line size is 64. The value 128 is a legacy of the Intel Netburst Microarchitecture (e.g. Intel Pentium D) where 64-byte lines are paired into 128-byte sectors. When a line in a sector is fetched, the hardware automatically fetches the other line in the sector too. So from a false sharing perspective, the effective line size is 128 bytes on the Netburst processors. (http://software.intel.com/en-us/forums/topic/292721)
+
+share|improve this answer
+	
+answered Feb 24 '13 at 2:25
+Daniel Muñoz
+36236
+	
+add a comment
+up vote 1 down vote
+	
+
+IIRC, GCC has a __builtin_prefetch hint.
+
+http://gcc.gnu.org/onlinedocs/gcc-3.3.6/gcc/Other-Builtins.html
+
+has an excellent section on this. Basically, it suggests:
+
+__builtin_prefetch (&array[i + LookAhead], rw, locality);
+
+where rw is a 0 (prepare for read) or 1 (prepare for a write) value, and locality uses the number 0-3, where zero is no locality, and 3 is very strong locality.
+
+Both are optional. LookAhead would be the number of elements to look ahead to. If memory access were 100 cycles, and the unrolled loops are two cycles apart, LookAhead could be set to 50 or 51.
+share|improve this answer
+	
+answered Nov 3 '13 at 3:59
+Max
+313
+	
+add a comment
+up vote 0 down vote
+	
+
+Raymond Chen's excellent blog touched on the subject recently.
+share|improve this answer
+	
+answered Dec 17 '09 at 15:40
+lhenrygr
+312
+	
+add a comment
+up vote -1 down vote
+	
+
+The cache will usually do the right thing. The only real worry for normal programmer is false sharing, and you can't take care of that at runtime because it requires compiler directives.

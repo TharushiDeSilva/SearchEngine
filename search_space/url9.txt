@@ -1,0 +1,48 @@
+http://www.lunarpages.com/uptime/5-ways-optimize-apache-performance
+5 Ways to Optimize Apache Performance
+
+If you are running a Linux server to host your company website, you’re probably using Apache open-source software. The Apache HTTP Server Project was started in 1995 and has continued active development ever since. According to a recent Netcraft report, Apache is currently the most popular web server.
+
+Netcraft reports that Apache represented 41 percent of all web server software used, followed by Microsoft IIS server with 28 percent of the market share, nginx with 15 percent and Google with 4 percent.
+
+If you are one of the many Apache users, you will want to focus on optimizing your Apache installation.
+
+For the most part, Apache runs fairly well out of the box on a fresh install, but you may encounter latency or less than optimal performance over time, as volume or transactions to your web server increase. While it is recommended that you seek professional assistance from your hosting provider or an Apache or Linux expert, there are a few optimization tricks that you can implement yourself to make your Apache environment a bit better.
+Apache 101: Covering the Basics
+
+For those users who don't fully understand how Apache works, it essentially processes several common programming languages, including PHP, Perl and Python. Web developers create code that produces HTML documents, which are in turn served by the HTTP server (Apache or other types).
+
+There are several modules that can be added or used by Apache to extend functionality, including authentication, security, compression and a multitude of other scripts. Apache is highly configurable and extensible, and since it is open source, the code can be adapted and modified to the user's requirements.
+
+The Apache HTTP Server is part of the Apache Software Foundation, which is a nonprofit corporation created to support a variety of software projects, including the HTTP Server, Hadoop, Jakarta and Subversion, among many others.
+
+Before you start messing with your Apache install, please note the following:
+
+    Have “root” access. In order to fully configure the following items, you will need to have root or equivalent administrative user access to your server environment, most likely through SSH. Otherwise, you won't be able to make the required changes.
+    Backup. Before you make any changes, be sure that you have a full backup of your server or of the files you will be modifying.
+    Test. If you have access to a clone of the server, then do all of the testing on the clone. This is where a cloud hosting environment can be helpful.
+    Document. As you go through your optimizations, be sure to document all of the changes you make. You might want to do this in an external document. That way, if you don't have access to your server, you will know what you were doing, and when. Within the files, comment about any changes or modifications that you make.
+    Upgrade. Be sure that you upgrade to the latest stable release and patch level that your operating system supports; there are performance (and security) improvements in these later versions.
+
+Getting the Most out of Apache
+
+In order to get the best out of Apache HTTP Server, there are several things that you can do to improve the performance of your server environment. However, optimization may not be necessary if your site only processes a few hundred or even a few thousand requests a day. In that case, it’s likely that the default configurations are sufficient.
+
+Here are a few Apache optimizations that you can, and probably should, do:
+
+    Disable or remove unused modules. Apache comes with many, many modules. Be sure to carefully review the ones that are enabled to ensure you are only activating and using the ones that you need. By not loading unneeded modules, you will save memory on your server.
+
+    Use caching. In order to reduce the overhead on your server and minimize the processor requests, activate and use caching technology within Apache. Use disk caching (mod_disk_cache) over memory caching (mod_mem_cache), especially if you are limited in the amount of RAM available to your server. And, if possible, externalize your disk cache to a different (hopefully fast) external drive. And if you use caching, be sure to set up the appropriate expire times; otherwise, you defeat the purpose of caching. However, if you have frequently used data and sessions, memcaching is optimal and can reduce the load on database queries.
+
+    Use compression. Wherever possible, try to compress the content prior to sending it out. Using gzip, for example, will reduce the size of the files being transmitted. These files can then be uncompressed, within the browser, when they are received by the end user. Look at mod_gzip or mod_deflate for these options.
+    Turn off host name lookups. In previous versions of Apache, hostname lookups defaulted to “on,” which added latency to requests. That’s because every time a host name was encountered, a DNS lookup was required. Although this setting in Apache 1.3 and later defaults to “off,” be sure to check.
+    Upgrade RAM and storage. While this is not specifically an Apache modification, this optimization is something that will improve the performance of any server. Giving more RAM to Apache means that the number of simultaneous requests can be increased and run faster. Upgrading the hard drive to one that supports faster I/O can also help, especially for database requests and disk cache-based transactions.
+
+More Apache Optimization Resources
+
+Monitoring service Monitis has a great list of Apache performance tuning tips. Similarly, Apache itself offers a variety of tips to overcome some issues that you may encounter. DeveloperSide.NET also has some very specific optimizations that you may want to review. Drupal expert Chris Charlton has a simple list of other Apache performance and tuning tips that are worth checking as well.
+
+The most important thing when embarking on any type of Apache optimization project is to evaluate whether you actually need to optimize Apache.
+
+What may be a focal area for one environment may not be for another. Doing Apache optimization can potentially slow down or even crash your site if you don't do things carefully, if you enable or disable the wrong module or if you incorrectly configure a setting. Test every change (including load tests) and then, once you are comfortable with your changes, push them to your active production environment and enjoy the results.
+- See more at: http://www.lunarpages.com/uptime/5-ways-optimize-apache-performance#sthash.WiFYPAip.dpuf

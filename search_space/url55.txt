@@ -1,0 +1,109 @@
+https://www.nersc.gov/users/data-and-file-systems/transferring-data/globus-online/
+
+Globus Online
+Table of Contents
+
+    Overview
+    Availability
+    Requirements
+    Usage: Transfers Among NERSC Machines
+    Usage: Transferring Data Between NERSC and Your Machine
+    Pros and Cons
+
+    Overview
+
+    Globus Online addresses the challenges faced by researchers in moving, sharing, and archiving large volumes of data among distributed sites. With Globus Online, you hand-off data movement tasks to a hosted service that manages the entire operation, monitoring performance and errors, retrying failed transfers, correcting problems automatically whenever possible, and reporting status to keep you informed while you focus on your research. Command line and web-based interfaces are available. The command line interface, which requires only ssh to be installed on the client, is the method of choice for grid-based workflows.
+
+    As described below you register with Globus Online, and then use the NERSC endpoint "nersc#dtn" as well as other sources or destinations. The NERSC endpoints listed are NERSC's data transfer nodes, which are tuned especially for WAN data movement tasks. You can activate the NERSC endpoints on Globus Online by simply using your NERSC username and password.
+    Back to Top
+    Availability
+
+    Globus Online is available as a free service that any user can sign up for. NERSC’s data transfer nodes (DTNs), Carver, Hopper, PDSF, and HPSS are available today as endpoints on Globus Online (in addition to dozens of other endpoints from other sites). If you would like to see a destination added as an endpoint feel free to contact NERSC and/or the staff at that location to get it added to the growing registry of endpoints. You can also add an endpoint on your laptop or local workstation with Globus Connect.
+    Back to Top
+    Requirements
+
+        Create an account by signing up with Globus Online
+        To transfer files into/out of your laptop or desktop, you need Globus Connect, a one-click executable on your machine
+        To use Globus Online’s command line interface, you need an ssh client on your machine
+
+    Back to Top
+    Usage: Transfers Among NERSC Machines
+
+    Globus Online offers both web and command line interfaces:
+
+    Web interface:
+
+        Login to Globus Online
+        Select ‘Start Transfer’ under ‘File Transfer’, or from the drop down menu in the top bar.
+        In the ‘Start Transfer’ page, you can view the list of available endpoints by clicking the button on the ‘Endpoint’ drop down box.
+            You can use one of the NERSC endpoints 'nersc#carver', 'nersc#dtn', 'nersc#dtn_jgi', 'nersc#hopper', 'nersc#hpss' or 'nersc#pdsf' as well as other sources or destinations.
+            You can type letters into the box to filter endpoints.
+            Once you select the NERSC endpoint, a login window will pop up. You can access the NERSC endpoints on Globus Online by simply using your NERSC username and password. Enter your NERSC username in the ‘Username’ field and NERSC password in the ‘Passphrase’ field and click ‘Authenticate’. You can ignore the other fields.
+            You will see a listing of the contents of your home directory on NERSC. Double click on a directory to view its contents.
+            Select a file or directory and click on the highlighted ‘arrow button’ to initiate the transfer.
+            You can view the status of your transfer by clicking ‘View Transfers’.
+
+    The procedure is same for other endpoints such as ALCF (alcf#dtn), TeraGrid/XSEDE (tg#* and xsede#*), etc.
+
+    Command Line Interface
+
+    In order to use the Globus Online Command Line Interface (CLI), you must add your SSH public key (typically found in $HOME/.ssh/id_rsa.pub) to your Globus Online account.
+
+        Select ‘My Account’ from the ‘Go To’ drop down box in the top bar.
+        Click the ‘Manage Identities’ link in the left column, then click on ‘Add SSH Public Key’.
+        Paste the contents of your SSH public key into the ‘SSH Public Key’ field (you can optionally enter any name you like in the ‘Alias’ field) and click on ‘Add SSH Key’. It will take a minute or two for the SSH key to become active for use.
+
+    You can now log in to the CLI by typing ‘ssh <your-globusonline-username>@cli.globusonline.org‘ at a command prompt. This logs you into a restricted shell where you can execute only Globus Online commands. Type ‘help’ to see all available commands, and ‘help <command-name>‘ or ‘<command-name> -help‘ for help on a specific command. There is also a ‘man’ page for each command accessed as ‘<man <command-name>‘. 
+
+    Example:
+
+    $ ssh testuser@cli.globusonline.org
+    Welcome to globusonline.org, testuser.  Type 'help' for help.
+    $ endpoint-activate -U nersc-user nersc#dtn
+    Contacting 'nerscca.nersc.gov'...
+    Enter MyProxy pass phrase:
+    Credential Subject  : /DC=gov/DC=nersc/OU=People/CN=NERSC User 13517
+    Credential Time Left: 11:59:57
+    Activating 'nersc#dtn'
+    $ ls nersc#dtn:~/
+    file1.txt
+    file3.txt
+    test/
+    zobt_O1d.nc
+    $ scp nersc#dtn:~/file3.txt mylaptop:~/
+    Task ID: 4559c88a-c386-11e0-bc85-12313804ec2a
+    [XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX] 1/1 0.00 mbps
+
+    Note: mylaptop endpoint above is the Globus Connect instance running on my laptop and scp is not the standard scp. GO scp has the same syntax as standard scp but does GridFTP data movement.
+
+    GO has built-in auto-tuning to improve the performance. So, the users do not have to worry about manual performance tuning.
+    Back to Top
+    Usage: Transferring Data Between NERSC and Your Machine
+
+    To transfer data between NERSC and your laptop or desktop, you can install Globus Connect on your machine and access it via Globus Online.
+
+        Download Globus Connect by going to the Dashboard (select ‘Dashboard’ in the ‘Go To’ drop down box in the top bar) and clicking on ‘Globus Connect’. Globus Connect is available as a one-click install for Mac, Linux, and Windows.
+        Install Globus Connect following the instructions for your operating system
+        Run Globus Connect. When you run Globus Connect for the first time, it will ask you for a setup key.
+        On the Globus Online web page, go to the Dashboard (select ‘Dashboard’ in the ‘Go To’ drop down box in the top bar), click on ‘Globus Connect’, and enter an endpoint name (eg., mylaptop) to identify your machine on Globus Online.
+        Click ‘Generate Setup Key’
+        Copy the setup key and paste it into the Globus Connect window to complete the setup process.
+
+    You should now see your machine in the list of endpoints (‘Start Transfer’ screen) identified as ‘<your-username>#<your-globus-connect-name>‘ on Globus Online. You can select it to view the contents of your machine and transfer files to and from it as above.
+    Back to Top
+    Pros and Cons
+
+    Pros
+
+        Fire and Forget transfers
+        High speed
+        No software installation required on user machine for data transfers between two remote machines
+        One click software installation on user machine for transfer to/from user machine
+        Many well-known sites available as endpoints on GO
+        Automatic performance tuning
+        Synchronization of datasets
+
+    Cons
+
+        Data downloads into Globus Connect not as fast as transfers between two GridFTP servers and uploads from Globus Connect
+        Supports GridFTP protocol only

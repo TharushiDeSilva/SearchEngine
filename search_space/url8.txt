@@ -1,0 +1,139 @@
+https://www.digitalocean.com/community/tutorials/how-to-optimize-apache-web-server-performance
+How To Optimize Apache Web Server Performance
+This tutorial is part 2 of 3 in the series: Scaling Django
+Introduction
+
+Apache is an amazingly powerful and capable web server. In order to make initial setup as easy as possible, it comes with numerous modules pre-installed. This makes it a great choice for new projects when you need to quickly be productive. However, as your site grows you may start to bump into performance problems.
+
+What first attracted me to DigitalOcean was the low cost to get started. The smallest and cheapest droplets have 512MB of RAM, which doesn't seem like much in today's world of big frameworks. However, you'd be surprised what you can do with a small server like this if you take a little time to tweak the settings.
+
+If you're running Apache on one of the smaller sizes of droplets, or if you want to maximize your performance on the bigger droplets, here are a few things you should do. I'll be using Ubuntu 12.04 in the examples but the principles I'm demonstrating are applicable to other versions of Linux as well.
+Unload Unneeded Modules
+
+In Ubuntu and Debian based systems, you'll see a folder called /etc/apache2/mods-enabled and a folder called /etc/apache2/mods-available/. The mods-available folder is a list of all the modules installed on a particular server and mods-enabled is the modules that are currently active.
+
+On my VPS I have 17 modules active by default. This is too many and most aren't needed for my application. Unfortunately, the modules you need may not be precisely clear because some are dependencies of others.
+
+What I suggest doing is making a list of all the currently active modules and saving it for future reference in case you need to revert back. Then simply disable modules one-by-one and restart your Apache after each change to see if errors occur.
+
+On Ubuntu and Debian, you disable a module with the command (using autoindex as an example):
+
+sudo a2dismod autoindex
+
+Some modules that are particularly resource hungry that you should disable if you don't need them are:
+
+    PHP
+    SSL
+    Rewrite
+    Perl
+    Python
+    Rack / Ruby / Passenger
+
+Several of those modules are not enabled by default, so you may not have them enabled, and in some cases, they're enabled because you actually need them.
+
+A quick note about "rewrite": Often this module is enabled when the "alias" module would actually work equally well. If you can get by with alias then disable rewrite. Rewrite is one of the more burdensome modules, but it also imbues Apache with some remarkable powers.
+
+Switching from "rewrite" to "alias" is an advanced topic (with some helpful documentation) However, even if you can't turn off rewrite completely, but you are able to convert some of your rewrite rules to aliases, you'll gain an advantage.
+
+After you disable a module and reload the Apache configuration, you can check the apache error log for messages. In Ubuntu and Debian, check /var/log/apache2/error.log.
+
+I get an error that looks like this:
+
+Syntax error on line 6 of /etc/apache2/sites-enabled/site1:
+Invalid command 'DAVLockDB', perhaps misspelled or defined by a module not included in the server configuration
+Action 'configtest' failed.
+
+That means that the module I just disabled was needed. In this case, the module was dav_fs, so I just re-enable it with:
+
+sudo a2enmod dav_fs
+
+Then I restarted Apache and looked for the next error. It may take several tries before you get the minimum list sorted out. Be patient, it's worth it.
+Move Code out of Apache
+
+If you run a PHP site, chances are great that you are using the famous mod_php. If you are running a ruby site, the easy solution is Passenger Phusion, aka mod_rails or mod_rack.
+
+The problem with this is that the C code for the interpreter for that language is embedded into Apache, thereby using more memory on every page view. If a popular page on your site causes 30 HTTP requests, one of those will be for the dynamic page, and the other 29 are likely for static resources like images, css and javascript. Why use up a bloated Apache for those 29 requests that don't serve any dynamic content?
+
+The difference can be dramatic. Enabling mod_php can cause it to use over 100MB of RAM usage per Apache child process! Considering that, by default, your Apache server may have 25 or more processes running, you can see why this can become an issue.
+
+Here are some tools you can use to do this:
+
+    PHP can benefit from php-fpm, which is a separate process that uses the fastcgi protocol.
+
+    For Python use uWSGI or gnunicorn (for more Python information, check out this great article here at DigitalOcean).
+
+    For Rails, use Unicorn (for more Ruby Details see this article here on DigitalOcean covering Unicorn).
+
+A downside to making this change is that it's harder to get things working initially. In some cases, the documentation is very good. In other cases, cough php-fpm cough the documentation is sparse.
+
+Generally what happens is that a special server process for PHP or Python or Ruby is started, then Apache, instead of instinctively knowing how to deal with these requests through embedded code, merely forwards the call for dynamic content onto this backend process.
+
+You'll be amazed at how much of a difference this makes. After removing mod_php from my virtual server, the size of my Apache processes went from 90-120MB each to under 10MB. I was able to serve all of my dynamic content with just two php backend processes that used merely 60MB each.
+Limit the Number of Apache Processes and Children
+
+Most operating systems' default Apache configurations are not well suited for smaller servers-- 25 child processes or more is common. If each of your Apache child processes uses 120MB of RAM, then your VPS would need 3GB just for Apache.
+
+One visitor's web browser may request 4 items from the website at once, so with only 7 or 8 people trying to load a page at the same time your cloud server can become overloaded. This causes the web page to hang in a constantly loading state for what seems like an eternity.
+
+It is often the case that the server will keep these dead Apache processes active, attempting to serve content long after the user gave up, which reduces the number of processes available to serve users and reduces the amount of system RAM available. This causes what is commonly known as a downward spiral that ends in a bad experience for both you and your site's visitors.
+
+What you should do is figure out how much RAM your application needs, and then figure out how much is left, and allocate most of that to Apache.
+
+For example, if you have three php-fpm processes handling dynamic content, and each can use up to 70MB of RAM, and your MySQL server may use up to 120MB of RAM, that combines for a total of 330MB used by the application. This allows you to allocate about 150MB to Apache.
+
+While Apache is running open the top command on the server. I'll paste a little bit of what you'd see, trimming out most of the lines that aren't pertinent:
+
+top -bn 1
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND                    
+[...]
+15015 www-data  20   0  232m 9644 1900 S  0.0  1.6   0:00.02 apache2                    
+15016 www-data  20   0  232m 9644 1900 S  0.0  1.6   0:00.01 apache2                    
+15017 www-data  20   0  232m 9644 1900 S  0.0  1.6   0:00.02 apache2                    
+
+Notice the RES column for an Apache child process and make note of its RES value. For example, on my virtual server which has been well optimized, the value is 9,644, which means it's using not quite 10MB of RAM. If I limit Apache to a maximum of 15 child processes, then it should max out at about 150MB of RAM.
+
+Edit your cloud server's apache config file, which on Ubuntu and Debian is /etc/apache2/apache2.conf and locate the section for the mpmpreforkmodule configuration. Look for the MaxClients line and set it to 15, then save and restart Apache.
+
+Here is an example of what you'll look for in Ubuntu:
+
+<IfModule mpm_prefork_module>
+    StartServers          3
+    MinSpareServers       3
+    MaxSpareServers       5
+    MaxClients           30
+    MaxRequestsPerChild   0
+</IfModule>
+
+See the MaxClients line there? We need to change that value to a lower number.
+
+If your VPS gets overloaded, and reaches the maximum number of clients it can serve at once, it will serve those and other users will simply get a quick failure. They can then reload the page and maybe have greater success on the second try.
+
+This sounds bad, but believe me, it's much better to have these connections close quickly but leave the server in a healthy state rather than hanging open for an eternity. Surprisingly you can get better performance from a server that has fewer child processes but responds faster than it is to have a server with more child processes that it is unable to handle.
+
+Case in point, a Wordpress site I manage is hosted on a 1GB droplet using 4 php-fpm processes and is able to serve over 950 simultaneous users at one time. This translate to a peak capacity of about 42 million page views per day, should this website ever become popular enough!
+Consider Alternate MPM Configuration
+
+Most Apache configurations have historically used the prefork mpm, which is thread safe and therefore suitable for use with PHP and other embedded languages.
+
+If you get rid of external modules such as PHP or Rails then you can consider the worker MPM, which often is faster than prefork.
+
+In order to enable the worker module you have to install it.
+
+sudo apt-get install apache2-mpm-worker
+
+Which will show you a message like this:
+
+The following packages will be REMOVED:
+  apache2-mpm-prefork libapache2-mod-php5
+The following NEW packages will be installed:
+  apache2-mpm-worker
+0 upgraded, 1 newly installed, 2 to remove and 2 not upgraded.
+Need to get 2,284 B of archives.
+After this operation, 8,718 kB disk space will be freed.
+Do you want to continue [Y/n]? 
+
+Take careful note, on Ubuntu, if you install the worker mpm it will uninstall the prefork mpm and it will uninstall mod_php and other incompatible add-on modules.
+
+Here we've discussed four optimizations you can make to Apache that should greatly boost your application performance, even if you have a small droplet.
+
+I strongly suggest trying this out on a test droplet rather than your production server. The beauty of DigitalOcean's service is that you can spin up a new droplet for just the amount of time you need to test the changes, and shut it down when you're done. With hourly billing, it is a low-risk, low-cost way to find the perfect configuration for your VPS.

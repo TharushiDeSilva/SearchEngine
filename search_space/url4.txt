@@ -1,0 +1,41 @@
+http://www.cnet.com/how-to/ways-to-increase-your-computers-performance/
+performance
+
+Over time, computers end up full of add-ons and random junk. It’s time to take action.
+It's something we can all relate to: that dreaded moment when you realize your once super-fast computer is now bogged down by renegade files, programs, and services. I mean, the most exciting part of buying a new PC is the first time you turn it on and experience its amazing speed. "I'm going to be more productive than ever" you exclaim. And then after a few months of usage -- perhaps a few years -- the productivity and computer have both slowed to a crawl.
+
+It's time to take action and restore some speed -- some productivity. Here are three quick, easy, and cheap ways to improve your computer's performance.
+Add memory
+
+One of the quickest ways to increase your computer's performance is by adding more memory, also known as RAM. Believe it or not, adding memory is extremely cheap, and requires little tech-savvy on your part. In fact, most memory can be swapped out in under 10 minutes at home.
+
+There's a lot of jargon and confusing terminology when it comes to purchasing memory, but don't let it intimidate you.
+
+I recommend using Crucial.com's free tool to help you find what type of and how much memory your computer requires. There's even a brief video tutorial walking you through the installation.
+
+You can then purchase directly from Crucial, or find another vendor (usually you can find the same memory Crucial recommends on Amazon for cheaper).
+
+Don't just take my word for how easy and beneficial memory upgrades are: Scott Stein documented his experience with swapping out RAM in a MacBook and was pleasantly surprised.
+Erase files
+
+Our computers are like a digital junk drawer, full of clutter and unessential items we think we need to keep. Instead of 30 pens and random oddities, we hold onto old college applications and photos we aren't even in -- among other things.
+
+There are a few different apps available to help you get rid of the junk. For Windows users, the popular app CCleaner seems to get the job done. Be warned, however, this app does far more than just clear old files, so don't go overboard. Should you decide to give this a go, I suggest you set aside at least an hour, grab your beverage of choice, and read through this guide first. Once you have a solid understanding of what needs to be done, dive in.
+
+For OS X users, I recommend using Daisy Disk. Using an interactive user interface, the app will color code what's eating into your hard-drive space. By clicking on a piece of the pie, you're able to follow the rabbit trail of storage usage down to the offending file. You can then decide if the file is something you actually need, or something you can trash.
+Startup items
+
+It's funny how quickly we go from having a computer that boots up incredibly fast, to having enough time to pour a cup of coffee before the computer lets us perform a simple task. This is partly due to startup items eating away at precious resources.
+
+Windows users can use the aforementioned CCleaner to help eradicate unnecessary startup items, while Mac users will need to dive into System Preferences.
+
+Launch System Preferences and select either Accounts or Users & Groups (the title varies based on OS X version). The button you're looking for is the "Login items" button just above your user picture. Click on it and go through the list of apps currently enabled to run at log-in. Prune what you don't need or want by deleting it from the list.
+
+There are plenty more ways to improve performance on any computer; some with better results than others. If you have a best practice approach to easily and efficiently improving performance, please share in the comments section below.
+
+Editors' note: It's spring cleaning time! Week's three's theme: getting optimized. Check back every day this week to see how to get the most out of your devices and services. And be sure to return next week for more spring cleaning tips and tricks.
+
+Tags:
+    Computers 
+    Software 
+    Applications 

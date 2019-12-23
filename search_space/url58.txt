@@ -1,0 +1,102 @@
+http://en.wikipedia.org/wiki/Content_delivery_network
+Content delivery network
+From Wikipedia, the free encyclopedia
+(Left) Single server distribution
+(Right) CDN scheme of distribution
+
+A content delivery network or content distribution network (CDN) is a large distributed system of servers deployed in multiple data centers across the Internet. The goal of a CDN is to serve content to end-users with high availability and high performance. CDNs serve a large fraction of the Internet content today, including web objects (text, graphics and scripts), downloadable objects (media files, software, documents), applications (e-commerce, portals), live streaming media, on-demand streaming media, and social networks.
+
+Content providers such as media companies and e-commerce vendors pay CDN operators to deliver their content to their audience of end-users. In turn, a CDN pays ISPs, carriers, and network operators for hosting its servers in their data centers. Besides better performance and availability, CDNs also offload the traffic served directly from the content provider's origin infrastructure, resulting in possible cost savings for the content provider.[1] In addition, CDNs provide the content provider a degree of protection from DoS attacks by using their large distributed server infrastructure to absorb the attack traffic. While most early CDNs served content using dedicated servers owned and operated by the CDN, there is a recent trend[2] to use a hybrid model that uses P2P technology. In the hybrid model, content is served using both dedicated servers and other peer-user-owned computers as applicable.
+
+Contents
+
+    1 Operation
+    2 Technology
+    3 Content networking techniques
+        3.1 Content service protocols
+        3.2 Peer-to-peer CDNs
+        3.3 Private CDNs
+    4 CDN trends
+        4.1 Emergence of telco CDNs
+            4.1.1 Telco CDN advantages
+        4.2 Federated CDNs
+        4.3 edns-client-subnet EDNS0 option
+        4.4 CDN infrastructure, focused on Cybersecurity
+    5 Notable content delivery service providers
+        5.1 Free CDNs
+        5.2 Traditional commercial CDNs
+        5.3 Telco CDNs
+        5.4 Commercial CDNs using P2P for delivery
+    6 See also
+    7 References
+    8 Further reading
+
+Operation
+
+Most CDNs are operated as an application service provider (ASP) on the Internet (also known as on-demand software or software as a service). An increasing number of Internet network owners have built their own CDNs to improve on-net content delivery, reduce demand on their own telecommunications infrastructure, and to generate revenues from content customers. This might include offering access to media streaming to internet service subscribers. Some larger software companies such as Microsoft build their own CDNs in tandem with their own products. Examples include Microsoft Azure CDN [3] and Amazon CloudFront.[4]
+
+Here content (potentially multiple copies) may exist on several servers. When a user makes a request to a CDN hostname, DNS will resolve to an optimized server (based on location, availability, cost, and other metrics) and that server will handle the request.
+Technology
+
+CDN nodes are usually deployed in multiple locations, often over multiple backbones. Benefits include reducing bandwidth costs, improving page load times, or increasing global availability of content. The number of nodes and servers making up a CDN varies, depending on the architecture, some reaching thousands of nodes with tens of thousands of servers on many remote points of presence (PoPs). Others build a global network and have a small number of geographical PoPs.
+
+Requests for content are typically algorithmically directed to nodes that are optimal in some way. When optimizing for performance, locations that are best for serving content to the user may be chosen. This may be measured by choosing locations that are the fewest hops, the least number of network seconds away from the requesting client, or the highest availability in terms of server performance (both current and historical), so as to optimize delivery across local networks. When optimizing for cost, locations that are least expensive may be chosen instead. In an optimal scenario, these two goals tend to align, as servers that are close to the end-user at the edge of the network may have an advantage in performance or cost.
+
+Most CDN providers will provide their services over a varying, defined, set of PoPs, depending on the geographic coverage desired, such as United States, International or Global, Asia-Pacific, etc. These sets of PoPs can be called "edges" or "edge networks" as they would be the closest edge of CDN assets to the end user.
+
+The CDN's Edge Network grows outward from the origin/s through further acquisitions (via purchase, peering, or exchange) of co-locations facilities, bandwidth, and servers.
+Content networking techniques
+
+The Internet was designed according to the end-to-end principle.[5] This principle keeps the core network relatively simple and moves the intelligence as much as possible to the network end-points: the hosts and clients. As a result the core network is specialized, simplified, and optimized to only forward data packets.
+
+Content Delivery Networks augment the end-to-end transport network by distributing on it a variety of intelligent applications employing techniques designed to optimize content delivery. The resulting tightly integrated overlay uses web caching, server-load balancing, request routing, and content services.[6] These techniques are briefly described below.
+
+Web caches store popular content on servers that have the greatest demand for the content requested. These shared network appliances reduce bandwidth requirements, reduce server load, and improve the client response times for content stored in the cache.
+
+Server-load balancing uses one or more techniques including service-based (global load balancing) or hardware-based, i.e. layer 4–7 switches, also known as a web switch, content switch, or multilayer switch to share traffic among a number of servers or web caches. Here the switch is assigned a single virtual IP address. Traffic arriving at the switch is then directed to one of the real web servers attached to the switch. This has the advantage of balancing load, increasing total capacity, improving scalability, and providing increased reliability by redistributing the load of a failed web server and providing server health checks.
+
+A content cluster or service node can be formed using a layer 4–7 switch to balance load across a number of servers or a number of web caches within the network.
+
+Request routing directs client requests to the content source best able to serve the request. This may involve directing a client request to the service node that is closest to the client, or to the one with the most capacity. A variety of algorithms are used to route the request. These include Global Server Load Balancing, DNS-based request routing, Dynamic metafile generation, HTML rewriting,[7] and anycasting.[8] Proximity—choosing the closest service node—is estimated using a variety of techniques including reactive probing, proactive probing, and connection monitoring.[6]
+
+CDNs use a variety of methods of content delivery including, but not limited to, manual asset copying, active web caches, and global hardware load balancers.
+Content service protocols
+
+Several protocol suites are designed to provide access to a wide variety of content services distributed throughout a content network. The Internet Content Adaptation Protocol (ICAP) was developed in the late 1990s[9][10] to provide an open standard for connecting application servers. A more recently defined and robust solution is provided by the Open Pluggable Edge Services (OPES) protocol.[11] This architecture defines OPES service applications that can reside on the OPES processor itself or be executed remotely on a Callout Server. Edge Side Includes or ESI is a small markup language for edge level dynamic web content assembly. It is fairly common for websites to have generated content. It could be because of changing content like catalogs or forums, or because of the personalization. This creates a problem for caching systems. To overcome this problem a group of companies created ESI.
+Peer-to-peer CDNs
+Further information: Peer-to-peer network
+
+In peer-to-peer (P2P) content-delivery networks, clients provide resources as well as use them. This means that unlike client-server systems, the content serving capacity of peer-to-peer networks can actually increase as more users begin to access the content (especially with protocols such as Bittorrent that require users to share). This property is one of the major advantages of using P2P networks because it makes the setup and running costs very small for the original content distributor.[12][13]
+Private CDNs
+
+If content owners are not satisfied with the options or costs of a commercial CDN service, they can create their own CDN. This is called a private CDN. A private CDN consists of POPs that are only serving content for their owner. These POPs can be caching servers,[14] reverse proxies or application delivery controllers.[15] It can be as simple as two caching servers,[14] or large enough to serve petabytes of content.[16] Private CDNs always need a DNS service to allocate and balance traffic to their POPs [17]
+CDN trends
+Emergence of telco CDNs
+
+The rapid growth of streaming video traffic[18] uses large capital expenditures by broadband providers[19] in order to meet this demand and to retain subscribers by delivering a sufficiently good quality of experience.
+
+To address this, telecommunications service providers (TSPs) have begun to launch their own content delivery networks[20] as a means to lessen the demands on the network backbone and to reduce infrastructure investments.
+Telco CDN advantages
+
+Because they own the networks over which video content is transmitted, telco CDNs have advantages over traditional CDNs.
+
+They own the last mile and can deliver content closer to the end user because it can be cached deep in their networks.[21] This deep caching minimizes the distance that video data travels over the general Internet and delivers it more quickly and reliably.
+
+Telco CDNs also have a built-in cost advantage since traditional CDNs must lease bandwidth from them and build the operator’s margin into their own cost structures.
+Federated CDNs
+
+In June 2011, StreamingMedia.com reported that a group of TSPs had founded an Operator Carrier Exchange (OCX)[22] to interconnect their networks and compete more directly against large traditional CDNs like Akamai and Limelight Networks, which have extensive PoPs worldwide. This way, telcos are building a Federated CDN offer, much more interesting for a content provider willing to deliver its content to the aggregated audience of this federation.
+
+It is likely that in a near future, other telco CDN federations will be created. They will grow by enrollment of new telco joining the federation and bringing network presence and Internet subscriber base to the existing ones.
+edns-client-subnet EDNS0 option
+
+In August 2011, a global consortium of leading Internet service providers led by Google announced their official implementation of the edns-client-subnet IETF Internet-Draft,[23] which is intended to accurately localize DNS resolution responses. The initiative involves a limited number of leading DNS and CDN service providers. With the edns-client-subnet EDNS0 option, the recursive DNS servers of CDNs will utilize the IP address of the requesting client subnet when resolving DNS requests. If a CDN relies on the IP address of the DNS resolver instead of the client when resolving DNS requests, it can incorrectly geo-locate a client if the client is using Google anycast addresses for their DNS resolver, which can create latency problems. Initially, Google's 8.8.8.8 DNS addresses geo-located to California, potentially far from the location of the requesting client, but now the Google Public DNS servers are available worldwide.[24]
+CDN infrastructure, focused on Cybersecurity
+
+First Generation of Cyber Security The best way to gain perspective on the cloud security industry is to look at its history. The first generation cloud security companies offered protection against DDoS attacks. They are known as DDoS Mitigation Service Providers, and includes Neustar, Verisign, at one time Prolexic, and others. This group of companies offered an innovative cloud security solution that was ahead of its time, and provided adequate protection against network based DDoS Attacks. On the hardware side, manufacturers like F5 Networks, Barracuda Networks and Radware provide robust security appliances the protect websites and web applications against a wide variety of attacks,including DDoS attacks.
+
+However, as time went by the rapidly changing threat landscape made these services seem old and out of touch because they did not scale on demand. Every time a customer wanted to protect a web application, they needed to buy one appliance at a time that was capped by amount of bandwidth the appliance could absorb. Thus, DDoS Mitigation Service Providers did not have enough global capacity to withstand large voluminous DDoS Attacks.
+
+Second Generation of Cyber Security Companies Content Delivery Networks never really intended to get into cloud security business. To a CDN, security consisted of SSL Certs, Token Authentication, and protection against DDoS attacks at Layer 3 and Layer 4. Then all of a sudden, many CDN customers started enduring a wave of cyber attacks. CDNs were helpless against the advanced threats. Being the opportunist that they are, a new wave of CDNs, that includes established CDNs, started offering more advance security features such as Web Application Firewalls, know as the WAF. However, being the innovators that they are, hackers and threat actors started creating advance threats that are not known, and don’t have any type of signature that identifies the threat. Once the threat is found, the compromise has already happened. The security focused CDNs fell behind, because hackers are out-innovating security based CDNs. This lead to the third generation of CDNs.
+
+The turning page of Cyber Security: the Cybersecurity focused CDN The new security CDN is much different from all past security companies. They were built from the ground up to combat not only known threats, but unknown threats. Instead of building a CDN, these companies started to leverage CDN infrastructure instead, picking the best parts from certain CDNs, and using that as an infrastructure component of a high-level cyber security shield. The tough part about being a CDN is most of the resources and focus is on maintaining caching servers, storage systems, video streaming services, and the like. Spending time on all these non-security activities means that security innovation slows down tremendously. Third generation cloud security providers do not need to worry about maintaining streaming services, transcoding servers, and caching servers, enabling them to focus on security innovation.

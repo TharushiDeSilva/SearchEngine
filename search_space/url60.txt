@@ -1,0 +1,8 @@
+https://www.cloudflare.com/features-security
+
+CloudFlare security
+
+CloudFlare leverages the knowledge of a diverse community of websites to power a new type of security service. Online threats range from nuisances like comment spam and excessive bot crawling to malicious attacks like SQL injection and denial of service (DOS) attacks. CloudFlare provides security protection against all of these types of threats and more to keep your website safe.
+Automatic learning of new attacks
+
+CloudFlare’s technology automatically detects new attacks that arise against any website on its network. Once CloudFlare identifies that there is a new attack, CloudFlare starts to block the attack for both the particular website and the entire community. This also means the longer you are on CloudFlare, the better the protection becomes. See a customer case study at the CloudFlare blog.

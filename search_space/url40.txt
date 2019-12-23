@@ -1,0 +1,82 @@
+https://docs.oracle.com/cd/E11035_01/wls100/perform/dbtune.html
+WebLogic Server Performance and Tuning
+     Previous  Next    Open TOC in new window  Open Index in new window  View as PDF - New Window  Get Adobe Reader - New Window
+Content starts here
+DataBase Tuning
+
+Your database can be a major enterprise-level bottleneck. Configure your database for optimal performance by following the tuning guidelines in this section and in the product documentation for the database you are using.
+
+    General Suggestions
+    Database-Specific Tuning
+
+ 
+General Suggestions
+
+This section provides general database tuning suggestions:
+
+    Good database design — Distribute the database workload across multiple disks to avoid or reduce disk overloading. Good design also includes proper sizing and organization of tables, indexes, and logs.
+    Disk I/O optimization — Disk I/O optimization is related directly to throughput and scalability. Access to even the fastest disk is orders of magnitude slower than memory access. Whenever possible, optimize the number of disk accesses. In general, selecting a larger block/buffer size for I/O reduces the number of disk accesses and might substantially increase throughput in a heavily loaded production environment.
+    Checkpointing — This mechanism periodically flushes all dirty cache data to disk, which increases the I/O activity and system resource usage for the duration of the checkpoint. Although frequent checkpointing can increase the consistency of on-disk data, it can also slow database performance. Most database systems have checkpointing capability, but not all database systems provide user-level controls. Oracle, for example, allows administrators to set the frequency of checkpoints while users have no control over SQLServer 7.x checkpoints. For recommended settings, see the product documentation for the database you are using.
+    Disk and database overhead can sometimes be dramatically reduced by batching multiple operations together and/or increasing the number of operations that run in parallel (increasing concurrency). Examples:
+        Increasing the value of the Message bridge BatchSize or the Store-and-Forward WindowSize can improve performance as larger batch sizes produce fewer but larger I/Os.
+        Programmatically leveraging JDBC's batch APIs.
+        Use the MDB transaction batching feature. See Tuning Message-Driven Beans.
+        Increasing concurrency by increasing max-beans-in-free-pool and thread pool size for MDBs (or decreasing it if batching can be leveraged).
+
+ 
+Database-Specific Tuning
+
+The following sections provide basic tuning suggestions for Oracle, SQL Server, and Sybase:
+
+    Oracle
+    Microsoft SQL Server
+    Sybase
+
+Note: 	Always check the tuning guidelines in your database-specific vendor documentation.
+Oracle
+
+This section describes performance tuning for Oracle.
+
+    Number of processes — On most operating systems, each connection to the Oracle server spawns a shadow process to service the connection. Thus, the maximum number of processes allowed for the Oracle server must account for the number of simultaneous users, as well as the number of background processes used by the Oracle server. The default number is usually not big enough for a system that needs to support a large number of concurrent operations. For platform-specific issues, see your Oracle administrator’s guide. The current setting of this parameter can be obtained with the following query:
+
+    SELECT name, value FROM v$parameter WHERE name = 'processes';
+
+    Buffer pool size —The buffer pool usually is the largest part of the Oracle server system global area (SGA). This is the location where the Oracle server caches data that it has read from disk. For read-mostly applications, the single most important statistic that affects data base performance is the buffer cache hit ratio. The buffer pool should be large enough to provide upwards of a 95% cache hit ratio. Set the buffer pool size by changing the value, in data base blocks, of the db_cache_size parameter in the init.ora file.
+    Shared pool size — The share pool in an important part of the Oracle server system global area (SGA). The SGA is a group of shared memory structures that contain data and control information for one Oracle database instance. If multiple users are concurrently connected to the same instance, the data in the instance’s SGA is shared among the users. The shared pool portion of the SGA caches data for two major areas: the library cache and the dictionary cache. The library cache stores SQL-related information and control structures (for example, parsed SQL statement, locks). The dictionary cache stores operational metadata for SQL processing.
+
+    For most applications, the shared pool size is critical to Oracle performance. If the shared pool is too small, the server must dedicate resources to managing the limited amount of available space. This consumes CPU resources and causes contention because Oracle imposes restrictions on the parallel management of the various caches. The more you use triggers and stored procedures, the larger the shared pool must be. The SHARED_POOL_SIZE initialization parameter specifies the size of the shared pool in bytes.
+
+    The following query monitors the amount of free memory in the share pool:
+
+    SELECT * FROM v$sgastat
+    WHERE name = 'free memory' AND pool = 'shared pool';
+
+    Maximum opened cursor — To prevent any single connection taking all the resources in the Oracle server, the OPEN_CURSORS initialization parameter allows administrators to limit the maximum number of opened cursors for each connection. Unfortunately, the default value for this parameter is too small for systems such as WebLogic Server. Cursor information can be monitored using the following query:
+
+    SELECT name, value FROM v$sysstat
+    WHERE name LIKE 'opened cursor%';
+
+    Database block size — A block is Oracle’s basic unit for storing data and the smallest unit of I/O. One data block corresponds to a specific number of bytes of physical database space on disk. This concept of a block is specific to Oracle RDBMS and should not be confused with the block size of the underlying operating system. Note that since the block size affects physical storage, this value can be set only during the creation of the database; it cannot be changed once the database has been created. The current setting of this parameter can be obtained with the following query:
+
+    SELECT name, value FROM v$parameter WHERE name = 'db_block_size';
+
+    Sort area size — Increasing the sort area increases the performance of large sorts because it allows the sort to be performed in memory during query processing. This can be important, as there is only one sort area for each connection at any point in time. The default value of this init.ora parameter is usually the size of 6– 8 data blocks. This value is usually sufficient for OLTP operations but should be increased for decision support operation, large bulk operations, or large index-related operations (for example, recreating an index). When performing these types of operations, you should tune the following init.ora parameters (which are currently set for 8K data blocks):
+
+    sort_area_size = 65536
+    sort_area_retained_size = 65536 
+
+Microsoft SQL Server
+
+The following guidelines pertain to performance tuning parameters for Microsoft SQL Server databases. For more information about these parameters, see your Microsoft SQL Server documentation.
+
+    Store tempdb on a fast I/O device.
+    Increase the recovery interval if perfmon shows an increase in I/O.
+    Use an I/O block size larger than 2 KB.
+
+Sybase
+
+The following guidelines pertain to performance tuning parameters for Sybase databases. For more information about these parameters, see your Sybase documentation.
+
+    Lower recovery interval setting results in more frequent checkpoint operations, resulting in more I/O operations.
+    Use an I/O block size larger than 2 KB.
+    Sybase controls the number of engines in a symmetric multiprocessor (SMP) environment. They recommend configuring this setting to equal the number of CPUs minus 1.

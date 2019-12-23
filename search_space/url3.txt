@@ -1,0 +1,60 @@
+https://www.lehigh.edu/~inimr/computer-basics-tutorial/computersperformance.htm
+
+
+What affects a computers performance
+
+Overall, the performance of a computer is dependant on how well it works together as a whole. Continually upgrading one part of the computer while leaving outdated parts installed will not improve performance much, if at all. Below, we discuss some of the most important parts of the computer regarding it's speed and computing power. The description of these parts is by no means complete and only serves to give newer users some understanding of what various computer specifications mean. It should also be noted that this web page was last updated January 2003, but the same factors can still be applied in 2006. The processor, memory and videocard are the most important components when determining performance inside a computer. Any specifics about pieces of hardware will be outdated in about six months or so. Gaining an understanding of what each specification means, and what each part does, is the goal of this section.
+
+
+  	Reference Chart
+Bit (b) 	Smallest unit of storage possible. 1 or 0.
+Byte (B) 	8 bits
+KiloByte (KB) 	1000* Bytes
+MegaByte (MB) 	1000 KB
+GigaByte (GB) 	1000 MB
+  	* Commonly approximated as 1000 for convenience. Actual value is 1024.
+  	 
+
+Processor speed (MHZ, L1 L2 cache, x86 and other chip types)
+Average PC Desktop (1.5 - 2.5 Ghz)
+Average Laptop or Macintosh (1.0 Ghz)
+
+
+Clock speed, a.k.a. Processor speed is often played up to be the major factor in a computer's overall performance. In rare cases this is true, but an average user rarely uses 100 percent of his Central Processing Unit's power. (CPU). Things like encoding video or encrypting files, or anything that computes large, complex, numbers requires a lot of processor power. Most users spend most of their time typing, reading email or viewing web pages. During this time, the computer's CPU is probably hovering around 1 or 2 percent of it's total speed. Startup time is probably the only time the CPU is under stress, and even then it's often limited due to the hard drive speed.
+
+    Megahertz (MHZ) or Gigahertz (GHZ or 1000MHZ) is the number of times the CPU can switch back and forth from 1 to 0. It is the driving force in the power the processor has (all other things being equal). Higher MHZ chips use more power and produce more heat.
+    Level 1 (L1) and Level 2(L2) cache is usually onchip RAM that is extremely fast. SRAM is different than System RAM and only used on processors. It stores data right before and after it is processed. SRAM is extremely expensive; most chips today only have 128 Kilobytes of L1 cache, and 256-512K of L2 cache. (This is what makes a Pentium 3 or 4 chip different than a celeron chip)
+    x86 is the architecture type of all Windows based computers. All processors sold today for computers running the Windows OS (operating system) are 32 bit, meaning they process 32 bits of information each clock cycle (a 1GHZ chip does 1 billion clock cycles per second). Not all CPU's are x86. For example Apple computers use Motorola's chip design called PowerPC, which comes in both 64 and 128 bit flavors. This is one reason apple computers can outpreform high-end PC's, despite their lower processor speeds. Currently Intel and AMD are developing 64 bit x86 chips. The disadvantage of higher bit architecture is that one needs to make changes to any software that one may want to work with on the new design; this is one reason Mac software will not run without specialized software on PC's, and visa-versa.
+
+System RAM speed and size (MHZ and Megabytes)
+Average Desktop - 256 megabytes
+Average Laptop - 128 megabytes
+
+The amount and speed of the RAM in your computer makes a huge difference in how your computer performs. If you are trying to run Windows XP with 64 MB of RAM it probably won't even work. When the computer uses up all available RAM it has to start using the hard drive to cache data, which is much slower. The constant transfer of data between RAM and virtual memory (hard drive memory) slows a computer down considerably. Especially when trying to load applications or files.
+The two types differ in the technology they use to hold data, dynamic RAM being the more common type. Dynamic RAM needs to be refreshed thousands of times per second. Static RAM does not need to be refreshed, which makes it faster; but it is also more expensive than dynamic RAM. Both types of RAM are volatile, meaning that they lose their contents when the power is turned off.
+Also the speed of your RAM can be influential. The normal speed of RAM in most computers today is pc100 (100mhz). This runs fine for most applications. Gamers or high-end machines probably are using DDR (double data rate) RAM. It's newer and more expensive, but runs considerably faster (266mhz). Note that all computers cannot use DDR RAM. For information about System RAM see:
+
+www.crucial.com
+
+ 
+
+Disk speed and size (RPM's and Gigabytes)
+Average Desktop (40 Gigabytes)
+Average Laptop (20 Gigabytes)
+
+The biggest factor in your computer's performance is the hard disk speed. How fast the hard drive can find (average seek time), read, write, and transfer data will make a big difference in the way your computer performs. Most hard drives today spin at 7,200 RPMS, older models and laptops still spin at 5,200 RPMS, which is one reason laptops often appear sluggish to a desktop equivalent.
+The size of your hard drive plays a very little role in the performance of a computer. As long as your have enough free space for virtual memory and keep the disk defragmented it will perform well no matter what the size. For more information on hardrives see:
+
+www.storage.ibm.com/hdd/index.htm
+
+www.seagate.com
+
+ 
+
+Video card - (onboard video RAM, chip type and speed)
+Average Desktop (32 - 64 Megabyte low end AGP card)
+Average Laptop (16 Megabyte onboard chip)
+
+Whenever your computer puts an image on the screen something has to render it. If a computer is doing this with software it is often slow and will affect the performance of the rest of the computer. Also, the image will not be rendered as crisp or as smoothly in the case of video. Even a low-end video card will significantly improve the performance of the computer by taking the large task of rendering the images on the screen from the CPU to the graphics card. If you work with large image files, video or play games you will want a higher end video card.
+
+Video cards use their own RAM called Video RAM. The more Video RAM a computer has the more textures and images the card can remember at a time. High end graphics cards for desktops now come with up to 64 megabytes of Video RAM, Laptops often only have 8 or 16 megabytes of Video RAM. To learn more about video cards see:

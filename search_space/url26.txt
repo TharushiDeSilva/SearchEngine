@@ -1,0 +1,287 @@
+http://java-performance.info/core-java-7-change-log/
+
+Java Performance Tuning Guide
+Java performance tuning guide – various tips on improving performance of your Java code
+Skip to content
+
+    Home
+
+Core Java 7 Change Log
+
+by Mikhail Vorontsov
+
+
+01 Jan 2014 update – covered all Java 7 versions up to Java 7u45.
+
+This article will list performance related changes made in the core part of various Java 7 updates. I will track changes in the following packages:
+
+    java.lang.*
+    java.io
+    java.math
+    java.net
+    java.nio.*
+    java.text.*
+    java.util.*
+
+These changes have one peculiar property – Oracle usually does not include them in the release notes. Probably, they consider them too minor… Anyway, this page will try to help you a little: hopefully, you will not miss updates like a “famous” String.substring change in Java 7u6.
+
+This page will be updated after new Java 7 updates. I will also add a list of changes done before Java 7u45 (give me some time!).
+Java 7u45 (compared to Java 7u25)
+
+Most of these changes were made in Java 7u40, but I have unfortunately missed that release.
+Shared empty table in ArrayList and HashMap update
+
+    File changed: \util\ArrayList.java
+    File changed: \util\HashMap.java
+
+Two most popular Java collections – ArrayList and HashMap are now consuming less memory if their instances are empty (size=0). The only reason for this update, from my point of view is a critical mass of cases in Oracle performance benchmarks when a map/list is created, but not populated later due to a conditional logic (for example, empty parameter list was provided in the HTTP request).
+
+This update reduces the garbage collector workload by creating less unused garbage.
+
+In case of ArrayList, only objects created via an empty constructor are updated. If you are using a constructor specifying the initial size, there are no changes at all for you.
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+
+    	
+
+    /**
+     * Shared empty array instance used for empty instances.
+     */
+    private static final Object[] EMPTY_ELEMENTDATA = {};
+     
+    public ArrayList() {
+        super();
+        this.elementData = EMPTY_ELEMENTDATA;
+    }
+
+HashMap got a more thorough update – internal table initialization is now moved away from the constructor. It is now always initialized with an empty table. As a consequence, all getters and setters in the HashMap are now checking if a map is empty. This makes getters slightly faster in case of an empty map – you no longer have to look at the actual table, but at the same time it makes all setters/getters slower in every other case (this is a very tiny slowdown – a zero check of a single int field, but this is still an extra instruction to execute).
+
+I hope that this HashMap change has a solid justification – there are enough always empty maps in the Oracle benchmark applications. In my personal opinion this change is quite questionable – I do not like “taxes” you always have to pay just for a corner case optimization.
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+
+    	
+
+    /**
+     * An empty table instance to share when the table is not inflated.
+     */
+    static final Entry<?,?>[] EMPTY_TABLE = {};
+     
+    /**
+     * The table, resized as necessary. Length MUST Always be a power of two.
+     */
+    transient Entry<K,V>[] table = (Entry<K,V>[]) EMPTY_TABLE;
+
+An author of these changes has responded me here.
+
+
+
+Tracing of file I/O callbacks
+
+    File changed: \io\FileInputStream.java
+    File changed: \io\FileOutputStream.java
+    File changed: \io\RandomAccessFile.java
+    File changed: \net\SocketInputStream.java
+    File changed: \net\SocketOutputStream.java
+
+Callback calls to the new sun.misc.IoTrace class were added. These callbacks are supposed to be a cheaper alternative to the IO profiling and should be used from a JMX agent. You should be careful not to use these classes in your agent – otherwise an infinite loop will happen.
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+
+    	
+
+    public int read() throws IOException {
+        Object traceContext = IoTrace.fileReadBegin(path);
+        int b = 0;
+        try {
+            b = read0();
+        } finally {
+            IoTrace.fileReadEnd(traceContext, b == -1 ? 0 : 1);
+        }
+        return b;
+    }
+
+Some research of this update could be found here.
+java.lang.invoke rewrite
+
+Most of this package was rewritten using the LambdaForm class from JDK8. Unfortunately, Java 8 lambdas seem to be not available :( This update may affect you only if you are using Java 7 MethodHandle class or if you are using some of JVM dynamic languages.
+
+There is a possible performance regression in Groovy 2.0 related to this change – my Groovy performance tests of dynamic method execution are running 2 times slower in Java 7u45 compared to Java 7u25.
+Alternative hashing regression fixed (from Java 7u6)
+
+    File changed: \util\HashMap.java
+    File changed: \util\Hashtable.java
+
+Java 7 update 6 included the new “alternative hashing” methods used in String and hash-based not concurrent JDK maps and sets. Take a look at my article for more details (it was updated several time since it was originally written).
+
+Nearly a year later a highly-concurrent performance issue with a mandatory sun.misc.Hashing.randomHashSeed method call on JDK hash sets/maps construction was fixed. This method is now called only if jdk.map.althashing.threshold system property is set. Take a look at this Java bug for more information. This update fixes all affected classes except WeakHashMap (but who creates lots of those simultaneously?)
+
+Java 7u25 (compared to Java 7u21)
+Oracle discontinuing sun.reflect.Reflection.getCallerClass(int)
+
+sun.reflect.Reflection.getCallerClass(int steps) method allows you to obtain the class which is steps frames above you in the call stack. This method allowed (still allows in Java 7) you to write caller-sensitive code.
+
+Here is the root Oracle bug database post.
+
+In essence, Oracle is intending to remove this method in Java 7u55 (or later) and does not support it in Java 8. This method is (was?) useful if you wanted to find out who is your caller. This method performance is much better than Thread.currentThread().getStackTrace(). The following test reports that sun.reflect.Reflection.getCallerClass is working 27 times faster than the public API.
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+    20
+    21
+    22
+    23
+    24
+    25
+    26
+    27
+    28
+    29
+
+    	
+
+    private static void testGetCallerClass(int cnt, int depth)
+    {
+        final Class[] classes = new Class[ cnt ];
+        final long start = System.currentTimeMillis();
+        for ( int i = 0; i < cnt; ++i )
+        {
+            classes[i] = sun.reflect.Reflection.getCallerClass(depth);
+        }
+        final long time = System.currentTimeMillis() - start;
+        System.out.println( "Time for " + cnt + " getCallerClass calls = " + time / 1000.0 + " sec" );
+    }
+     
+    private static void testGetStackTrace(int cnt, int depth)
+    {
+        final String[] classes = new String[ cnt ];
+        final long start = System.currentTimeMillis();
+        for ( int i = 0; i < cnt; ++i )
+        {
+            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            classes[i] = stackTrace[ depth ].getClassName();
+        }
+        final long time = System.currentTimeMillis() - start;
+        System.out.println( "Time for " + cnt + " getStackTrace calls = " + time / 1000.0 + " sec" );
+    }
+     
+    public static void main(String[] args) {
+        testGetStackTrace(1000000, 2);
+        testGetCallerClass(1000000, 2);
+    }
+
+Despite the promise (threat?) to make this method unavailable in Java 7u40 (and add a switch to turn it on), this method is still accessible in my version of Java 7u45.
+
+See also:
+
+    JDK-8014925 : Disable sun.reflect.Reflection.getCallerClass(int) with a temporary switch to re-enable it
+    JEP 176: Mechanical Checking of Caller-Sensitive Methods
+    Oracle Discontinuing sun.reflect.Reflection.getCallerClass
+
+Java 7u21 (compared to Java 7u15)
+
+No performance related updates.
+
+Java 7u15 (compared to Java 7u7)
+
+No performance related updates.
+
+Java 7u7 (compared to Java 7u2)
+String.substring no longer shares the internal char[]
+
+This is the first major String update since the original Java version: String no longer has offset and count fields since Java 7u6. It means that char[] value field must contain the whole string from the first to the last character.
+
+It also means that the only publicly accessible interface of sharing the internal char[] - String.substring method now has to make a copy of a part of an original char[], so its complexity has increased from O(1) (create a single object and set 3 fields) to O(n) (copy all characters of a new String).
+
+new String(String) constructor now became absolutely useless. Previously it was used when "copy the subarray" behavior was required (in order to avoid memory leaks).
+
+The whole story could be read in my Changes to String internal representation made in Java 1.7.0_06 article.
+Alternative hashing in various JDK maps/sets
+
+Following classes were affected: HashMap, Hashtable, HashSet, LinkedHashMap, LinkedHashSet, WeakHashMap and ConcurrentHashMap.
+
+These classes now switch to an alternative hash32 method in String class (if map keys/set values are strings) if map/set size exceeds jdk.map.althashing.threshold JVM parameter value. In theory, this change should improve the hash code distribution, thus making hash based maps/sets faster. In practice, this change is a Java 7 only feature. It is not present in Java 8. See my Changes to String internal representation made in Java 1.7.0_06 article for more details.
+
+All these classes except ConcurrentHashMap have a concurrency issue between Java 7u6 (introduced) and Java 7u40 (fixed) - they all rely on a single instance of java.util.Random during their construction (actually, during jdk.map.althashing.threshold parameter processing) - this limits the number of maps/sets you can create in high contention environments.
+java.io.InputStream.skip update
+
+java.io.InputStream.skip method is implemented via reading skipped data into the temporary buffer and discarding it. The original implementation cached 2K buffer on the first skip call of each InputStream instance. On one hand it created less garbage (in theory). On the other hand, you may never use skip method again (unlike read), but you had to keep that "temporary" buffer.
+
+The new implementation (from Java 7u7 at least) is allocating a temporary buffer on every skip call. The buffer size is the smaller of 2K and the amount of data to skip.
+Integer/Long.toString became slightly faster
+
+Updated versions use a package private constructor new String(char[], boolean) which does not make a copy of provided char[]. The old code used new String(offset, count, char[]) constructor which makes a copy of provided char[].
+
+Byte/Short.toString methods were not updated because they call Integer.toString for conversion. Finally, Float/Double.toString are using sun.misc.FloatingDecimal for conversion, which can not access String package private constructors.
+java.util.Collections wrapper classes have equals method updated
+
+Several collection wrapper classes inside java.util.Collections now have slightly faster equals method: if ( this == other ) return true branch was added.
+
+This entry was posted in Intermediate, Overviews and tagged CallerSensitive, ChangeLog, collections, cpu optimization, getCallerClass, Java 7, memory optimization, string on January 1, 2014.
+Post navigation
+← Book review: Systems Performance: Enterprise and the Cloud java.util.Random and java.util.concurrent.ThreadLocalRandom in multithreaded environments →
+One thought on “Core Java 7 Change Log”
+
+    Pingback: Large HashMap overview: JDK, FastUtil, Goldman Sachs, HPPC, Koloboke, Trove  - Java Performance Tuning Guide
+
+Comments are closed.
+Summary
+
+Java performance tuning guide summary - all you could read on this website in one page.
+Java performance books
+
+Google ads
+Most popular
+
+    Introduction to JMH
+    Changes to String internal representation made in Java 1.7.0_06
+    Implementing a high performance Money class
+    Trove library: using primitive collections for performance
+    java.util.ArrayList performance guide
+    Java collections overview
+
+Google ads
+Tags
+algorithms array avoiding worst practices BigDecimal binary serialization bitset book review boxing byte buffer collections cpu optimization data compression datatype optimization date dateformat double exceptions FIX hashcode hdd io iterators Java 7 Java 8 java dates java regular expressions JMH JNI long bitset map matcher memory layout memory optimization multithreading parsing partitioned bitset pattern primitive collections ssd string string concatenation string pool sun.misc.Unsafe trove unboxing

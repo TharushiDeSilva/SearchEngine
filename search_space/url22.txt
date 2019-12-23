@@ -1,0 +1,68 @@
+http://fasterj.com/tools/threadanalysers.shtml
+Fasterj
+
+|	home 	|	articles 	|	cartoons 	|	site map 	|	contact us 	|
+Tools: | 	GC log analysers	| 	Multi-tenancy tools	| 	Books	| 	SizeOf	| 	Thread analysers	|
+
+Our valued sponsors who help make this site possible
+AppDynamics: Get complete browser to backend visibility. Monitor Now! 
+
+New Relic: Try free w/ production profiling and get a free shirt! 
+
+ManageEngine's Site24x7: End-to-End analysis on Java EE web transactions. Sign up for FREE! 
+
+Thread Analysers
+JProfiler
+Get rid of your performance problems and memory leaks!
+
+Chart Java Jitter with jHiccup
+Monitor and identify pauses in your Java apps. Download now
+
+Use jKool analytics as a service
+Spot patterns in time-series data - real-time and free
+
+
+See Your Message Here
+You could have your tool advertised here, to be seen by thousands of potential customers
+
+Java Performance Tuning, 2nd ed
+The classic and most comprehensive book on tuning Java
+
+Java Performance Tuning Newsletter
+Your source of Java performance news. Subscribe now!
+Enter email:
+
+
+AppDynamics
+AppDynamics: Get complete browser to backend visibility. Monitor Now!
+
+New Relic
+New Relic: Try free w/ production profiling and get a free shirt!
+
+ManageEngine
+ManageEngine's Site24x7: End-to-End analysis on Java EE web transactions. Sign up for FREE!
+
+
+JProfiler
+Get rid of your performance problems and memory leaks!
+
+Chart Java Jitter with jHiccup
+Monitor and identify pauses in your Java apps. Download now
+
+Use jKool analytics as a service
+Spot patterns in time-series data - real-time and free
+
+
+Java thread analysers, maintained by Viktoriia Kuznetcova. Useful for identifying and investigating performance problems, thread locks and crashes in an application.
+
+(Year in brackets is when the tool/page was last updated)
+
+    (2014) ThreadLogic: Thread Dump Analyzer with added logic for common patterns
+    (2014) JProfiler - a commercial Java profiler, includes functionality for live threads monitoring (locally and remotely) as well as for taking and analysing thread dumps
+    (2014) VisualVM - free visual tool, can monitor live threads and take thread dumps, locally and remotely
+    (2014) YourKit - a commercial tool, can monitor thread activity live and through thread dumps, locally and remotely
+    (2014) ManageEngine Applications Manager - a commercial tool, does thread dumps analysis, reports on thread usage
+    (2014) MJProf command line tool processes jstack thread dumps
+    (2013) Thread Dump Viewer - a tool for thread dump analysis. Opens thread dumps from Oracle HP and IBM JVMs
+    (2011) TDA - Thread Dump Analyzer
+    (2008) Samurai - GUI tail tool, picks up thread dumps from a file and visually presents it, color coding thread states 

@@ -1,0 +1,126 @@
+http://www.javaperformancetuning.com/
+Java Performance Tuning
+
+Java(TM) - see bottom of page
+
+|	home 	|	services 	|	training 	|	newsletter 	|	tuning tips 	|	tool reports 	|	articles 	|	resources 	|	about us 	|	site map 	|	contact us 	|
+Tools: | 	GC log analysers	| 	Multi-tenancy tools	| 	Books	| 	SizeOf	| 	Thread analysers	|
+
+Our valued sponsors who help make this site possible
+AppDynamics: Get complete browser to backend visibility. Monitor Now! 
+
+New Relic: Try free w/ production profiling and get a free shirt! 
+
+ManageEngine's Site24x7: End-to-End analysis on Java EE web transactions. Sign up for FREE! 
+
+Java Performance Tuning
+JProfiler
+Get rid of your performance problems and memory leaks!
+
+Chart Java Jitter with jHiccup
+Monitor and identify pauses in your Java apps. Download now
+
+Use jKool analytics as a service
+Spot patterns in time-series data - real-time and free
+
+
+Java Performance Training Courses
+COURSES AVAILABLE NOW. We can provide training courses to handle all your Java performance needs
+
+See Your Message Here
+You could have your tool advertised here, to be seen by thousands of potential customers
+
+Java Performance Tuning, 2nd ed
+The classic and most comprehensive book on tuning Java
+
+Java Performance Tuning Newsletter
+Your source of Java performance news. Subscribe now!
+Enter email:
+
+
+AppDynamics
+AppDynamics: Get complete browser to backend visibility. Monitor Now!
+
+New Relic
+New Relic: Try free w/ production profiling and get a free shirt!
+
+ManageEngine
+ManageEngine's Site24x7: End-to-End analysis on Java EE web transactions. Sign up for FREE!
+
+
+JProfiler
+Get rid of your performance problems and memory leaks!
+
+Chart Java Jitter with jHiccup
+Monitor and identify pauses in your Java apps. Download now
+
+Use jKool analytics as a service
+Spot patterns in time-series data - real-time and free
+
+
+Latest news
+
+NEW: NOVEMBER NEWSLETTER
+
+    We list all the latest Java performance related news and articles
+        "The advantage of a microservice architecture is that you only need to scale the services that need scaling, rather than all components"
+    All the latest Java performance tips extracted in concise form
+        "The cloud is a new environment with it's own very specific challenges that need independent consideration for testing, monitoring and analysis - you can't just take the techniques you use on a server or browser or client application or mobile app and transfer those to cloud services, you actually have to use different techniques, it's a completely new environment class to add to those four: it has a server-like environment, but resource competition similar to a browser and mobile app type unpredictability of uptime."
+
+OCTOBER NEWSLETTER
+
+    We list all the latest Java performance related news and articles
+        "If you're interested in a little more about types of sizeof, or a little Java history (or both) then you might want to check my java.net blog"
+    All the latest Java performance tips extracted in concise form
+        "In designing multithreaded components, you need to consider exactly how the component responds to interaction with other threads. Do you give hard or soft guarantees - for example the view of the size of a multithreaded collection depends on whether you want to be quick and just return the local thread's current impression of the collection size, or do you want to be thorough but slow and give the completely accurate size across all threads (which means suspending element additions and removals until the sizing operation completes! This is a design decision (not implementation), and has definite performance consenqences. It may be worth providing multiple methods, some with hard guarantees and others with soft guarantees so the developer can choose what is best for them."
+
+SEPTEMBER NEWSLETTER
+
+    We list all the latest Java performance related news and articles
+        "I look through all the Java sizeof implementations and choose the best"
+    All the latest Java performance tips extracted in concise form
+        "There are two high level reasons for bottlenecks: a node has insufficient capacity (making other requests queue); A shared resource is too busy handling other nodes to provide the resource to a requesting node, making the node wait to acquire the shared resource."
+
+AUGUST NEWSLETTER
+
+    We list all the latest Java performance related news and articles
+        "The GC tuning guide includes details about ergonomics, the various collectors (note it places G1 together with CMS as 'mostly' concurrent GCs); generations, sizing, GC phases, and much more"
+    All the latest Java performance tips extracted in concise form
+        "Apart from the core collections that come with the JDK, there are now many alternative collection frameworks. The following provide high performance options: Higher Frequency Trading's OpenHFT Collections; Carrotsearch's High Performance Primitive Collections (HPPC); The fastutil collections; Goldman Sachs GS-Collections; The Trove collections; Apache's Mahout Collections."
+
+JULY NEWSLETTER
+
+    We list all the latest Java performance related news and articles
+        "If you have any ideas for Java performance related tool categories, please do suggest them to me so that I can catalogue them and add a page on them"
+    All the latest Java performance tips extracted in concise form
+        "When using memory mapped files, your performance is at in-memory speeds as long as the memory mapped segments you are working on fit in memory. Once you go outside this area the OS needs to page out and in the pages you are addressing, so there is IO overhead. This is still highly efficient if you need to address more memory than you have available in RAM, but you should be aware of the tradeoff"
+
+JUNE NEWSLETTER
+
+    We list all the latest Java performance related news and articles
+        "Please help me organise the over 700 Java performance tools I've referenced over the years"
+    All the latest Java performance tips extracted in concise form
+        "A sequence of Stream operations (called a pipeline) allows you to pass only one result from each step on to the next stage of the pipeline. If you want to pass multiple results, you must pass them as an object, but creating an object for the result of each individual comparison would hurt the performance of a stream approach compared to chunked approaches. Streams let's you handle this case efficiently by alowing you to pass a mutable intermediate container object which gets executed for each element. "
+
+MAY NEWSLETTER
+
+    We list all the latest Java performance related news and articles
+        "I have the distinct impression that the JavaSphere has gone into overdrive"
+    All the latest Java performance tips extracted in concise form
+        "The main targets for tuning garbage collection are: 1) Modify the heap/permgen size; 2) Change the GC algorithm; 3) Configure the ratios between the memory regions"
+
+Previous newsletters
+
+All our previous newsletters can be viewed from here
+How to use this site
+
+This site has four main information resources:
+
+    The uncategorized tips page lists many other web pages with Java performance tuning related information. Each web page has its performance tuning tips extracted and listed immediately after the URL is listed. These tips are being categorized, and the tips page links to those categories currently available. If the performance area you are interested in is not yet categorized, send us an email from this page telling us the categorization you'd like to see. In any of the tips pages, use your browser's "find" or "search" option to identify particular tips you are interested in on the page, and follow up by reading the referenced web page if necessary or desired.
+    The resources page lists Java performance tuning resources including books, tools, reports, other performance tuning sites of interest, and Java performance tuning discussion groups.
+    The news pages are monthly newsletters listing any new Java performance tuning related information, together with Kirk Pepperdine's discussion group roundup and Javva The Hutt.
+    The tool reports pages are detailed introductory reports on various Java performance related tools, for both free and commercial tools. 
+
+This site has been designed to download almost as fast as possible. (Some stylistic markup and required server-side processing has been used in preference to absolute speed contraints.) The web tree contains very few graphics and almost no complex typesetting markup except for very simple tables, and the main pages can be accessed directly from the menu.
+
+This line is only to help search engines: Java performance tuning Java tuning Java optimization Java optimize Java optimizing Java fast Java faster Java speedup Java performance Java High-Performance 

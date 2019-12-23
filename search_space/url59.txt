@@ -1,0 +1,8 @@
+https://www.cloudflare.com/features-cdn
+CloudFlare is the next-generation CDN
+
+CloudFlare designed its CDN (Content Delivery Network) without the legacy of the last 15 years. Our proprietary technology takes advantage of recent changes to hardware, web server technology and network routing. In other words, we’ve built the next-generation CDN. The result is a CDN that is easier to setup, more affordable, and performs better than any legacy CDN you've tried before.
+
+We build our hardware from the ground up, which means that we choose the hardware components down to the chip level. Our proprietary software allows us to process millions of requests per second efficiently. We run our own network, so we choose the exact location of our edge nodes—the most strategic points on the Internet. This is essential to ensure your visitors get the fastest page load times and best performance.
+
+CloudFlare’s CDN reduces hops and lowers latency. On average, a request is fewer than 10 hops and takes less than 30ms. The result? Your website gains a global presence on an affordable budget.

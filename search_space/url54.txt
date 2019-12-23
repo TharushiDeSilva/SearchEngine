@@ -1,0 +1,38 @@
+https://www.nersc.gov/users/data-and-file-systems/
+
+Data & File Systems
+
+We recognize the importance of being able to manage your files and data.  Scientific datasets are growing very rapidly and there is an increasing need for large scale data storage and high performance data transfers.  As science becomes more distributed organizing and sharing data becomes very important.
+
+This section covers several topics on how to successfully manage your data at NERSC.
+
+    NERSC Data Management Policies This page provides some of the information that Principal Investigaors can use when writing the Data Management section of their resesrch proposals. NERSC provides its users with the means to store, manage and share their research data products. We provide a variety of storage resources optimized for different phases of the data lifecycle, tools to enable users to manage, protect and control their data; high-speed networks for intra-site and inter-site (ESnet) data transfer; gateways and portals for publishing data for broad consumption; and consulting services to help users craft efficient data management processes for their projects.
+    NERSC File Systems This page compares the various file systems at NERSC in terms of availability per machine, purging, quota limits, and other key characteristics.
+        Detailed Drawings of NERSC File Systems
+        Global Home Filesystem
+        Global Scratch File System
+        Project File System
+        Disk Quota Increase Request
+        Project Directory Request Form
+        Sponsored Storage
+        Frontiers in Advanced Storage Technologies (FAST) project
+    HPSS Data Archive HPSS, the High Performance Storage System, is the NERSC system you should use to back up your files to prevent data loss from accidental deletion and file purging.
+        About
+        Getting Started
+        Storing and Retrieving Data
+        Advanced Usage Examples
+        HPSS Charging
+        Storage Statistics
+        Troubleshooting
+    I/O Resources for Scientific Applications at NERSC NERSC provides a range of online resources to assist users developing, deploying, understanding, and tuning their scientific I/O workloads, supplemented by direct support from the NERSC Consultants and the Data Analytics Group. Here, we provide a consolidated summary of these resources, along with pointers to relevant online documentation.
+    Optimizing I/O performance on the Lustre file system The Lustre file system is mounted locally on Hopper. This page describes how get the best performance out of the Lustre file system.
+    I/O Formats I/O continues to be one of the main bottlenecks for scientific applications. This page describes the HDF5 and NetCDF software.
+    Science Database Services NERSC supports the provisioning of databases to hold large scientific datasets. Currently we support MySQL, PostgreSQL, MongoDB and SciDB (Experimental)
+    Sharing Data Information on how to share data across NERSC systems, with other users within NERSC, or between NERSC and systems elsewhere.
+    Transferring Data Data can be transfered to and from NERSC using Globus Online, gridftp, scp, sftp, bbcp, and HPSS tools. NERSC also provides an easy was for research teams to share data through via the web from their project directories.
+        Globus Online
+        Using SCP/SFTP At NERSC
+        Using bbcp At NERSC
+        NERSC FTP Upload Service
+    Unix File Groups at NERSC Information on how NERSC uses Unix file groups.
+    Unix File Permissions Overview of Unix file permissions

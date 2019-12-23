@@ -1,0 +1,125 @@
+http://en.wikibooks.org/wiki/Optimizing_C%2B%2B/General_optimization_techniques/Memoization
+Optimizing C++/General optimization techniques/Memoization
+< Optimizing C++‎ | General optimization techniques
+Unreviewed changes are displayed on this pageThis page may need to be reviewed for quality.
+Optimizing C++
+
+    Cover
+
+    Introduction
+    Optimization life cycle
+    Writing efficient code
+        Performance improving features
+        Performance worsening features
+        Constructions and destructions
+        Allocations and deallocations
+        Memory access
+        Thread usage
+    General optimization techniques
+        Input/Output
+        Memoization
+        Sorting
+        Other techniques
+    Code optimization
+        Allocations and deallocations
+        Run-time support
+        Instruction count
+        Constructions and destructions
+        Pipeline
+        Memory access
+        Faster operations
+
+Memoization techniques (aka caching techniques) are based on the principle that if you must repeatedly compute a pure function, that is a referentially transparent function (aka mathematical function), for the same argument, and if such computation requires significant time, you can save time by storing the result of the first evaluation and retrieve that result the other times.
+Look-up table
+
+If you often have to call a pure function that has a small integer interval as domain, pre-compute (at compile time or at program start-up time) all the values of the function for every value of the domain and put them in a static array called lookup table. When you need the value of the function for a particular value of the domain, read the corresponding value of such array.
+
+For example, to compute the square root of an integer between 0 and 9, the following function is faster:
+
+double sqrt10(int i) {
+    static const double lookup_table[] = {
+        0, 1, sqrt(2.), sqrt(3.), 2,
+        sqrt(5.), sqrt(6.), sqrt(7.), sqrt(8.), 3,
+    };
+    assert(0 <= i && i < 10);
+    return lookup_table[i];
+}
+
+Array access is very fast, mainly if the accessed cell is in processor data cache. Therefore, if the lookup table is not large, almost surely its access is faster than the function to evaluate.
+
+If the lookup table is large, it may be no more efficient, for the memory footprint, for the time to pre-compute all the values, if it doesn't fit the processor data cache. But if the function to evaluate is slow, it is called many times and you can afford to use much memory, consider using a lookup table up to several hundreds of kilobytes. It is rarely efficient to exceed one megabyte.
+One-place cache
+
+If you often have to call a pure function with the same arguments, the first time the function is called save the arguments and the result in static variables. When the function is called again, compare the new arguments with the saved ones; if they match, return the saved result, otherwise compute the result and store the new arguments and the new result.
+
+For example, instead of the following function:
+
+double f(double x, double y) {
+    return sqrt(x * x + y * y);
+}
+
+you can use this function:
+
+double f(double x, double y) {
+    static double prev_x = 0;
+    static double prev_y = 0;
+    static double result = 0;
+    if (x == prev_x && y == prev_y) {
+        return result;
+    }
+    prev_x = x;
+    prev_y = y;
+    result = sqrt(x * x + y * y);
+    return result;
+}
+
+Notice that, for faster processing it isn't necessary that the function be called with the same arguments for the entire program session. It is enough that it is called some times with the same arguments, then some other times with other arguments. In such cases, the computation is performed only when the arguments change.
+
+Obviously, instead of increasing the speed, this technique may decrease it if the function is called with almost always changing arguments or if the comparison between the new arguments and the old ones requires more time than the computation of the function itself.
+
+Notice that if you use static variables this function is not thread-safe and cannot be recursive. If this function must be called concurrently by several threads, it is necessary to replace the static variables with variables that are distinct for every thread.
+
+Notice also that in the example it is assumed that the function has zero value when both arguments are zero. Failing this, you should choose another solution, such as one of the following:
+
+    Initialize the variable result with the value that corresponds to all-zero arguments.
+    Initialize the variables prev_x and prev_y with values that will never be passed as arguments.
+    Add a static flag indicating whether the static variables keep valid values and check that flag at every call.
+
+N-places cache
+
+If you often have to call a pure function with arguments that in most cases belong to a small domain, use a static map (aka dictionary) that is initially empty. When the function is called, search the map for the function argument. If you find it, return the associated value, otherwise compute the result and insert the pair argument-result into the map.
+
+Here is an example in which the map is implemented using an array. The same function was used for the example of the guideline "One-place cache" in this section:
+
+double f(double x, double y) {
+    static const int n_buckets = 8; // should be a power of 2
+    static struct {
+        double x; double y; double result;
+    } cache[n_buckets];
+    static int last_read_i = 0;
+    static int last_written_i = 0;
+    int i = last_read_i;
+    do {
+        if (cache[i].x == x && cache[i].y == y) {
+            return cache[i].result;
+        }
+        i = (i + 1) % n_buckets;
+    } while (i != last_read_i);
+    last_read_i = last_written_i = (last_written_i + 1) % n_buckets;
+    cache[last_written_i].x = x;
+    cache[last_written_i].y = y;
+    cache[last_written_i].result = sqrt(x * x + y * y);
+    return cache[last_written_i].result;
+}
+
+Some functions, although they have a theoretically large domain, are called most often with few distinct arguments.
+
+For example, a word processor may have many installed fonts, but in a typical document only a few fonts are used for most characters. A rendering function that has to handle the font of every character of the document will be called typically with few distinct values. For such cases, an N-places cache is preferable to a one-place cache, as in the example.
+
+The remarks about static variables, in guideline "One-place cache" in this section, apply also to this case.
+
+For small caches (in the example, having 8 places) the most efficient algorithm is a sequential scan on an array. To implement a larger cache, though, a search tree or a hash table could be more efficient. In addition, the cache of the example has fixed size, but it could be expedient to have a variable-size cache.
+
+Usually, the last read element is the most likely for the next call. Therefore, as in the example, it may be expedient to save its position and to begin the search from that position.
+
+If the cache does not expand itself indefinitely, there is the problem choosing the element to replace. Obviously, it would be better to replace the element that is the least likely to be requested by the next call. In the example, it is assumed that, among the elements in the cache, the first inserted element is the least probable for the next call. Therefore, the write scans cyclically through the array. Often, a better criterion is to replace the least recently read element instead of the least recently written element. To implement such criterion, a more complex algorithm is required

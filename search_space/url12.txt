@@ -1,0 +1,65 @@
+http://www.serverwatch.com/tutorials/article.php/3436911/Apache-Server-Performance-Optimization.htm
+Apache Server Performance Optimization
+By Martin Brown (Send Email)
+Posted Feb 22, 2008
+
+
+More on Apache server
+
+Squeezing the most performance out of your Apache server can make difference in how your Web site functions and the impression it makes. Even fractions of a second matter, especially on dynamic sites. This article looks primarily at configuration and installation, two areas where you have the most control.
+Measuring and Improving Apache Server Performance
+SWatch Reader Favorite: Squeezing the most performance out of your Apache server can make difference in how your Web site functions and the impression it makes. We look at configuration and installation, two areas where you have the most control.
+
+Apache was designed to be as fast as possible. It's easy, with a fairly low-powered machine, to completely saturate a low-end Internet link with little effort. However, as sites become more complex and the bandwidth needs of different connection types increase, getting the best performance out of an Apache installation and Web sites becomes more important.
+
+Enhancing performance means nothing if the changes achieved are only minor gains. Spending hours or even days finely tuning a server for just a few percentage points is a waste of time. The first step, therefore, is to determine how fast the server is running and its general performance level so you can work out how to improve performance and measure the changes.
+
+This is not the first time we've discussed Apache testing (see Staying Out of Deep Water: Performance Testing Using HTTPD-Test's Flood). As was noted previously, determining which parts of your Web application are causing the problem — particularly identifying whether it's Apache or the application environment you are using with dynamic sites — can be difficult. Identifying problems in dynamic applications is beyond the scope of this article, but we will look at ways to generally improve the speed of Apache and how it interacts with other components to support a Web site.
+Apache Server Host Hardware
+
+The machine and operating system environment on which Apache is running have the most effect. Obviously, an old 386-based PC will not have the same performance as a new P4 or dual-processor model, but you can make other improvements. Avoiding, for the moment, hardware changes, the biggest thing you can do is ensure Apache is running on a dedicated server. Coexistence with other applications will affect Web server performance.
+
+In most situations, but particularly with static sites, the amount of RAM is a critical factor because it will affect how much information Apache can cache. The more information that can be cached, the less Apache has to rely on the comparatively slow process of opening and reading from a file on disk. If the site relies mostly on static files, consider using the mod_cache; if plenty of RAM is available, consider mod_mem_cache.
+
+The former caches information to disk, which makes a significant difference if the site relies on mod_include to build up a page as it caches the final version. With mod_mem_cache, the information is stored in the memory heap shared by all the Apache processes.
+
+Using a fast disk or, better still, a Redundant Array of Inexpensive Disks (RAID) solution in one of the striping modes (e.g.,RAID 0, 0+1, 5, 10, or 50) will improve the overall speed of access to files served.
+
+Note, however, if you do go down any of these routes, a hardware, rather than software solution is the best option.
+
+Finally, in terms of hardware, CPU power can have an impact on dynamic sites with the additional overhead of executing an application for each page accessed. Heavily dynamic pages have a higher CPU requirement.
+Apache Server Host Environment
+
+Regardless of operating system, the following optimization principles apply:
+
+    Keep other background applications to a minimum. If you are really serious about performance, this should even include some background processes that some would consider vital. For example, in Unix, switch off NFS, any printing services, and even sendmail if it's not needed. Under Windows, use the System control panel to optimize the system for applications and system cache, and optimize the system for performance. Make sure, of course, any required applications or services, like MySQL are still running.
+
+    Avoid using the system. If you start compiling applications, editing files, or otherwise employing the machine, you'll reduce its Web serving performance. If you must edit components or install software, build or edit the components on another machine and copy them over.
+
+    Keep your system up to date. Although a good idea just from a security point of view, software patches and updates can make significant improvements to network and I/O performance.
+
+The Apache Server Application
+
+Then, of course, there is the Apache application itself.
+
+First, ensure it is built correctly with only the modules and extensions required for your Web sites. This means, for example, you can ignore the rewriting module if it's not required. The main benefit of this is a reduction in memory overhead, but a very good side benefit is that you can't accidentally enable these options and therefore reduce server performance.
+Static vs. Dynamic
+
+Flexibility is the primary concern of most Apache administrators, but flexibility has a cost. Using Dynamically loaded modules within Apache is a convenience, but using them can result in a performance hit, as the code is loaded when the module is required. Dynamic modules also have the advantage of helping keep memory requirements down.
+
+To build in static mode, use the configure script and specify the modules you want, but don't specify them as shared (e.g., use --enable-rewrite not --enable-rewrite=shared, or use the shared option --enable-so.
+Module Configuration
+
+If you are using a static configuration of Apache, choose the modules you wish to incorporate with care. Using static mode comes at a price — the more modules, the more memory you use. Thus, a forked multi-processing module can have a significant effect on the machine's memory requirements.
+
+Note that some items are automatically included, so you'll need to explicitly enable and disable needed modules. Also remember to include any third-party modules (e.g., authentication, PHP, or mod_perl), the Web service requires. Use configure --help to get a list of the available options.
+Apache Server Configuration
+
+Once your environment is set up and your Apache application optimized, it's time to start looking at the configuration file for further optimization tricks. A good way to start is by simply cleaning up the file so directives are limited to a few hundred, which is achieved by simply removing the comments. Beyond this, it becomes a case of removing unnecessary elements or those that fail to provide any appreciable benefit.
+Simplifying the Configuration File
+
+The first step to optimization should be the simplification of the configuration file. It will not have any direct improvement on performance, but it will make the configuration file easier to use and therefore make you less likely to miss a directive or component that needs modifying.
+
+If you are doing any kind of optimization, start with one of the default-supplied configuration files. They are usually available in the Apache configuration directory as httpd.conf.orig or httpd-std.conf. Don't be tempted to use the high performance-std.conf file; in the long term it's not really as useful as you would think once you start adding vast quantities of additional configuration information. On the other hand, if a very fast static Web server is the goal, this is probably the easiest way to get things up and running.
+
+If you know your Apache configuration directives, or are willing to look at the documentation, the quickest and most effective step is to remove all comments from the configuration file, as they often detract from the actual directives. You can also remove references to MPM systems not in use on the chosen platform. 

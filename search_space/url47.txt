@@ -1,0 +1,20 @@
+http://www.morganclaypool.com/doi/abs/10.2200/S00365ED1V01Y201105CAC017
+Multi-Core Cache Hierarchies
+Synthesis Lectures on Computer Architecture
+November 2011, 153 pages, (doi:10.2200/S00365ED1V01Y201105CAC017)
+Rajeev Balasubramonian
+University of Utah
+Norman P. Jouppi
+HP Labs
+Naveen Muralimanohar
+HP Labs
+
+Abstract
+
+A key determinant of overall system performance and power dissipation is the cache hierarchy since access to off-chip memory consumes many more cycles and energy than on-chip accesses. In addition, multi-core processors are expected to place ever higher bandwidth demands on the memory system. All these issues make it important to avoid off-chip memory access by improving the efficiency of the on-chip cache. Future multi-core processors will have many large cache banks connected by a network and shared by many cores. Hence, many important problems must be solved: cache resources must be allocated across many cores, data must be placed in cache banks that are near the accessing core, and the most important data must be identified for retention. Finally, difficulties in scaling existing technologies require adapting to and exploiting new technology constraints.
+
+The book attempts a synthesis of recent cache research that has focused on innovations for multi-core processors. It is an excellent starting point for early-stage graduate students, researchers, and practitioners who wish to understand the landscape of recent cache research.
+
+The book is suitable as a reference for advanced computer architecture classes as well as for experienced researchers and VLSI engineers.
+
+Table of Contents: Basic Elements of Large Cache Design / Organizing Data in CMP Last Level Caches / Policies Impacting Cache Hit Rates / Interconnection Networks within Large Caches / Technology / Concluding Remarks

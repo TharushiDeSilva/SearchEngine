@@ -1,0 +1,35 @@
+http://www.ecs.umass.edu/ece/koren/architecture/
+· Cache Demonstrator
+· Cache-TLB Simulator
+· Cache Transient Reloads
+· Victim Cache Simulator
+· Selective Victim Cache Simulator
+· Dual Cache Simulator
+· XOR Cache Simulator
+· Page Replacement Policies Demo (Javascript)
+· New Page Replacement Policies (Java Applet)
+· Virtual Memory Simulator
+· Memory Interleaving Demo
+	. 	· Pipelining (w & w/o forwarding)
+· Pipelining (Static vs. Dynamic scheduling)
+· Scoreboarding
+· Tomasulo's algorithm (Java Applet)
+· Tomasulo's algorithm (Javascript)
+· Reorder Buffer
+· Loop Unrolling
+· Loop Unrolling in VLIW
+· Reservation Table Analyzer
+·
+· The SimpleScalar simulator
+· The M-Sim (Multi-threaded) simulator
+	. 	· Branch Prediction
+· Branch Target Buffer
+· RAID Tutorial
+· Vector Processor Simulation
+· Transaction Processing Example
+· VLIW Tutorial
+· Cache Energy Estimator
+· Disk Scheduling for Energy
+· Scheduling Real-Time Tasks for Energy
+· Voltage Scaling Algorithms
+· Energy and Temperature of I-Cache configurations

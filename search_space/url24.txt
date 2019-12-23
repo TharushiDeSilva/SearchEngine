@@ -1,0 +1,147 @@
+http://shop.oreilly.com/product/9780596000158.do
+ Java Performance Tuning
+By Jack Shirazi
+Publisher: O'Reilly Media
+Final Release Date: September 2000
+Pages: 442
+ 
+4.5
+Read 2 Reviews
+Write a Review
+
+No matter what language they're programming in, developers always wish things would run faster! Especially when writing mission-critical applications, no one wants to be limited by the programming environment.Java Performance Tuning provides all the details you need to know to "performance tune" any type of Java program and...
+Full description
+Table of Contents
+	
+Product Details
+	
+About the Author
+	
+Colophon
+	
+	
+
+    Chapter 1 Introduction
+        Why Is It Slow?
+        The Tuning Game
+        System Limitations and What to Tune
+        A Tuning Strategy
+        Perceived Performance
+        Starting to Tune
+        What to Measure
+        Don’t Tune What You Don’t Need to Tune
+        Performance Checklist
+    Chapter 2 Profiling Tools
+        Measurements and Timings
+        Garbage Collection
+        Method Calls
+        Object-Creation Profiling
+        Monitoring Gross Memory Usage
+        Client/Server Communications
+        Performance Checklist
+    Chapter 3 Underlying JDK Improvements
+        Garbage Collection
+        Replacing JDK Classes
+        Faster VMs
+        Better Optimizing Compilers
+        Sun’s Compiler and Runtime Optimizations
+        Compile to Native Machine Code
+        Native Method Calls
+        Uncompressed ZIP/JAR Files
+        Performance Checklist
+    Chapter 4 Object Creation
+        Object-Creation Statistics
+        Object Reuse
+        Avoiding Garbage Collection
+        Initialization
+        Early and Late Initialization
+        Performance Checklist
+    Chapter 5 Strings
+        The Performance Effects of Strings
+        Compile-Time Versus Runtime Resolution of Strings
+        Conversions to Strings
+        Strings Versus char Arrays
+        String Comparisons and Searches
+        Sorting Internationalized Strings
+        Performance Checklist
+    Chapter 6 Exceptions, Casts, and Variables
+        Exceptions
+        Casts
+        Variables
+        Method Parameters
+        Performance Checklist
+    Chapter 7 Loops and Switches
+        Java.io.Reader Converter
+        Exception-Terminated Loops
+        Switches
+        Recursion
+        Recursion and Stacks
+        Performance Checklist
+    Chapter 8 I/O, Logging, and Console Output
+        Replacing System.out
+        Logging
+        From Raw I/O to Smokin’ I/O
+        Serialization
+        Clustering Objects and Counting I/O Operations
+        Compression
+        Performance Checklist
+    Chapter 9 Sorting
+        Avoiding Unnecessary Sorting Overhead
+        An Efficient Sorting Framework
+        Better Than O(nlogn) Sorting
+        Performance Checklist
+    Chapter 10 Threading
+        User-Interface Thread and Other Threads
+        Race Conditions
+        Deadlocks
+        Synchronization Overheads
+        Timing Multithreaded Tests
+        Atomic Access and Assignment
+        Thread Pools
+        Load Balancing
+        Threaded Problem-Solving Strategies
+        Performance Checklist
+    Chapter 11 Appropriate Data Structures and Algorithms
+        Collections
+        Java 2 Collections
+        Hashtables and HashMaps
+        Cached Access
+        Caching Example I
+        Caching Example II
+        Finding the Index for Partially Matched Strings
+        Search Trees
+        Performance Checklist
+    Chapter 12 Distributed Computing
+        Tools
+        Message Reduction
+        Comparing Communication Layers
+        Caching
+        Batching I
+        Application Partitioning
+        Batching II
+        Low-Level Communication Optimizations
+        Distributed Garbage Collection
+        Databases
+        Performance Checklist
+    Chapter 13 When to Optimize
+        When Not to Optimize
+        Tuning Class Libraries and Beans
+        Analysis
+        Design and Architecture
+        Tuning After Deployment
+        More Factors That Affect Performance
+        Performance Checklist
+    Chapter 14 Underlying Operating System and Network Improvements
+        Hard Disks
+        CPU
+        RAM
+        Network I/O
+        Performance Checklist
+    Chapter 15 Further Resources
+        Books
+        Magazines
+        URLs
+        Profilers
+        Optimizers
+
+    Colophon

@@ -1,0 +1,32 @@
+http://www.pcworld.com/article/258473/how_to_benchmark_your_pc_for_free.html
+How to Benchmark Your PC for Free
+By Marco Chiappetta, PCWorld
+
+    Jul 2, 2012 6:00 PM
+    e-mail
+    print
+    Single
+    Page
+
+Running benchmarks on a PC enables users to evaluate performance, to identify potential bottlenecks, and to choose effective system upgrades. Unfortunately, many users imagine that system performance is simply a matter of CPU frequency or memory capacity, which leads them to think that dropping in a faster CPU or more memory will automatically and immediately yield noticeable performance improvements. In reality, however, that is not always the case.
+
+Though CPU and memory upgrades help in some situations, it often makes more sense to upgrade the storage subsystem or the graphics board if you're looking for perceptible improvement in system responsiveness or gaming performance, for example. If you ran a series of benchmarks and identified which components were holding your system back, you'd be able to choose the most effective upgrade for your current system--or determine which components make the most sense in a new system suited to your particular needs.
+
+Several different types of benchmarks are available for evaluating a system's performance. Some use synthetic tests that don't necessarily reflect real-world usage, while others employ scripted tests that rely on actual applications and simulated real-world workloads. Some benchmarks assess the performance of a single component, while others measure total system performance. To best gauge the overall performance of a PC, consider running some combination of all of these different types of benchmarks, based on your usage patterns.
+Benchmarking Do's and Don'ts
+
+Before running any benchmarks, you need to consider a number of hardware and software factors, in order to avoid potential damage to your system and to ensure consistent, accurate results. We'll look at hardware factors first.
+
+Many benchmarks place significant stress on specific components, so you need to ensure that all such components are in good working order, properly cooled (if necessary), and receiving adequate power. If you have a component that seems unstable or unreliable during normal, day-to-day use, subjecting it to a taxing benchmark could kill it. Also, an inadequately cooled or underpowered device that works most of the time may become unstable under stress. That said, we've run benchmarks for many years, and have had only a handful of components fail due to the demands of a benchmark test--and those components were likely defective to begin with.
+
+On the software front, parameters for the operating system, applications, and drivers must be satisfied to ensure accurate, repeatable benchmark results. Windows (and other) operating systems proactively prefetch data and store numerous temporary files that could interfere with a benchmark, so it's best to clear out any temporary files and prefetch data before running a test. In Windows 7, you can find prefetch data in C:\Windows\Prefetch, and temporary files in C:\Windows\Temp and C:\Users\[username]\AppData\Local\Temp. If you have applications running, it may not be safe (or possible) to delete all temporary files, so restart your system and shut down any applications that may be running in the background before wiping out any temporary files.
+
+You don't want applications or utilities that may be running in the background to interfere with the benchmark, so shut them down. This is especially important in connection with antimalware utilities, remote desktop tools, and downloaders that intermittently consume CPU, memory, and storage resources and steal application focus. Unless you're testing a system as it shipped from an OEM to evaluate the effects of background applications on performance, shut them down before running the tests. In the same vein, most operating systems load multiple services and perform maintenance during the initial boot process. Consequently, after boot-up, it's best to let the system "settle" and reach an idle state, with no drive or CPU activity, before you run a test.
+
+Using the correct (typically the latest) drivers for a component is another important step to take to ensure that it is operating and performing optimally. This is especially true of graphics boards and motherboards/chipsets, where the wrong driver can significantly worsen the system's frame rates or transfer speeds and latency. Finally, confirm that the operating system is fully updated and patched to ensure optimal compatibility and to reflect the current, real-world OS configuration--not the OS as it may have shipped years ago.
+Benchmarking Individual Components
+
+Many components in a system contribute to its overall performance, but the CPU/processor, memory, graphics board, and storage configuration generally play the largest roles for most users. Which of these components is the most important in a particular case depends on the individual person's usage patterns, however. A gamer seeking the best possible frame rates, for example, will probably be better served by a faster GPU than by more memory. A casual user seeking a more responsive system may benefit most by upgrading a slow hard drive to a fast solid-state drive. You must decide which aspects of system performance are most important to you, tailor the suite of benchmarks to your specific needs, and then weigh the individual test results accordingly.
+CPU/Processor
+
+The most useful CPU benchmarks place a heavy workload on the CPU while minimizes the influence of other system components. SiSoft's SANDRA 2012 incorporates a few CPU-centric synthetic benchmarks that test a chip's performance with various mathematical workloads. The tests are multithreaded and generally scale with higher-clocked speeds and more CPU cores. SANDRA also provides results from other CPUs for easy comparison.

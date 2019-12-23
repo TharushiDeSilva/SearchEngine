@@ -1,0 +1,74 @@
+http://fasterj.com/tools/gcloganalysers.shtml
+Fasterj
+
+|	home 	|	articles 	|	cartoons 	|	site map 	|	contact us 	|
+Tools: | 	GC log analysers	| 	Multi-tenancy tools	| 	Books	| 	SizeOf	| 	Thread analysers	|
+
+Our valued sponsors who help make this site possible
+AppDynamics: Get complete browser to backend visibility. Monitor Now! 
+
+New Relic: Try free w/ production profiling and get a free shirt! 
+
+ManageEngine's Site24x7: End-to-End analysis on Java EE web transactions. Sign up for FREE! 
+
+Garbage Collector Log Analysers
+JProfiler
+Get rid of your performance problems and memory leaks!
+
+Chart Java Jitter with jHiccup
+Monitor and identify pauses in your Java apps. Download now
+
+Use jKool analytics as a service
+Spot patterns in time-series data - real-time and free
+
+
+See Your Message Here
+You could have your tool advertised here, to be seen by thousands of potential customers
+
+Java Performance Tuning, 2nd ed
+The classic and most comprehensive book on tuning Java
+
+Java Performance Tuning Newsletter
+Your source of Java performance news. Subscribe now!
+Enter email:
+
+
+AppDynamics
+AppDynamics: Get complete browser to backend visibility. Monitor Now!
+
+New Relic
+New Relic: Try free w/ production profiling and get a free shirt!
+
+ManageEngine
+ManageEngine's Site24x7: End-to-End analysis on Java EE web transactions. Sign up for FREE!
+
+
+JProfiler
+Get rid of your performance problems and memory leaks!
+
+Chart Java Jitter with jHiccup
+Monitor and identify pauses in your Java apps. Download now
+
+Use jKool analytics as a service
+Spot patterns in time-series data - real-time and free
+
+
+These tools assist you in analysing the garbage collection (GC) log files produced by the JVM when using -verbosegc or -Xloggc:.. or equivalent. GC log file analysis is the most useful technique for identifying exactly what your JVM is doing in terms of GC, and also provides the most useful data for tuning the GC. Maintained by Zden?k Henek, https://twitter.com/zdenekhenek .
+
+(Year in brackets is when the tool/page was last updated)
+
+    (2014) Framework for performance analysis of sharded & stateful services, includes GC log analysis capability
+    (2014) JClarity's Censum Garbage Collection log analyser
+    (2014) GcViewer
+    (2014) IBM PMAT Pattern Modeling and Analysis Tool for Java Garbage Collector
+    (2014) IBM GCMV The GC and Memory Visualizer
+    (2013) HPjmeter JVM performance analyser (includes the functionality from HPjtune which was the GC log analyser tool)
+    (2012) verbosegcanalyzer
+    (2011) garbagecat
+    (2010) gclogviewer
+    (2010/2004) printgcstats (this may or may not be the PrintGCStats tool from 2004 which Sun created)
+    (2009) GCAnalysis
+    (2008) gchisto
+    (2008) the original GcViewer
+    (2005) Garbage Collection Analysis (GCA)
+    (2004) GCPortal 

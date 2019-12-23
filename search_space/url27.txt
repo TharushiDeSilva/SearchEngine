@@ -1,0 +1,25 @@
+https://fasterdata.es.net/network-tuning/
+Network Tuning
+
+One of the principle causes of poor data transfer performance is packet loss between the data transfer client and server hosts. There are many possible causes of packet loss, ranging from bad or failing hardware to misconfigured hosts or network equipment. Network design, coupled with proper configuration of hosts, routers and switches, can eliminate packet loss and result in significantly improved data transfer performance.
+TCP Issues Explained
+
+My performance is fine to nearby sites, but terrible across the country. Why? Read More »
+UDP Tuning
+
+UDP will not get a full 10Gbps (or more) without some tuning as well. The important factors are: use jumbo frames: performance will be 4-5 times better using 9K MTUs packet size: best performance is MTU size minus packet header size. For example for a 9000Byte MTU, use 8972 for IPV4, and 8952 for IPV6. socket buffer size: For UDP, buffer size is not related to RTT the way TCP is, but the defaults are still not large enough. Setting the socket buffer to 4M seems to help a lot in most cases core… Read More »
+Router/Switch Buffer Size Issues
+
+How much buffer space do you need in your switches/routers? Read More »
+Router Tuning
+
+While many of the causes of poor performance reside in end hosts, network devices can certainly cause problems of their own.  Some of the problems caused by routers and switches are simple configuration errors, while other problems are caused by hardware limitations. Ethernet Flow Control Flow control allows a device receiving Ethernet frames to notify the sender that the reciever is having difficulty processing the frames it is being sent - this typically occurs when the receiver is… Read More »
+Firewall Performance Issues
+
+Firewalls can often slow down your throughput. Read More »
+MTU Issues
+
+How to verify your end-to-end path MTU. Read More »
+Buffer Bloat
+
+What about the buffer bloat issue we have heard about? Read More »

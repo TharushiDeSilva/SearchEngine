@@ -1,0 +1,116 @@
+https://fasterdata.es.net/network-tuning/tcp-issues-explained/
+
+fasterdata.es.net
+| Share
+
+    Fasterdata Home
+    Science DMZ
+        Motivation
+        Architecture
+        Network Components
+        Advanced Services
+        Virtual Circuit Strategies
+        Software Defined Networking
+        Data Transfer Nodes
+        Performance Monitoring
+        Security
+        Sensitive Data Environments
+        FAQ
+        Learn More
+        Case Studies
+        Science DMZ Community Presentation
+        More References
+    Host Tuning
+        Background Information
+        Linux
+        Mac OSX
+        FreeBSD
+        MS Windows
+        Other OS
+        ESnet perfSONAR Tuning
+        NIC Tuning
+        Interrupt Binding
+        Virtual Machines
+        Packet Pacing
+        40G
+    Network Tuning
+        TCP Issues Explained
+        UDP Tuning
+        Buffer Issues
+        Router Tuning
+        Firewall Issues
+        MTU Issues
+        Buffer Bloat
+    Data Transfer Tools
+        Background
+        Standard Unix Tools
+        Other Unix Tools
+        Globus
+        GridFTP
+        scp and sftp
+        Commercial Tools
+        Browser Tools
+        MS Windows Tools
+        Special Purpose Tools
+        Performance Expectations
+        DOE Site Data Transfer Nodes
+        Case Studies
+    Performance Testing
+        Network Performance HOWTO
+        Troubleshooting
+        Network Test Tools
+        perfSONAR
+        Evaluating Network Performance
+        ESnet DTNs
+        Network Emulation
+    NSF Docs
+        NSF IREN
+        Campus CI Plans
+    ESnet Home
+
+Home » Network Tuning » TCP Issues Explained
+Network Tuning
+
+    TCP Issues Explained
+        Packet Loss
+    UDP Tuning
+    Buffer Issues
+    Router Tuning
+    Firewall Issues
+    MTU Issues
+    Buffer Bloat
+
+TCP Issues Explained
+My performance is fine to nearby sites, but terrible across the country. Why?
+
+
+There are three major factors that affect TCP performance (there are others, but these are the Big Three):  Packet loss, latency (or RTT -Round Trip Time), and buffer/window size.  All three are interrelated.
+
+Latency/RTT is the amount of time it takes for a packet to go from the sender to the receiver and back (a "round trip").  This is the minimum amount of time for one host to get information back from the other host about data that was sent.
+
+Buffer and window size determine both the amount of data that the kernel will keep in buffers for the connection, and the "window" that is advertised over the TCP connection (the window information sent via TCP reflects the size of the available buffers).  The larger the window, the more data can be in flight between the two hosts.  Note that if the window is smaller than the available bandwidth multiplied by the latency ( the Bandwidth Delay Product) then the sender will send a full window of data and then sit and wait for the receiver to acknowledge the data. This results in lower performance, and is the primary reason TCP buffer autotuning exists - without autotuning, you need to set system-global parameters to optimize for each destination, or the application has to have knowledge of the underlying network to set its buffers correctly. With autotuning (provided the max buffer size is set high enough but not too high), the kernel will right-size the TCP buffers/windows for the latency for each connection.
+
+So, this is all great - it's way better than it was for many years, and as long as the network is clean, performance is typically pretty good these days.
+
+The third factor is packet loss - this is where things get complicated.
+
+When TCP encounters packet loss, it backs off on its sending rate.  The mechanism for doing this is to reduce the sender's notion of the window so that it attempts to send less data.  TCP then ramps its sending rate back up again, in hopes that the loss was transitory.  This is another case where things are a lot better now than they were for many years....algorithms such as htcp and cubic are much more aggressive about ramping back up again than the old scheme (TCP Reno).
+
+When TCP encounters loss, it has to recover - but it starts with a small window and opens it back up again over time.  The longer the latency, the longer the control loop is for doing this. So, all other things being equal, the time necessary for a TCP connection to recover from loss goes up as the round-trip time goes up.
+
+However, there are additional issues that complicate the interaction between loss and latency when you add small buffers in routers, switches, and firewalls.
+
+Large windows are required for adequate throughput when latency is large (anything over about 10 milliseconds starts becoming an issue, and 20+ milliseconds is where it gets really tricky).  When the window is large, TCP can send a lot of data all at once.  The network card typically doesn't know or care about TCP.  The network card just knows that when there are packets to send, it throws packets onto the link until it doesn't have packets to send.  This happens at whatever link speed the card is configured for, e.g. 10Gbps.
+
+So, if the TCP window is 4MB, TCP will pass 4MB of data to the network card, and the network card will slam it onto the link at 10Gbps.  This means that every device in the path between the sender and the receiver sees a high-speed burst of packets.  If there are any buffering or queuing problems anywhere on the path, some of those packets will be dropped, causing TCP to back off.
+
+Since the TCP windows are much smaller for low-latency connections, these issues often are not noticed at low latencies. If the packet loss is due to random error (e.g. dirty fiber, marginal optics, longer-than-spec cable length) then there will be a bit of loss here and there, and with low latency TCP will recover so quickly that people typically won't notice a performance hit.  If there are small switch buffers in the path, they typically don't cause loss for low-latency connections, because TCP is not sending big enough bursts to cause loss.  However, if you use the same infrastructure to send data to a host a long way away, you will see dramatic performance degradation.  In the case of random error, TCP will always be recovery mode, and so will always have a small window.  In the case of small buffers, TCP will ramp up, encounter loss, reduce its window, ramp up again, and so on - so TCP will effectively always have a small window and perform poorly.
+Packet Loss
+
+Very little packet loss can have a huge performance with TCP. Read More »
+Last edited: 2014-04-14 09:07:07
+
+    Contribute Updates to Fasterdata
+    Contact Us
+    © 2003 – 2015 Lawrence Berkeley National Laboratory
+    Privacy & Security

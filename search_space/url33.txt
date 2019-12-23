@@ -1,0 +1,248 @@
+http://technet.microsoft.com/en-us/library/hh801901.aspx
+
+
+    TechNet
+    Products
+    IT Resources
+    Downloads
+    Training
+    Support
+
+Windows Server
+United States (English)
+Sign in
+Home Windows Server 2012 R2 Windows Server 2008 R2 Library Forums
+Export (0) Print
+TechNet Library
+Windows Server
+Windows Server 2012 R2 and Windows Server 2012
+What's New in Windows Server Technical Preview
+What's New in Windows Server
+Technical Scenarios for Windows Server
+Install and Deploy Windows Server
+Migrate Roles and Features to Windows Server
+Secure Windows Server
+Manage Privacy
+Support Windows Server
+Server Roles and Technologies
+Management and Tools
+Expand
+Windows Server 2012 R2 and Windows Server 2012
+736 out of 932 rated this helpful - Rate this topic
+
+Published: February 29, 2012
+
+Updated: November 1, 2013
+
+Applies To: Windows Server 2012, Windows Server 2012 R2
+
+
+Welcome to the Windows Server 2012 R2 and Windows Server 2012 Technical Library.
+
+This library provides the core content that IT pros need to evaluate, plan, deploy, manage, troubleshoot, and support servers running the Windows Server 2012 R2 and Windows Server 2012 operating systems. To find the information you need, browse the content listed below, or use our search feature. If you need help with using Windows at home, see Windows Help and How-To.
+
+    What's New in Windows Server
+    The content in this section describes what's new and changed in Windows Server 2012 R2 and Windows Server 2012. This content focuses on changes that will potentially have the greatest impact on your use of this release.
+
+    Technical Scenarios for Windows Server 2012 R2 and Windows Server 2012
+    These technical scenarios provide guidance that addresses an area of interest or particularly compelling capability enabled by Windows Server 2012 R2 and Windows Server 2012, such as virtualization and Dynamic Access Control.
+
+    Install and Deploy Windows Server 2012 R2 and Windows Server 2012
+    This section provides information about how to migrate to, install, and deploy Windows Server 2012 R2 and Windows Server 2012.
+
+    Migrate Roles and Features to Windows Server
+    Migration documentation and tools ease the process of migrating server roles, features, operating system settings, and data from an existing server that is running Windows Server 2012, Windows Server 2008 R2, Windows Server 2008, or Windows Server 2003 to a computer that is running Windows Server 2012.
+
+    Secure Windows Server 2012 R2 and Windows Server 2012
+    This section provides the security products and assessment tools needed to help secure servers running Windows Server 2012 R2 or Windows Server 2012.
+
+    Manage Privacy
+    This section offers not only guidance about managing privacy-related settings in Windows Server 2012, but also links that can be useful to administrators and others concerned about privacy.
+
+    Support Windows Server 2012 R2 and Windows Server 2012
+    This section contains information to help IT pros find workarounds for known issues in Windows Server 2012 R2 and Windows Server 2012, and troubleshoot and resolve specific Windows Server 2012 R2 and Windows Server 2012 system errors and events.
+
+    Server Roles and Technologies in Windows Server 2012 R2 and Windows Server 2012
+    This section contains information to design, deploy, manage, and troubleshoot technologies in Windows Server 2012 R2 and Windows Server 2012.
+
+    Management and Tools for Windows Server 2012 R2 and Windows Server 2012
+    This section contains tool and reference information for IT pros using Windows Server 2012 R2 and Windows Server 2012. Learn about Windows PowerShell, Server Manager, Remote Server Administration Tools, and Command-Line Reference.
+
+Was this page helpful?
+Yes
+No
+Community Additions
+ADD
+I AROUD 5 YEAR NEVER TOUCH PC. ONLY SMART PHONE
+KINDLY UNDERSTAND Y I KEEP ON BEEN HACK. BECAUSE IM NOT FACEING PROBLEM. KEEP ON CHANGING EMAIL. AS IM BEEN GOOGLE CROME IN PAST. NOW IM CHANGE FIREFOX. AS IF U THINK U R NO MATCH FOR ALL. I CAN SAY. GOD WONT SAVE U. U SAVE UR SELF. ONLY THINK IS REPORT. BUT MUST HAVE PROVE BEFORE GO. THANKS.
+G_E_1980
+11/29/2014
+facebook.com
+sdausiiopp-0w6ysagbbhtyaf5sd5aw36eajxzb
+bardhi83
+11/10/2014
+the specified address is not available on DHCP SERVER
+<p style="line-height:13.5pt;"><span lang="EN" style="color:#333333;font-family:'Arial','sans-serif';font-size:10pt;mso-ansi-language:EN;">Hi,<!--?xml:namespace prefix = "o" ns = "urn:schemas-microsoft-com:office:office" /--><o:p></o:p></span></p><p style="line-height:13.5pt;"><span lang="EN" style="color:#333333;font-family:'Arial','sans-serif';font-size:10pt;mso-ansi-language:EN;">I'm on a Windows<br />Server 2012 R2 x64 machine that handles DHCP.<o:p></o:p></span></p><p style="line-height:13.5pt;"><span lang="EN" style="color:#333333;font-family:'Arial','sans-serif';font-size:10pt;mso-ansi-language:EN;">Yesterday I began to<br />set up DHCP reservations for clients by MAC address. For some reservations, I'm<br />unable to add them, receiving the error "The specified address is not<br />available". If I hit OK and try again, I'll receive "The specified IP<br />address or hardware address is being used by another client."<o:p></o:p></span></p><p style="line-height:13.5pt;"><span lang="EN" style="color:#333333;font-family:'Arial','sans-serif';font-size:10pt;mso-ansi-language:EN;">Sometimes after this,<br />I'll see a nameless reservation for the IP/MAC I made but it doesn't actually<br />function.<o:p></o:p></span></p><p style="line-height:13.5pt;"><span lang="EN" style="color:#333333;font-family:'Arial','sans-serif';font-size:10pt;mso-ansi-language:EN;">On the client machine<br />that I'm trying to create a reservation for, the IP is stuck at 192.168.4.127<br />ipconfig release/renew doesn't help.<o:p></o:p></span></p><br />
+Deepakpal7
+11/2/2014
+Yeni nesil server çok faydalı
+çok t******rler faydalı bilgiler mevcut
+sezgin bilir
+11/1/2014
+Questions about Server 2012
+
+I'm looking to buy a new version of Server for my Company. I've worked a little with it in the past but don't know enough to make the right choice. Looking for help in the following.
+
+We are a fairly small business, 4 Windows PC's and 4 Mac's. I want to setup AD for file security and just overall better user management. Can I install AD and File Server Roles on one Server? I found the following info online:
+
+
+
+    Windows 2012 with Hyper-V role (Hypervisor)
+
+    Windows 2012 with AD role (VM)
+
+    Windows 2012 file server (VM)
+
+
+Is this a reasonable layout on one machine for the business? What do you recommend?
+
+Thanks,
+Kostya
+
+Kostya92
+10/22/2014
+Did the issue in KB2553549 exists in Windows Server 2012?
+
+Hi,
+
+We meet the the issue described in KB2553549 in Windows 2008 R2.
+
+(All the TCP/IP ports that are in a TIME_WAIT status are not closed after 497 days from system startup in Windows Vista, in Windows 7, in Windows Server 2008 and in Windows Server 2008 R2)
+
+http://support.microsoft.com/kb/2553549
+
+
+I want to know if the problem exists in Windows Server 2012 ?
+
+Regards,
+
+Willy
+Willy Cheng
+10/21/2014
+Where to get the lan driver for win2012 standard sever R2 on intel dh61ww motherboard ?
+Where to get the lan driver for windows 2012 standard sever R2 on intel dh61ww motherboard ?
+Faheem Satti
+10/20/2014
+Deleted Files , By Netwok Sharing Driver
+
+Hi! Everyone ,
+
+I use Windows server data center edition as a domain server ,i share a drive like ( D:\Share File ) for domain users , he work there and i permitted Delete and new create  any file and folders( on the Shared Drive , But When he accidentally deleted any File on Domain Share Drive its don't to move in the Domain Recycle Bin, its deleted permanently.If its move To Domain Recycle Bin no meter ,But i have trouble to solve it , If Have Anyone Solution Reply Me
+
+Thanx
+
+Khalil Ansari
+Excellent Computers Kharian
+9/29/2014
+Windows Server 2012 running Hyper-V
+I am running a 2012 server with Hyper-V installed, I have a problem where one of the virtual servers shuts down every Friday at the same time, when I look on Hyper-V it says "Backing up" in the status bar, NO backups are scheduled for this time, the moment it starts to backup the server shuts down completely and the event log on the virtual server says "Unknown error" Unexpected shut-down!  On the host itself it does not bring up any error nor Hyper-V log files?  I have done so many things and I have checked so many thins but I cannot find the reason why the server shuts down.
+Juan Krynie
+9/29/2014
+How to limit the inloggning to the windows server 2012 to only the (Administrator account)
+
+Hi there
+
+
+is it possible to limit the inloggning to the "windows server 2012" to only one or twoaccounts, like to only to the (Administrator) account, if YES how can i do it ?.
+
+
+Best regards
+AlMoselly
+9/25/2014
+FAST INTERNET NETWORK
+FAST INTERNET NETWORK
+FARIH
+9/24/2014
+donvanneman@msn.com
+ACEEventLog,Hardware Events,Internet Explorer,Key Management Service,Microsoft-Windows-All-User-Install-Agent/Operational,Microsoft-Windows-Anytime-Upgrade-Events/Operational,Microsoft-Windows-AppID/Operational,Microsoft Windows Applicability Engine/Operational,Microsoft-Windows-Application Server-Applications/Operational,Microsoft-Windows-Application-Experience/Program-Compatibility-Assistant,Microsoft-Windows-Application-Experience/Program-Compatibility-Troubleshooter,Microsoft-Windows-ApplicationResourceManagementSystem/Operational,Microsoft-Windows-AppLocker/EXE and DLL,Microsoft-Windows-AppLocker/Packaged app-Deployment,Microsoft-Windows-AppLocker/Packaged app-Execution,Microsoft-Windows-AppReadiness/Operational,Microsoft-Windows-TWinUI/Operational,Microsoft-Windows-CoreApplication/Operational,Microsoft-Windows-AppXDeployment/Operational,Microsoft-Windows-AppXDeploymentServer/Operational,Microsoft-Windows-AppXDeploymentServer/Restricted,Microsoft-Windows-AppxPackaging/Operational,NTASN1/Operational,Microsoft-Windows-AssignedAccess/Admin,Microsoft-Windows-AssignedAccess/Operational,Microsoft-Windows-Storage-ATAPort/Admin,Microsoft-Windows-Storage-ATAPort/Operational,Microsoft-Windows-Audio/CaptureMonitor,Microsoft-Windows-Audio/GlitchDetection,Microsoft-Windows-Audio/Informational,Microsoft-Windows-Audio/Operational,Microsoft-Windows-Audio/PlaybackManager,Microsoft-Windows-Authentication/AuthenticationPolicyFailures-DomainController,Microsoft-Windows-Authentication/ProtectedUser-Client,Microsoft-Windows-Authentication/ProtectedUserFailures-DomainController,Microsoft-Windows-Authentication/ProtectedUserSuccesses-DomainController,Microsoft-Windows-Authentication User Interface/Operational,Microsoft-Windows-BackgroundTaskInfrastructure/Operational,Microsoft-Windows-BackgroundTransfer-ContentPrefetcher/Operational,Microsoft-Windows-Backup/Operational,BFE IPsec Connections/ Operational Log,BFE IPsec Connections' Resource Flows/ Operational Log,Microsoft-Windows-Biometrics/Operational,Microsoft-Windows-BitLocker-API/Management,Microsoft-Windows-BitLocker-API/Operational,Microsoft-Windows-BitLocker-DrivePreparationTool/Admin,Microsoft-Windows-BitLocker-DrivePreparationTool/Operational,Microsoft-Windows-Bits-Client/Analytic,Microsoft-Windows-Bits-Client/Operational,Microsoft-Windows-Bluetooth-HidBthLE/Operational,Microsoft-Windows-Bluetooth-MTPEnum/Operational,Microsoft-Windows-BranchCache/Operational,Microsoft-Windows-BranchCacheSMB/Operational,Microsoft-Windows-Regsvr32/Operational,Microsoft-Windows-CAPI2/Operational,Microsoft-Windows-CertificateServicesClient-CredentialRoaming/Operational,Microsoft-Windows-CertificateServicesClient-Lifecycle-System/Operational,Microsoft-Windows-CertificateServicesClient-Lifecycle-User/Operational,CertPolEng/Operation log,Microsoft-Windows-CloudStorageWizard/Operational,Microsoft-Windows-CodeIntegrity/Operational,Microsoft-Windows-Connected-Search/Operational,Microsoft-Windows-CorruptedFileRecovery-Client/Operational,Microsoft-Windows-CorruptedFileRecovery-Server/Operational,Microsoft-Windows-Crypto-DPAPI/BackUpKeySvc,Microsoft-Windows-Crypto-DPAPI/Debug,Microsoft-Windows-Crypto-DPAPI/Operational,Microsoft-Windows-Crypto-NCrypt/Operational,Microsoft-Windows-DAL-Provider/Operational,Microsoft-Windows-DataIntegrityScan/Admin,Microsoft-Windows-DataIntegrityScan/CrashRecovery,Microsoft-Windows-DateTimeControlPanel/Operational,Data Deduplication/Diagnostic,Data Deduplication/Operational,Data Deduplication/Scrubbing,Microsoft-Windows-Desired State Configuration/Operational,Microsoft-Windows-DeviceSetupManager/Admin,Microsoft-Windows-DeviceSetupManager/Operational,Microsoft-Windows-DeviceSync/Operational,Microsoft-Windows-DHCP Client Events/Admin,Microsoft-Windows-DHCP Client Events/Operational,Microsoft-Windows-DHCPNap/Admin,Microsoft-Windows-DHCPNap/Operational,Microsoft-Windows-DHCP Client Events/Operational,Microsoft-Windows-DHCPv6 Client Events/Admin,Microsoft-Windows-Diagnosis-DPS/Operational,Microsoft-Windows-Diagnosis-PCW/Operational,Microsoft-Windows-Diagnosis-PLA/Operational,Microsoft-Windows-Diagnosis-Scheduled/Operational,Microsoft-Windows-Diagnosis-Scripted/Admin,Microsoft-Windows-Diagnosis-Scripted/Operational,Microsoft-Windows-Diagnosis-ScriptedDiagnosticsProvider/Operational,Microsoft-Windows-Diagnostics-Networking/Operational,Microsoft-Windows-Diagnostics-Performance/Operational,Microsoft-Windows-Storage-Disk/Admin,Microsoft-Windows-Storage-Disk/Operational,Microsoft-Windows-DiskDiagnostic/Operational,Microsoft-Windows-DiskDiagnosticDataCollector/Operational,Microsoft-Windows-DiskDiagnosticResolver/Operational,Microsoft-Windows-DisplayColorCalibration/Operational,Microsoft-Windows-DNS Client Events/Operational,Microsoft-Windows-DriverFrameworks-UserMode/Operational,Microsoft-Windows-DxpTaskRingtone/Analytic,Microsoft-Windows-EapHost/Operational,Microsoft-Windows-EapMethods-RasChap/Operational Channel,Microsoft-Windows-EapMethods-RasTls/Operational Channel,Microsoft-Windows-EapMethods-Sim/Operational Channel,Microsoft-Windows-EapMethods-Ttls/Operational,Microsoft-Windows-EmbeddedAppLauncher/Operational,Microsoft-Windows-Fault-Tolerant-Heap/Operational,Microsoft-Windows-FileHistory-Core/WHC,Microsoft-Windows-FileManagerApp/Operational,Microsoft-Windows-FileManagerDataModel/Operational,Microsoft-Windows-FMS/Operational,Microsoft-Windows-Folder Redirection/Operational,Microsoft-Windows-GroupPolicy/Operational,Microsoft-Windows-Help/Operational,Microsoft-Windows-HomeGroup Control Panel/Operational,Microsoft-Windows-HomeGroup Provider Service/Operational,Microsoft-Windows-HomeGroup Listener Service/Operational,Microsoft-Windows-HotspotAuth/Operational,Microsoft-Windows-IdCtrls/Operational,Microsoft-Windows-IIS-Configuration/Administrative,Microsoft-Windows-IIS-Configuration/Operational,Microsoft-Windows-International/Operational,Microsoft-Windows-International-RegionalOptionsControlPanel/Operational,Microsoft-Windows-Iphlpsvc/Operational,Microsoft-Windows-KdsSvc/Operational,Microsoft-Windows-Kernel-ApphelpCache/Operational,Microsoft-Windows-Kernel-Boot/Operational,Microsoft-Windows-Kernel-PnP/Device Configuration,Microsoft-Windows-Kernel-PnPConfig/Configuration,Microsoft-Windows-Kernel-Power/Thermal-Operational,Microsoft-Windows-Kernel-ShimEngine/Operational,Microsoft-Windows-Kernel-StoreMgr/Operational,Microsoft-Windows-Kernel-WDI/Operational,Microsoft-Windows-Kernel-WHEA/Operational,Microsoft-Windows-Known Folders/Operational,Microsoft-Windows-LanguagePackSetup/Operational,Microsoft-Windows-LinkLayerDiscoveryProtocol/Operational,Microsoft-Windows-LiveId/Operational,Microsoft-Windows-LSA/Operational,Microsoft-Windows-MemoryDiagnostics-Results/Debug,Microsoft-Windows-Mobile-Broadband-Experience-Parser-Task/Operational,Microsoft-Windows-Mobile-Broadband-Experience-SmsApi/SMSApi,Microsoft-Windows-MUI/Operational,Microsoft-Windows-Ncasvc/Operational,Microsoft-Windows-NcdAutoSetup/Operational,Microsoft-Windows-NCSI/Operational,Microsoft-Windows-NDIS/Operational,Microsoft-Windows-NdisImPlatform/Operational,Microsoft-Windows-Network Access Protection/Operational,Microsoft-Windows-Network Access Protection/WHC,Microsoft-Windows-NetworkProfile/Operational,Microsoft-Windows-NetworkProvisioning/Operational,Microsoft-Windows-NlaSvc/Operational,Microsoft-Windows-Ntfs/Operational,Microsoft-Windows-Ntfs/WHC,Microsoft-Windows-NTLM/Operational,Microsoft-Windows-OfflineFiles/Operational,Microsoft-Windows-OtpCredentialProvider/Operational,Microsoft-Windows-PackageStateRoaming/Operational,Microsoft-Windows-Policy-based QoS/Operational,Microsoft-Windows-PowerShell/Operational,Windows PowerShell Desired State Configuration Pull Server/Operational,Microsoft-Windows-NetworkLocationWizard/Operational,Microsoft-Windows-PrintService/Operational,Microsoft-Windows-Program-Compatibility-Assistant/Analytic,Microsoft-Windows-PushNotifications-Platform/Operational,Microsoft-Windows-RasClusterResource/Notification Channel,Microsoft-Windows-ReadyBoost/Operational,Microsoft-Windows-ReadyBoostDriver/Operational,Microsoft-Windows-Reliability-Analysis-Engine/Operational,Microsoft-Windows-RemoteApp and Desktop Connections/Operational,Microsoft-Windows-RemoteAssistance/Operational,Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational,Microsoft-Windows-RemoteDesktopServices-SessionServices/Operational,Microsoft-Windows-Remotefs-Rdbss/Operational,Microsoft-Windows-Resource-Exhaustion-Detector/Operational,Microsoft-Windows-Resource-Exhaustion-Resolver/Operational,Microsoft-Windows-Resource-Leak-Diagnostic/Operational,Microsoft-Windows-RestartManager/Operational,Microsoft-Windows-Security-Audit-Configuration-Client/Operational,Microsoft-Windows-Security-EnterpriseData-FileRevocationManager/Operational,Microsoft-Windows-Security-ExchangeActiveSyncProvisioning/Operational,Microsoft-Windows-Security-Kerberos/Operational,Microsoft-Windows-Security-Netlogon/Operational,Microsoft-Windows-Security-SPP-UX-GenuineCenter-Logging/Operational,Microsoft-Windows-Security-SPP-UX-Notifications/ActionCenter,Microsoft-Windows-Security-UserConsentVerifier/Audit,Microsoft-Windows-SettingSync/Operational,Microsoft-Windows-Shell-ConnectedAccountState/ActionCenter,Microsoft-Windows-Shell-Core/ActionCenter,Microsoft-Windows-Shell-Core/Operational,Microsoft-Windows-SmartCard-Audit/Authentication,Microsoft-Windows-SmartCard-DeviceEnum/Operational,Microsoft-Windows-SmartCard-TPM-VCard-Module/Operational,Microsoft-Windows-SMBClient/Connectivity,Microsoft-Windows-SMBClient/Operational,Microsoft-Windows-SMBServer/Connectivity,Microsoft-Windows-SMBServer/Operational,Microsoft-Windows-SMBWitnessClient/WitnessClientAdmin,Microsoft-Windows-StorageSpaces-Driver/Operational,Microsoft-Windows-StorageSpaces-ManagementAgent/WHC,Microsoft-Windows-Storage-ClassPnP/Admin,Microsoft-Windows-Storage-ClassPnP/Operational,Microsoft-Windows-Store/Operational,Microsoft-Windows-Storage-Storport/Admin,Microsoft-Windows-Storage-Storport/Operational,Microsoft-Windows-Superfetch/Memory cooling operational channel,Microsoft-Windows-SystemSettings/Operational,Microsoft-Windows-TaskScheduler/Maintenance,Microsoft-Windows-TaskScheduler/Operational,Microsoft-Windows-TCPIP/Operational,Microsoft-Windows-TerminalServices-RDPClient/Operational,Microsoft-Windows-TerminalServices-ClientUSBDevices/Operational,Microsoft-Windows-TerminalServices-LocalSessionManager/Operational,Microsoft-Windows-TerminalServices-PnPDevices/Operational,Microsoft-Windows-TerminalServices-Printers/Operational,Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational,Time Zone Sync/Operational,Microsoft-Windows-TZUtil/Operational,Microsoft-Windows-UAC/Operational,Microsoft-Windows-UAC-FileVirtualization/Operational,Microsoft-Windows-SearchUI/Operational,Microsoft-Windows-User Control Panel/Operational,Microsoft-Windows-User Profile Service/Operational,Microsoft-Windows-User-Loader/Operational,Microsoft-Windows-UserPnp/ActionCenter,Microsoft-Windows-UserPnp/DeviceInstall,Microsoft-Windows-VerifyHardwareSecurity/Operational,Microsoft-Windows-VHDMP/Operational,Microsoft-Windows-Vpn Plugin Platform/Operational,Microsoft-Windows-Vpn Plugin Platform/OperationalVerbose,Microsoft-Windows-VPN-Client/Operational,Microsoft-Windows-Wcmsvc/Operational,NDF/Diagnostic,WEPHOSTSVC/Operational,Microsoft-Windows-WER-Diagnostics/Operational,Microsoft-Windows-IKE/Operational,Microsoft-Windows-VPN/Operational,Microsoft-Windows-WFP/Operational,Microsoft-Windows-Windows Defender/Operational,Microsoft-Windows-Windows Defender/WHC,Microsoft-Windows-Windows Firewall With Advanced Security/ConnectionSecurity,Microsoft-Windows-Windows Firewall With Advanced Security/ConnectionSecurityVerbose,Microsoft-Windows-Windows Firewall With Advanced Security/Firewall,Microsoft-Windows-Windows Firewall With Advanced Security/FirewallVerbose,Microsoft-Windows-Windows Remote Management/Operational,Microsoft-Windows-WindowsBackup/ActionCenter,Microsoft-Windows-WindowsColorSystem/Operational,Microsoft-Windows-WindowsSystemAssessmentTool/Operational,Microsoft-Windows-WindowsUIImmersive/Operational,Microsoft-Windows-WindowsUpdateClient/Operational,Config/ProxyConfigChanged,Microsoft-Windows-Winlogon/Operational,Microsoft-Windows-Winsock Catalog Change/Operational,Microsoft-Windows-Winsock NameResolution Event/Operational,Microsoft-Windows-Winsock Network Event/Operational,Microsoft-Windows-Wired-AutoConfig/Operational,Microsoft-Windows-WLAN-AutoConfig/Operational,Microsoft-Windows-WMI-Activity/Operational,Microsoft-Windows-WorkFolders/Operational,Microsoft-Windows-WPD-ClassInstaller/Operational,Microsoft-Windows-WPD-CompositeClassDriver/Operational,Microsoft-Windows-WPD-MTPClassDriver/Operational,Microsoft-Windows-WWAN-SVC-EVENTS/WWAN Operational Channel
+LH-14OOLK7GSIM Herrhommeinsf
+8/30/2014
+windows live mail server error
+
+Unable to send or receive messages for the Live (krishnanandanray)
+account.
+
+
+
+
+Server Error: 0x80048820
+
+Server: 'https://mail.services.live.com/DeltaSync_v2.0.0/Sync.aspx'
+
+Windows Live Mail Error ID: 0x80048820
+
+krishnanandanray
+7/9/2014
+MR. Duane Tomson
+I have to wait till Monday to transfer funds from 1 account to another.                 Duane Tomson
+dewey.tomson
+1/24/2014
+CHM Format
+
+Dear MS Team,
+
+
+Please provide the Windows 2012 help files , like the Exchange 2013 format. This is so useful.
+
+
+Regards
+
+
+Manu
+manutitus
+12/24/2013
+PDF download available here!!
+
+110MB nice to have the above in PDF format.
+
+
+http://www.microsoft.com/en-us/download/details.aspx?id=41182
+Ricky Day
+12/11/2013
+More useful link to Windows 2012 Info
+A more useful link for Windows 2012 is http://technet.microsoft.com/en-US/windowsserver/hh534429
+Aamir Qureshi
+4/8/2013
+CHM File as Standard
+
+I agree with bbenito. It would be nice if Microsoft used the CHM form of documentation across the board.
+
+I know I find it useful to have documentation that I can read offline. I don't know why Microsoft are not leading the way on this.
+
+basskickit1
+4/6/2013
+Windows Server 2012 "Early Experts" Peer Study Group
+Windows Server 2012 "Early Experts" MCSA Peer Study Group - Join us as we prepare for Windows Server 2012 certification together! http://EarlyExperts.net
+icrnsect.gov
+1/13/2013
+Windows server 2012 documentation in chm file
+Is there any way to download all this documentation as .chm file?
+
+Exchange has it, System Center has it, Windows Server 2012 - :-(
+bbenito
+12/27/2012
+© 2014 Microsoft
+Manage Your Profile
+
+    Newsletter
+    |
+    Contact Us
+    |
+    Privacy Statement
+    |
+    Terms of Use
+    |
+    Trademarks
+
+|
+Site Feedback Site Feedback

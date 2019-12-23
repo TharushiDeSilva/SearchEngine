@@ -1,0 +1,18 @@
+http://sciencegateways.org/what-is-a-science-gateway/
+What Is a Science Gateway?
+
+A Science Gateway is a community-developed set of tools, applications, and data collections that are integrated through a portal or a suite of applications. Gateways provide access to a variety of capabilities including workflows, visualization, resource discovery, and job execution services.
+
+Science Gateways enable entire communities of users with a common scientific goal to use digital resources through a common interface, even when such resources are geographically distributed. The digital resources in this context could be anything from a highly tuned parallel application running on a supercomputer to a Hadoop analysis running on a commercial cloud to a shared instance of Matlab running on a department workstation. The key point is that Science Gateways provide value-added interfaces to access these shared resources.
+
+Science Gateways commonly take one of these three forms:
+
+    A gateway packaged as a web portal, with users using  the front end to access digital services provided through the back end.
+    A grid-bridging gateway, with communities running their own grids devoted to their areas of science (in these cases, a Science Gateway is a mechanism for extending the reach of the community’s grid by coupling it with digital services from another organization).
+    A gateway that lets users run a desktop or mobile application to access remote digital services.
+
+Science Gateways can have varying goals and implementations. Some expose specific sets of community codes so that anonymous scientists can run them. Others may serve as a “metaportal,” a community portal that brings a broad range of new services and applications to the community. A common trait of all types is their interaction with back-end digital services to provide value-added capabilities to the end user.
+
+HUBzero is one platform that has been used to build many science gateways. Here is a short video that conveys the breadth of functions offered by a science gateway, in this case powered by HUBzero.
+
+Some more examples of Science Gateways can be found through the XSEDE Science Gateways Program.

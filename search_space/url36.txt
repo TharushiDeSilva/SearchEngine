@@ -1,0 +1,17 @@
+http://msdn.microsoft.com/en-us/library/ms170096.aspx
+
+Lesson 1: Basic Navigation in Database Engine Tuning Advisor
+SQL Server 2014
+Other Versions
+
+Database Engine Tuning Advisor provides a graphical user interface (GUI) based way to view tuning sessions and tuning recommendation reports. This lesson shows you how to start the tool and how to configure the display. At the end of this lesson, you will know the different ways you can start the tool and how to configure its display to support the tuning tasks that you regularly perform.
+
+This lesson contains the following topics:
+
+    Launching Database Engine Tuning Advisor
+
+    Setting Tool Options and Layout
+
+Next Task in This Lesson
+
+Launching Database Engine Tuning Advisor

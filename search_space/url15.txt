@@ -1,0 +1,103 @@
+http://programmers.stackexchange.com/questions/125874/how-can-i-learn-about-optimising-for-the-cpu-cache-in-c
+
+How can I learn about optimising for the CPU cache (in C)?
+up vote 3 down vote favorite
+5
+	
+
+Reading these two questions, I see that understanding CPU caching behaviour can be important when dealing with large amounts of data in memory. I would like to understand the way the caching works to add another tool to my optimisation toolbox.
+
+How can I learn about the way the CPU cache works so I can write code that uses it sensibly? Relatedly, is there a way to profile code to see if poor cache use is slowing things down?
+learning c optimization caching
+shareimprove this question
+	
+asked Dec 19 '11 at 0:38
+Timothy Jones
+1216
+	
+   	 
+	
+Caches are not the same everywhere; most obviously, they vary in size. Don't expect to learn any deep secrets, only good practices (like Michael Borgwardt's advice). –  David Thornley Dec 19 '11 at 18:10
+add a comment
+4 Answers
+active oldest votes
+up vote 7 down vote accepted
+	
+
+    Keep your data small if possible
+    Keep things that will be accessed together (or right after another) next to each other in memory
+    Learn about your compiler's optimization parameters
+    Read What every programmer should know about memory for more details than you could ever want
+
+shareimprove this answer
+	
+edited Dec 20 '11 at 8:41
+
+	
+answered Dec 19 '11 at 9:32
+Michael Borgwardt
+28.6k666116
+	
+   	 
+	
++1 for “Keep things that will be accessed together next to each other”; that's the one that it's easy to forget. –  Donal Fellows Dec 19 '11 at 10:14
+   	 
+	
+And tell the compiler to optimize. –  rightføld Dec 20 '11 at 7:21
+   	 
+	
+@WTP: right - added. –  Michael Borgwardt Dec 20 '11 at 8:41
+   	 
+	
+Also, keep mutexes well separated. Changing a mutex (should) flush all cache lines it is in, across all CPUs. This can be a big performance hit if you've managed to get 2-3 mutexes in a single cache line. –  Vatine Dec 20 '11 at 12:51
+add a comment
+up vote 9 down vote
+	
+
+The intricacy of this issue has been beyond human comprehension these days. (It has been that way since the last 5 years.) Combine that with short-vector parallelism (SIMD) and you have a sense of hopeless that optimizing code by hand is no longer economically feasible - not that it's not possible, but it would not be cost-effective anymore.
+
+The current approach is to rely on teaching computers how to optimize - by making variations of code that compute the same answers with different structures (loops, data structure, algorithms) and automatically evaluating the performance. The rules for code transformations are specified with a very rigorous mathematical model, so that it is something both computer scientists can understand and computers can execute.
+
+The following is a link posted by Larry OBrien in one of his answers.
+
+http://onward-conference.org/2011/images/Pueschel_2011_AutomaticPerformanceProgramming_Onward11.pdf
+shareimprove this answer
+	
+answered Dec 19 '11 at 8:48
+rwong
+6,1701641
+	
+   	 
+	
++1 Interesting link, thanks. –  Timothy Jones Dec 19 '11 at 23:48
+   	 
+	
+the fasttest BLAS implementation (GotoBLAS) uses hand-optimized code to ensure maximal cache usage for matrix multiplication –  quant_dev Jan 14 '12 at 18:42
+add a comment
+up vote 2 down vote
+	
+
+It is quite possible to understand and optimize for caches. It starts with understanding the hardware and continues with being in control of the system. The less control you have over the system the less likely you will be to succeed. Linux or windows running a bunch of applications/threads that are not idling.
+
+Most caches are somewhat similar in their properties, use some part of the address field to look for hits, have a depth (ways) and a width (cache line). Some have write buffers, some can be configured to write through or bypass the cache on writes, etc.
+
+You need to be acutely aware of all the memory transactions going on that are hitting that cache. (some systems have independent instruction and data caches making the task easier).
+
+You can easily make a cache useless by not carefully managing your memory. for example if you have multiple data blocks you are processing, hoping to keep them in cache, but they are in memory at addresses that are even multiples relative to the caches hit/miss checking, say 0x10000 0x20000 0x30000, and you have more of these than ways in the cache, you may very quickly end up making something that runs quite slow with the cache on, slower than it would with the cache off. but change that to perhaps 0x10000, 0x21000, 0x32000 and that might be enough to take full advantage of the cache, reducing the evictions.
+
+bottom line the key to optimizing for a cache (well other than knowing the system quite well) is to keep all of the things you need performance for in the cache at the same time, organizing that data such that it is possible to have it all in the cache at once. And preventing things like code execution, interrupts and other regular or random events from evicting significant portions of this data you are using. Same goes for code, a little harder though as you need to control the locations where the code lives to avoid collisions with other code you want to keep in cache. While testing/profiling any code that goes through a cache that adding a single line of code here and there or even a single nop, anything that shifts or changes the addresses where the code lives from one compile to another for the same code, changes where the cache lines fall within that code and changes what gets evicted and what doesnt for critical sections.
+shareimprove this answer
+	
+answered Jan 14 '12 at 16:16
+dwelch
+63146
+	
+add a comment
+up vote 1 down vote
+	
+
+Both nwong's and Michael Borgwardt's answers give good advice.
+
+Also, trust first the compiler's optimizations on these issues.
+
+If using a recent GCC compiler, you might use (with parsimony) its __builtin_prefetch function. See this answer on stackoverflow.

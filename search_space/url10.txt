@@ -1,0 +1,259 @@
+https://www.devside.net/articles/apache-performance-tuning
+
+WampDeveloper Pro, Performance Optimized
+Advanced, High-Performance Web Server Software using Apache, PHP, MySQL - for Windows
+
+WampDeveloper Pro helps you rapidly create & deploy websites, and work with Databases. Fully integrates Apache (web server), PHP (language), MySQL (database), and phpMyAdmin.
+
+Performance Optimized. Secured. And Fully Supported!
+Apache Performance Tuning
+Forewarning:
+
+    "Premature optimization is the root of all evil." -- Donald Knuth.
+
+...in other words, don't implement in extra complexity if you don't need it. A site handling a few thousand requests per day will do fine on a default configuration and just about any hardware. This article is geared towards a site that needs to handle multiple concurrent requests (ten to several hundred requests per second).
+General [in order of importance]
+Server RAM
+
+The single biggest issue affecting webserver performance is RAM. Have as much RAM as your hardware, OS, and funds allow (within reason).
+
+The more RAM your system has, the more processes and threads Apache can allocate and use; which directly translates into the amount of concurrent requests/clients Apache can serve.
+
+Generally speaking, disk I/O is usually a close 2nd, followed by CPU speed and network link. Note that a single PIII (Pentium 3) from the year 2000 clocked at 400 Mhz with 128-256 Megs of RAM can saturate a 100Mbps link.
+Apache MPM
+
+Chose the right MPM for the right job.
+event [default MPM for Apache 2.4]:
+
+    Based on the worker MPM.
+    Multiple processes, many threads per process, threads handle requests.
+    Used for even lower memory consumption and higher performance over worker MPM.
+    No longer requires Apache to couple and maintain a specific thread to a specific KeepAlive connection (unlike the worker MPM). And in turn frees that thread to do other work, as the original client might be idle.
+
+prefork [default MPM for Apache 2.2, 2.0 and 1.3]:
+
+    Apache 1.3-based.
+    Multiple processes, 1 thread per process, processes handle requests.
+    Used for security and stability.
+    Has higher memory consumption and lower performance over the newer Apache 2.0-based threaded MPMs.
+
+worker:
+
+    Apache 2.0-based.
+    Multiple processes, many threads per process, threads handle requests.
+    Used for lower memory consumption and higher performance.
+    Does not provide the same level of isolation request-to-request, as a process-based MPM does.
+
+winnt:
+
+    The only MPM choice under Windows.
+    1 parent process, exactly 1 child process with many threads, threads handle requests.
+    Best solution under Windows, as on this platform, threads are always "cheaper" to use over processes.
+
+MPM Settings and Directives
+Core Features and Multi-Processing Modules
+Default Configuration
+
+
+<IfModule prefork.c>
+  StartServers            5
+  MinSpareServers         5
+  MaxSpareServers        10
+  MaxClients            250 // MaxRequestWorkers
+  MaxRequestsPerChild     0 // MaxConnectionsPerChild
+</IfModule>
+
+<IfModule worker.c>
+  StartServers            3
+  MinSpareThreads        75
+  MaxSpareThreads       250 
+  ThreadsPerChild        25
+  MaxClients            400 // MaxRequestWorkers
+  MaxRequestsPerChild     0 // MaxConnectionsPerChild
+</IfModule>
+
+<IfModule event.c>
+    StartServers          3
+    MinSpareThreads      75
+    MaxSpareThreads     250 
+    ThreadsPerChild      25
+    MaxClients          400 // MaxRequestWorkers
+    MaxRequestsPerChild   0 // MaxConnectionsPerChild
+</IfModule>
+
+<IfModule mpm_winnt.c>
+  ThreadsPerChild       150
+  MaxRequestsPerChild     0
+</IfModule>
+
+MaxMemFree             2048
+
+Directives
+MaxClients, for prefork MPM
+
+MaxClients sets a limit on the number of simultaneous connections/requests that will be served.
+
+I consider this directive to be the critical factor to a well functioning server. Set this number too low and resources will go to waste. Set this number too high and an influx of connections will bring the server to a stand still. Set this number just right and your server will fully utilize the available resources.
+
+An approximation of this number should be derived by dividing the amount of system memory (physical RAM) available by the maximum size of an apache/httpd process; with a generous amount spared for all other processes.
+MaxClients ≈ (RAM - size_all_other_processes)/(size_apache_process)
+
+Use 'ps -ylC httpd --sort:rss' to find process size. Divide number by 1024 to get megabytes. Also try 'top'.
+
+Use 'free -m' for a general overview. The key figure to look at is the buffers/cache used value.
+
+Use 'vmstat 2 5' to display the number of runnable, blocked, and waiting processes; and swap in and swap out.
+
+Example:
+
+    System: VPS (Virtual Private Server), CentOS 4.4, with 128MB RAM
+    Apache: v2.0, mpm_prefork, mod_php, mod_rewrite, mod_ssl, and other modules
+    Other Services: MySQL, Bind, SendMail
+    Reported System Memory: 120MB
+    Reported httpd process size: 7-13MB
+    Assumed memory available to Apache: 90MB
+
+Optimal settings:
+
+    StartServers 5
+    MinSpareServers 5
+    MaxSpareServers 10
+    ServerLimit 15
+    MaxClients 15
+    MaxRequestsPerChild 2000
+
+With the above configuration, we start with 5-10 processes and set a top limit of 15. Anything above this number will cause serious swapping and thrashing under a load; due to the low amount of RAM available to the [virtual] Server. With a dedicated Server, the default values [ServerLimit 256] will work with 1-2GB of RAM.
+
+When calculating MaxClients, take into consideration that the reported size of a process and the effective size are two different values. In this setup, it might be safe to use 20 or more workers... Play with different values and check your system stats.
+
+Note that when more connections are attempted than there are workers, the connections are placed into a queue. The default queue size value is 511 and can be adjusted with the ListenBackLog directive.
+ThreadsPerChild, for winnt MPM
+
+On the Windows side, the only useful directive is ThreadsPerChild, which is usually set to a value of 150-250 by default. In most cases this is set too high, and for most request loads 64 worker threads is a good start. If you expect more, or less, concurrent connections/requests, set this directive appropriately. Check process size with Task Manager, under different values and server load.
+MaxRequestsPerChild
+
+Directive MaxRequestsPerChild is used to recycle processes. When this directive is set to 0, an unlimited amount of requests are allowed per process.
+
+While some might argue that this increases server performance by not burdening Apache with having to destroy and create new processes, there is the other side to the argument...
+
+Setting this value to the amount of requests that a website generates per day, divided by the number of processes, will have the benefit of keeping memory leaks and process bloat to a minimum [both of which are a common problem]. The goal here is to recycle each process once per day, as apache threads gradually increase their memory allocation as they run.
+
+Note that under the winnt MPM model, recycling the only request serving process that Apache contains, can present a problem for some sites with constant and heavy traffic.
+Requests vs. Client Connections
+
+On any given connection, to load a page, a client may request many URLs: page, site css files, javascript files, image files, etc.
+
+Multiple requests from one client in rapid succession can have the same effect on a Server as "concurrent" connections [threaded MPMs and directive KeepAlive taken into consideration]. If a particular website requires 10 requests per page, 10 concurrent clients will require MPM settings that are geared more towards 20-70 clients. This issue manifests itself most under a process-based MPM [prefork].
+Separate Static and Dynamic Content
+
+Use separate servers for static and dynamic content. Apache processes serving dynamic content will carry overhead and swell to the size of the content being served, never decreasing in size. Each process will incur the size of any loaded PHP or Perl libraries. A 6MB-30MB process size [or 10% of server's memory] is not unusual, and becomes a waist of resources for serving static content.
+
+For a more efficient use of system memory, either use mod_proxy to pass specific requests onto another Apache Server, or use a lightweight server to handle static requests:
+
+    Nginx
+    lighttpd
+    Or use a front-end caching proxy such as Squid-Cache or Varnish-Cache
+
+The Server handling the static content goes up front.
+
+Note that configuration settings will be quite different between a dynamic content Server and a static content Server.
+mod_deflate
+
+Reduce bandwidth by 75% and improve response time by using mod_deflate.
+
+
+LoadModule deflate_module modules/mod_deflate.so
+<Location />
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml application/x-javascript
+</Location>
+
+Loaded Modules
+
+Reduce memory footprint by loading only the required modules.
+
+Some also advise to statically compile in the needed modules, over building DSOs (Dynamic Shared Objects). Very bad advice. You will need to manually rebuild Apache every time a new version or security advisory for a module is put out, creating more work, more build related headaches, and more downtime.
+mod_expires
+
+Include mod_expires for the ability to set expiration dates for specific content; utilizing the 'If-Modified-Since' header cache control sent by the user's browser/proxy. Will save bandwidth and drastically speed up your site for [repeat] visitors.
+
+Note that this can also be implemented with mod_headers.
+KeepAlive
+
+Enable HTTP persistent connections to improve latency times and reduce server load significantly [25% of original load is not uncommon].
+
+prefork MPM:
+
+
+KeepAlive On
+KeepAliveTimeout 2
+MaxKeepAliveRequests 100
+
+worker and winnt MPMs:
+
+
+KeepAlive On
+KeepAliveTimeout 15
+MaxKeepAliveRequests 100
+
+With the prefork MPM, it is recommended to set 'KeepAlive' to 'Off'. Otherwise, a client will tie up an entire process for that span of time. Though in my experience, it is more useful to simply set the 'KeepAliveTimeout' value to something very low [2 seconds seems to be the ideal value]. This is not a problem with the worker MPM [thread-based], or under Windows [which only has the thread-based winnt MPM].
+
+With the worker and winnt MPMs, the default 15 second timeout is setup to keep the connection open for the next page request; to better handle a client going from link to link. Check logs to see how long a client remains on each page before moving on to another link. Set value appropriately [do not set higher than 60 seconds].
+SymLinks
+
+Make sure 'Options +FollowSymLinks -SymLinksIfOwnerMatch' is set for all directories. Otherwise, Apache will issue an extra system call per filename component to substantiate that the filename is NOT a symlink; and more system calls to match an owner.
+
+
+<Directory />
+    Options FollowSymLinks
+</Directory>
+
+AllowOverride
+
+Set a default 'AllowOverride None' for your filesystem. Otherwise, for a given URL to path translation, Apache will attempt to detect an .htaccess file under every directory level of the given path.
+
+
+<Directory />
+    AllowOverride None
+</Directory>
+
+ExtendedStatus
+
+If mod_status is included, make sure that directive 'ExtendedStatus' is set to 'Off'. Otherwise, Apache will issue several extra time-related system calls on every request made.
+ExtendedStatus Off
+Timeout
+
+Lower the amount of time the server will wait before failing a request.
+Timeout 45
+Other/Specific
+
+Cache all PHP pages, using Squid, and/or a PHP OPcode Cache, such as Zend OPcache, Xcache, APC. Also take a look at mod_cache under Apache 2.2.
+
+Convert/pre-render all PHP pages that do not change request-to-request, to static HTML pages. Use 'wget' or 'HTTrack' to crawl your site and perform this task automatically.
+
+Pre-compress content and pre-generate headers for static pages; send-as-is using mod_asis. Can use 'wget' or 'HTTrack' for this task. Make sure to set zlib Compression Level to a high value (6-9). This will take a considerable amount of load off the server.
+
+Use output buffering under PHP to generate output and serve requests without pauses.
+
+Avoid content negotiation for faster response times.
+
+Make sure log files are being rotated. Apache will not handle large (2gb+) files very well.
+
+Gain a significant performance improvement by using SSL session cache.
+
+Outsource your images to Amazon's Simple Storage Service (S3).
+Measuring Web Server Performance
+Load Testing
+Apache HTTP server benchmarking tool
+httperf
+The Grinder, a Java Load Testing Framework
+Benchmarks
+
+I have searched extensively for Apache, lighttpd, tux, and other webserver benchmarks. Sadly, just about every single benchmark I could locate appeared to have been performed completely without thought, or with great bias.
+
+Do not trust any posted benchmarks, especially ones done with the 'ab' tool.
+
+The only way to get a valid report is to perform the benchmark yourself.
+
+For valid results, note to test under a system with limited resources, and maximum resources. But most importantly, configure each httpd server application for the specific situation.
+Information
+System Tuning Info for Linux Servers

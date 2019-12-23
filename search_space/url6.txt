@@ -1,0 +1,104 @@
+http://en.wikipedia.org/wiki/Performance_tuning
+Performance tuning
+From Wikipedia, the free encyclopedia
+Question book-new.svg
+	This article does not cite any references or sources. Please help improve this article by adding citations to reliable sources. Unsourced material may be challenged and removed. (January 2013)
+
+Performance tuning is the improvement of system performance. This is typically a computer systems. The motivation for such activity is called a performance problem, which can be real or anticipated. Most systems will respond to increased load with some degree of decreasing performance. A system's ability to accept higher load is called scalability, and modifying a system to handle a higher load is synonymous to performance tuning.
+
+Systematic tuning follows these steps:
+
+    Assess the problem and establish numeric values that categorize acceptable behavior.
+    Measure the performance of the system before modification.
+    Identify the part of the system that is critical for improving the performance. This is called the bottleneck.
+    Modify that part of the system to remove the bottleneck.
+    Measure the performance of the system after modification.
+    If the modification makes the performance better, adopt it. If the modification makes the performance worse, put it back the way it was.
+
+This is an instance of the measure-evaluate-improve-learn cycle from quality assurance.
+
+A performance problem may be identified by slow or unresponsive systems. This usually occurs because high system loading, causing some part of the system to reach a limit in its ability to respond. This limit within the system is referred to as a bottleneck.
+
+A handful of techniques are used to improve performance. Among them are code optimization, load balancing, caching strategy, distributed computing and self-tuning.
+
+Contents
+
+    1 Performance analysis
+    2 Performance engineering
+    3 Code optimization
+    4 Caching strategy
+    5 Load balancing
+    6 Distributed computing
+    7 Self-tuning
+    8 Bottlenecks
+    9 See also
+    10 External links
+
+Performance analysis
+
+    See the main article at Performance analysis
+
+Performance analysis, commonly known as profiling, is the investigation of a program's behavior using information gathered as the program executes. Its goal is to determine which sections of a program to optimize.
+
+A profiler is a performance analysis tool that measures the behavior of a program as it executes, particularly the frequency and duration of function calls. Performance analysis tools existed at least from the early 1970s. Profilers may be classified according to their output types, or their methods for data gathering.
+Performance engineering
+
+    See the main article at Performance engineering
+
+Performance engineering is the discipline encompassing roles, skills, activities, practices, tools, and deliverables used to meet the non-functional requirements of a designed system, such as increase business revenue, reduction of system failure, delayed projects, and avoidance of unnecessary usage of resources or work.
+
+Several common activities have been identified in different methodologies:
+
+    Identification of critical business processes.
+    Elaboration of the processes in use cases and system volumetrics.
+    System construction, including performance tuning.
+    Deployment of the constructed system.
+    Service management, including activities performed after the system has been deployed.
+
+Code optimization
+
+    See the main article at Optimization (computer science).
+
+Some optimizations include improving the code so that work is done once before a loop rather than inside a loop or replacing a call to a simple selection sort with a call to the more complicated algorithm for a quicksort.
+Caching strategy
+Main article: Cache (computing)
+
+Caching is a fundamental method of removing performance bottlenecks that are the result of slow access to data. Caching improves performance by retaining frequently used information in high speed memory, reducing access time and avoiding repeated computation. Caching is an effective manner of improving performance in situations where the principle of locality of reference applies. The methods used to determine which data is stored in progressively faster storage are collectively called caching strategies. Examples are ASP.NET cache, CPU cache, etc.
+Load balancing
+Main article: Load balancing (computing)
+
+A system can consist of independent components, each able to service requests. If all the requests are serviced by one of these systems (or a small number) while others remain idle then time is wasted waiting for used system to be available. Arranging so all systems are used equally is referred to as load balancing and can improve overall performance.
+
+Load balancing is often used to achieve further gains from a distributed system by intelligently selecting which machine to run an operation on based on how busy all potential candidates are, and how well suited each machine is to the type of operation that needs to be performed.
+Distributed computing
+Main article: Distributed computing
+
+Distributed computing is used for increasing the potential for parallel execution on modern CPU architectures continues, the use of distributed systems is essential to achieve performance benefits from the available parallelism. High-performance cluster computing is a well-= known use of distributed systems for performance improvements.
+
+Distributed computing and clustering can negatively impact latency while simultaneously increasing load on shared resources, such as database systems. To minimize latency and avoid bottlenecks, distributed computing can benefit significantly from distributed caches.
+Self-tuning
+Main article: Self-tuning
+
+A self-tuning system is capable of optimizing its own internal running parameters in order to maximize or minimize the fulfillment of an objective function; typically the maximization of efficiency or error minimization. Self-tuning systems typically exhibit non-linear adaptive control. Self-tuning systems have been a hallmark of the aerospace industry for decades, as this sort of feedback is necessary to generate optimal multi-variable control for nonlinear processes.
+Bottlenecks
+Main article: Bottleneck (software)
+
+The bottleneck is the part of a system which is at capacity. Other parts of the system will be idle waiting for it to perform its task.
+
+In the process of finding and removing bottlenecks, it is important to prove their existence, such as by sampling, before acting to remove them. There is a strong temptation to guess. Guesses are often wrong, and investing only in guesses can itself be a bottleneck.[citation needed]
+See also
+
+    Performance Application Programming Interface
+
+External links
+
+    Address Scalability Bottlenecks with Distributed Caching
+    ASP.NET Web Cache Spurs Performance and Scalability
+    Improve SharePoint 2010 Performance with RBS
+    Clouds Done Right - Distributed Caching Removes Bottlenecks
+    Quick performance tuning tips from Linux file systems to WebSphere heap size. - Easy-to-understand and easy-to-apply software tuning tips.
+    Tweaking Your System Performance In Windows XP - Easy to read guide on tuning computer performance.
+    Online CPU and GPU - Optimization for video game technology
+    performancetroubleshooting.com - Tips on Optimizing your performance
+    Guide to speed up your pc - 18 tips for speeding up computer performance.
+    Crowd Tuning - collaborative performance tuning.

@@ -1,0 +1,288 @@
+http://sol.gfxile.net/boolean.html
+Bit twiddling
+Sol's take on bit masking, bit manipulation and Boolean algebra.
+Foreword
+
+Some readers of my graphics tutorials have expressed frustration... err, interest in bitwise operations, and have asked me to write a tutorial about them.
+
+Bitwise operations and, in general, Boolean algebra is rather difficult to explain in an entertaining way, but it's just one of those things that any programmer worth their salt (or dublons, or whatever) pretty much has to know by heart. Instead of being enteretaining, I try to be practical. I'll go through the basics, as well as some useful applications and tricks.
+Contents
+
+    Bits, bytes, words, dwords, and so on
+    AND, OR, NOT, XOR
+    Shifting
+    Tricks and tips
+    Further reading
+
+1. Bits, bytes, words, dwords, and so on
+
+Computers are built on transistors, which are kind of like switches. Either electricity flows or it doesn't. On and off. One and zero. It follows from this that the very basic operations in computing are done through bits.
+
+Doing more complicated calculations requires us to use more bits. The magnitude of an unsigned integer that can be represented by N bits is easily calculated as 2N-1, like so:
+Bits	2N	Max value
+1	2	1
+2	4	3
+3	8	7
+4	16	15
+5	32	31
+6	64	63
+7	128	127
+8	256	255
+9	512	511
+10	1024	1023
+11	2048	2047
+12	4096	4095
+13	8192	8191
+14	16384	16383
+15	32768	32767
+16	65536	65535
+
+If you've played with computers for a while, you should recognize many of the above values from various places in computer software and hardware.
+
+Just to make sure we're on the same page with the notation:
+
+2N means 2*2*.. N times. i.e. 24 = 2*2*2*2 = 16
+
+Typical, but not in any way standard naming convention for groups of bits is as follows:
+Name	Bits	Max value
+Bit	1	1
+Nibble	4	15
+Byte	8	255
+Word	16	65535
+Doubleword	32	4294967295
+
+Historically, a 'word' is supposed to be the native machine word on whatever platform you're working on, which then should on the current 32-bit platforms be 32-bit. However, the longevity of the x86 platform has blurred things a bit. I don't know if there's any standardized term for 64-bit words, but I've heard qword (or quadrupleword) been thrown around.
+
+The C standard is a bit loose on the integer data type definitions, but the 'de facto' sizes for data types are as follows:
+Data type	Bits
+char	8
+short	16
+int	32
+long	32
+
+The definitions of the data types are bound to change from one platform to another. For example, on 64-bit platforms, 'long' may be 64-bit, and on 16-bit platforms, 'int' may be 16-bit.
+
+Note the data type char. It was supposed to be a data type that contains a character, which back then meant the western alphabet, which conveniently fits inside 8 bits. Java chars are 16-bit, and most of the internationalized applications these days use unicode, and that's way outside the scope of this tutorial. Let's just say that chars are usually 8 bit and get over it.
+
+The C99 standard adds a header stdint.h which includes definitions for specific integer types, including int16_t for 16-bit signed integer and uint32_t for unsigned 32-bit integer. This header has finally started to appear even in Microsoft's tools, so you may wish to use it (if you care about specific variable type sizes, that is).
+
+There's no native data types for nibbles or bits, but they're handy to know nevertheless. Nibble happens to be a half-byte, and can be expressed with one hexadecimal digit. I won't go deep into hexadecimals (or octals) here, though.
+
+Native data types are by default signed (although there are some exceptions here). Most of the bit manipulations work equally well on signed and unsigned values, while others are tricky or even undefined on signed values. Hence, if you run into problems, first see if your variables are unsigned.
+
+Since standard C does not have a notation for entering binary numbers, using hex is the easiest way. Setting single bits in hex is relatively easy, like so:
+Bit pattern	Hex
+00000000	0x00
+00000001	0x01
+00000010	0x02
+00000100	0x04
+00001000	0x08
+00010000	0x10
+00100000	0x20
+01000000	0x40
+10000000	0x80
+2. AND, OR, NOT, XOR
+
+The three common Boolean operations are AND, OR and NOT. XOR is also so handy that it's good to know. (XOR can be implemented using AND, OR and NOT. Trust me).
+
+AND ('&') can be thought of as a multiplication and OR ('|') can be considered as an addition operation. If the result is zero, the result is zero. If it's anything else, the result is one.
+
+NOT ('~') negates the value. Meaning, 0 becomes 1, and 1 becomes 0.
+
+XOR ('^'), or exclusive or, is 1 if the two parameters don't agree, and 0 if they do.
+A	B	    	A & B	A | B	A ^ B	~A	~B
+0	0	0	0	0	1	1
+1	0	0	1	1	0	1
+0	1	0	1	1	1	0
+1	1	1	1	0	0	0
+
+In C, these operations don't work on single bits, but whole variables at the same time. Brace yourself, the following table may look somewhat confusing, but it's really just the same thing as above:
+Bit pattern	Operation	Value
+0000011110110111	A	1975
+0000011111010110	B	2006
+0000011110010110	A & B	1942
+0000011111110111	A | B	2039
+0000000001100001	A ^ B	97
+1111100001001000	~A	63560
+1111100000101001	~B	63529
+
+Wasn't that fun? Ok, so what does this have to do with anything?
+
+Many APIs have been developed so that different features are enabled or disabled using bit masks.
+
+Let's say you have a couple of bit masks, FEATURE1 and FEATURE2, and you need to set a variable to hold these bits. You'll want to use the operator that combines the masks, i.e. turns the bits on. You'll want to use OR.
+
+   variable = FEATURE1 | FEATURE2;
+
+Now then, if you want to test if variable has FEATURE1 bits on. You want to separate the bits out of the variable, or in other words you want to find the bits that are on in both variable and FEATURE1. Choose AND.
+
+   if ((variable & FEATURE1) == FEATURE1)
+
+If the FEATURE1 has only one bit on, you can simplify this to:
+
+   if (variable & FEATURE1)
+
+If you're unsure what FEATURE1 includes, or if you don't want to check whether any of the bits are enabled in variable, it's better to use the first version.
+
+If you get a variable, and have no idea what it contains, but you need to disable FEATURE2, you'll end up with the following kind of snippet:
+
+   variable = variable & ~(FEATURE2);
+
+Here variable gets ANDed with all bits on except the ones that were on in FEATURE2.
+
+One thing to keep in mind is that C has two kinds of boolean operators, namely logical and binary operators. Logical operators come in pairs - && and || versus the binary operators & and |. The logical operators don't care about binary contents of the parameters, and just check if the whole variable is zero or not. You've been warned.
+
+So what's the XOR useful for?
+
+If you want to flip the FEATURE1 on and off, but don't really care which state it came in with, you can use the XOR operator.
+
+   variable = variable ^ FEATURE1;
+
+A variable can also be cleared by XORing it with itself. Generally speaking, XORing something twice with the same value returns you to the original value. This has led to some very simple encryption algorithms.
+3. Shifting
+
+Shifting is a very useful bitwise operation, as many multiplications and divisions can be done using simple shift operations, and it's faster than using actual multiplication and division (except for some perverse platforms such as the 8051 microcontroller).
+
+There are two different kinds of shift operations; arithmetic and logical. For unsigned values, the two are the same, but for negative values, the arithmetic shift keeps negative values as negative.
+
+The C standard (as far as I know, anyway) does not define what should happen if signed values are shifted, but typically C compilers seem to perform arithmetic shifts on signed values and logical shifts on unsigned values.
+
+So what's shifting about, then? Moving bits within a word.
+Bits	Operation	Value
+0000011110110111	none	1975
+0000111101101110	<< 1	3950
+0001111011011100	<< 2	7900
+0011110110111000	<< 3	15800
+0111101101110000	<< 4	31600
+1111011011100000	<< 5	63200
+1110110111000000	<< 6	60864
+1101101110000000	<< 7	56192
+1011011100000000	<< 8	46848
+
+As seen from the table above, shifting to the left multiplies the value by 2. Shifting by two multiplies by 4, shifting by 4 multiplies by 16, and shifting by 6 multiplies by 64. Sound familiar? Back to the powers of two.
+
+As the bits are shifted left, new zeros are added to the right end of the bit stream.
+
+1975 multiplied by 64 is actually 126400, but since we only had 16 bits available above (or a 'short'), the highest bits get dropped off and the value is truncated to 60864.
+
+Confused? It's ok, this might take some time to figure out.
+
+Similar operations shifting right:
+Bits	Operation	Value
+0000011110110111	none	1975
+0000001111011011	>> 1	987
+0000000111101101	>> 2	493
+0000000011110110	>> 3	246
+0000000001111011	>> 4	123
+0000000000111101	>> 5	61
+0000000000011110	>> 6	30
+0000000000001111	>> 7	15
+0000000000000111	>> 8	7
+
+Here shifting by one bit is division by two. By two bits is division by 4, 4 is division by 16, and 6 is division by 64.
+
+As the bits are shifted right, new zeros (here, red) are added to the left end of the bit stream.
+
+Note that if you shift enough to the left or right, you'll end up with zero! If you shift with larger values than the target word, the C standard doesn't even guarantee that you end up with zero. Thus, it's better not to try.
+
+In arithmetic shifts, the negative values are recognized by the fact that the highest bit is 1, and the highest bit is simply replicated. It's usually safer to just stick to unsigned values when shifting things in C.
+
+Most CPU architectures also have operations for bit rotation. This is also a very handy operation, where the bits that would be shifted outside the word are inserted back in to the other end of the word. Unfortunately C does not have an operator for this, and this is an example where many operations in C may result in a single operation in Assembler.
+4. Tricks and tips
+
+When converted to binary (use a calculator if you want), 2N results in one bit on and the rest of the bits as zero, while 2N-1 ends up with a string of ones. This is very useful in truncating values.
+
+Let's say you have a variable and want to discard all too high bits so that the value is below 64. Since 64-1 = 63, and 63 happens to have a bit pattern of just six '1':s, you can do the following:
+
+   variable = variable & 63;
+
+You may end up in a situation where you need to truncate a value to some power of two. You can be sneaky about it and write something like;
+
+   variable = variable & ((1 << poweroftwo) - 1);
+
+Let's say you need to multiply by some value that's not a power of two; say, 320, and you don't want to (or can't, for some reason) use multiply operations. What should you do?
+
+x * 320 is the same thing as x * 256 + x * 64, so all you need to do is shift x left by 8 and by 6 and add these values together.
+
+   variable = (variable << 8) + (variable << 6);
+
+Please note the use of parentheses. Since the shift operators are evaluated in a bit awkward order in C, it's usually better to be safe than sorry.
+
+Pixel color values are often packed into single integers. For instance, if you have a 16-bit color value of the format RGB 5:6:5, the highest 5 bits are red, middle 6 bits are green, and the lowest 5 bits are blue. Should you want to extract the color values from a variable, you could use:
+
+   red   = (variable >> 11) & ((1 << 5) - 1);
+   green = (variable >>  5) & ((1 << 6) - 1);
+   blue  = (variable >>  0) & ((1 << 5) - 1);
+
+Let's say you get a 5-bit value (from the above 5:6:5 pixel format, for instance) and want to extend this to 8-bit so that zero is zero while maximum value is maximum value for both values. You need to fill out the bottom bits as well, like so:
+
+   variable = (variable << 3) | (variable >> 2);
+
+This results in the lower bits filling out very neatly, like follows:
+5 bits	8 bits
+00000	00000000
+00001	00001000
+00011	00011000
+00111	00111001
+10111	10111101
+11111	11111111
+
+A related trick from Jim Blinn's "dirty pixels" chapter 19 is where you wish to multiply two 8-bit values and want 0*0 to be 0 and 255*255 to be 255 (since in pixel-speak, 255 equals 1.0);
+
+   temp = a * b + 128;
+   result = (temp + (temp >> 8)) >> 8;
+
+This is sometimes called the "Blinn fix". Without this kind of operation, blending white with white would result in non-white, and applying this several times would end up with something that's not really.. white.
+
+This is related to fixed point math, which you may be interested in; Jetro Lauha did a pretty good seminar about that subject. Slides as PDF and a video of the seminar are available.
+
+If you wish to generate a checkerboard pattern, you can use XOR on one bit in the X and Y coordinates. For example,
+
+  for (y = 0; y < 128; y++)
+  {
+    for (x = 0; x < 128; x++)
+    {
+      int color;
+      if ((x & 1) ^ (y & 1))
+      {
+        color = white;
+      }
+      else
+      {
+        color = black;
+      }        
+      putpixel(x, y, color);
+    }
+  }  
+
+For bigger checker squares, you could pick some higher bit in the coordinates. For 16x16 checkers, you could do (x & 4) ^ (y & 4).
+
+Another XOR trick is swapping two values without a temporary variable. This is a great trick to use if you want to reduce the readability of your code..
+
+  a = a ^ b;
+  b = b ^ a;
+  a = a ^ b;
+
+5. Further reading
+
+A great compilation of bit twiddling hacks:
+
+http://graphics.stanford.edu/~seander/bithacks.html
+
+I recommend printing this out for safekeeping, should it disappear.
+
+Wikipedia has lots of pages related to boolean algebra:
+http://en.wikipedia.org/wiki/List_of_Boolean_algebra_topics
+
+The formal stuff can be found at:
+http://en.wikipedia.org/wiki/Boolean_algebra
+
+You may especially be interested in Karnaugh maps:
+http://en.wikipedia.org/wiki/Karnaugh_map
+
+and De Morgan's laws:
+http://en.wikipedia.org/wiki/De_Morgan%27s_laws
+
+although it's unlikely that you'll ever use those outside the classroom environment.
+
+Any comments etc. can be emailed to me.
