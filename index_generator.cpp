@@ -14,6 +14,10 @@ const std::string index_file_name  ="ind_file.txt";
 const std::string search_path = "search_space/url"; 
 const int dimesion = 2;                                 // number of URL files to read 
 
+std::string ignore_words[11] = {"the", "and", "that", "which", "are", "was", "were", "will", "then", "when", "what"}; 
+char ignore_chars[18] = {'&', '.',' >',' <', '?', '#', '@', '~', '!', '“', '$', '%',' *','(', ')','[', ']', ','}; 
+
+/*
 void write_index_to_file(string keyword, string matching_query){
     //writing the output in a file for test
 	
@@ -25,7 +29,9 @@ void write_index_to_file(string keyword, string matching_query){
 	offile.close();
 	
 }
+*/
 
+/*
 void read_file(){
     ifstream ifile;
     ifile.open ("test.txt");
@@ -35,10 +41,13 @@ void read_file(){
     }
     ifile.close();
 }
+*/
+
+void generate_inverse_index(){
+    
+}
 
 int main(){
     
-    write_index_to_file("computer", "www.url1.com/index.html"); 
-    //read_file(); 
     return 0; 
 }
