@@ -40,9 +40,19 @@ void update_global_index(std::string url){                      // adding the gl
     std::map<std::string, int>::iterator itr_local;
     for(itr_local = keyword_map.begin(); itr_local != keyword_map.end(); itr_local++){
         std::string pre_keyword = itr_local->first; 
-        if(pre_keyword == "the"){
-            std::cout<<" the"<<pre_keyword<<std::endl; 
-        }
+        for(int k=0; k < 11; k++){
+            if(pre_keyword ==ignore_words[k]){
+                continue;                                       //stop word detected
+            }else{
+                std::map<std::string, string>::iterator itr; 
+                itr = index_map.find(pre_keyword); 
+                if(itr != index_map.end()){                     //if the keyword exists
+                    itr->second = itr->second + ", "+ url; 
+                }else{
+                    index_map.insert(std::pair<string, string>(pre_keyword, url));
+                }
+            }  
+        }        
     }
 }
 
@@ -106,7 +116,13 @@ void generate_inverse_index(){
     }
 }
 
+void write_reverse_index_to_file(std::string filename){                 //write the index_map into a text file for reference 
+    
+}
+
 int main(){
     generate_inverse_index(); 
+    write_reverse_index_to_file(index_file_name); 
+    
     return 0; 
 }
