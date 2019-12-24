@@ -78,11 +78,21 @@ void load_inverse_index_to_memory(std::string file){
 
     string keyword, url_set; 
     while(ifile >>keyword>>url_set){
-        //std::cout<<keyword<<"\tvalues: "<<url_set<<std::endl; 
+        inverse_index.insert(std::pair<string, string>(keyword, url_set));
     }
 
     ifile.close(); 
 
+}
+
+void write_output_to_file(std::string filename, std::string content){
+    std::ofstream ofile; 
+    ofile.open(filename.c_str(), ios::app); 
+
+    if(ofile.is_open()) {
+        ofile<<content<<endl;
+    }
+    ofile.close(); 
 }
 
 void read_queries_file(std::string filename){
@@ -99,6 +109,8 @@ void read_queries_file(std::string filename){
 
             line.erase(line.find_last_not_of(" \n\r\t")+1);
             line.erase(0, line.find_first_not_of("-& \'\"\t.><?#@~!$%*()[],"));
+            write_output_to_file(answers_file_name, line); 
+
             std::string word = "";  
             int word_count = 0; 
             for(int i=0; i<line.size(); i++){
@@ -128,11 +140,15 @@ void read_queries_file(std::string filename){
                 if(search_query[k]==""){
                     break; 
                 }else{
-                    std::cout<<"not blank"<<std::endl; 
-                }
-                
+                    std::map<std::string, string>::iterator itr;
+                    itr = inverse_index.find(search_query[k]);  
+                     
+                    if(itr != inverse_index.end()){
+                        // if the search keyword is found 
+                    }
+                } 
             }
-            //std::cout<<std::endl; 
+            write_output_to_file(answers_file_name, "\n"); 
         }
     }
 
