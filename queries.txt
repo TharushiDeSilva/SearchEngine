@@ -1,0 +1,1000 @@
+IaaS Cloud
+C#
+.Net Performance
+Random Seed
+Matrix multiply
+Profiling
+Computer Architecture
+Amdahl’s law
+Parallel Computing
+Immutable Objects
+Policy
+PaaS Cloud
+SaaS Cloud
+Matrix Multiply with C
+x86
+SPARC
+Java Random Seed
+ARM
+64-bit
+MMX
+SSE
+MIPS
+DAXPY
+FLOPS
+Random Number Generation
+Structural hazards
+Data hazards detection
+Control hazards
+Performance Engineering
+CPU Architecture
+ISA
+Google File System
+Segate
+RAM
+Instruction Set
+Storage System
+Memory Bank
+NFS
+Method
+Temporal Locality
+SAN
+NAS
+SSD
+SSD Speed
+Network File System
+True sharing
+Network Tuning
+Data transfer 
+Data transfer performance
+TCP Issues
+UDP Tuning
+10Gbps
+Jumbo frames
+RTT
+Round Trip Time
+Buffer Size Issues
+Switches
+Routers
+Router Tuning
+End hosts
+Routers and switches
+Ethernet
+Flow Control
+Firewall Performance Issues
+Firewalls
+MTU
+Packet size
+Buffer
+Bit hacks
+Instruction Set Architecture
+Multiplication
+Shift
+Cache Demonstrator
+TLB
+Simulator
+Virtual Memory
+Scoreboarding
+Tomasulo's algorithm
+Loop Unrolling
+Branch
+RAID Tutorial
+Vector Processor Simulation
+VLIW
+e-mail
+Latency
+Throughput
+Apache
+RAID Tutorial
+Bit Shift
+Data optimization
+Network I/O
+Measurements Timings
+TCP
+Garbage Collection
+REST
+Storage
+Database optimization
+API
+API security
+Method Calls
+Object-Creation
+Profiling
+Client side
+SCTP
+SSH
+SFTP
+OOP
+UDP
+Streaming
+Monitoring
+Client Server Communications
+Checklist
+ping
+traceroute
+HTML
+HTML5
+Native Method Calls
+Thread pool
+Unix
+Thread Pool
+Java Optimization
+Java Tuning
+Windows
+Smart Phone
+Windows RT
+CentOS
+Python
+SMTP
+Wiki Cache
+Performance
+Cache Hierarchy
+Memory Hierarchy
+Wiki
+Cache Optimization
+Computer
+quickest
+Applications
+Mobile Optimization
+Mobile Apps
+Hardware
+Optimization
+Benchmark
+CPU Optimization
+Registers
+Memory Manager
+Memory Management
+CEP
+Hard disk
+RAID 0
+Memory
+Disk
+Disk I/O
+Performance tuning
+Firewall optimization
+VPN
+Tuning
+Data
+Cloud
+Webserver
+VPC
+Virtual Machine
+Apache Web Server
+Web server log
+Web server
+Server security
+Optimizing software
+C++
+Optimization tutorial
+FreeBSD
+Ubuntu Linux
+Cisco
+Memory optimization
+Synchronization
+Optimization manuals
+Code optimization
+Open source
+JVM optimization
+Numerical Code
+Multicore Performance Analysis
+Performance Analysis
+File
+IO
+I/O Optimization
+Java
+Windows Performance
+Threads
+Locks
+Client Server
+Windows Server 2012
+Google
+Locality
+Ubuntu
+Security
+TCP/IP
+IP Address
+Firewall
+Multi-core
+Cache levels
+Level
+Management
+Performance Analysis
+Java JVM
+Virtual Hard Disk
+Windows Server
+SSH
+https
+Database
+Windows 2012
+Oracle
+MSDN
+SQL
+SQL Server 2014
+MySQL
+Oracle
+DB2
+Bit hacks
+Multiplication
+Shift
+Cache Demonstrator
+TLB
+Simulator
+Virtual Memory
+Scoreboarding
+Tomasulo's algorithm
+Loop Unrolling
+Branch
+RAID Tutorial
+Vector Processor Simulation
+VLIW
+MySQL Optimization
+WAMP
+LAMP
+e-mail
+RAID Tutorial
+Bit Shift
+Data optimization
+Network I/O
+Measurements and Timings
+TCP
+Garbage Collector
+Database optimization
+API
+Method Calls
+Object-Creation
+Profiling
+OOP
+UDP
+Monitoring
+Client Server Communications
+Checklist
+Native Method Calls
+Thread pool
+Java Optimization
+Java Tuning
+Windows
+JVM
+Linux
+Performance
+Cache
+Wiki
+Cache Optimization
+Computer
+quickest
+App
+Applications
+Mobile
+Mobile Apps
+Hardware
+Optimization
+Benchmark
+CPU
+URL
+CEP
+Hard disk
+Memory
+Disk
+Performance tuning
+Firewall optimization
+VPN
+Tuning
+Data
+Cloud
+VPC
+PHP on Apache
+IIS
+Web server
+Server security
+Optimizing software
+C++
+Optimization tutorial
+Memory optimization
+Optimization manuals
+Code
+Open source
+JVM optimization
+Numerical Code
+Multicore Performance Analysis
+Performance Analysis
+File
+IO
+I/O Optimization
+Java
+Windows Performance
+Threads
+Locks
+Client Server
+Windows Server 2012
+Google
+Ubuntu
+Security
+FreeBSD
+Cisco
+TCP/IP
+IP Address
+Firewall
+Multi-core
+Cache levels
+Level
+Management
+Performance Analysis
+Java JVM
+Windows Server
+SSH
+https
+Databse
+Windows 2012
+Oracle
+MSDN
+SQL
+SQL Server 2014
+MySQL
+Oracle
+DB2
+Bit hacks
+Multiplication
+Shift
+Cache Demonstrator
+TLB
+Simulator
+Virtual Memory
+Scoreboarding
+Tomasulo's algorithm
+Loop Unrolling
+Branch
+RAID Tutorial
+Vector Processor Simulation
+VLIW
+e-mail
+Apache
+RAID Tutorial
+Bit Shift
+Data optimization
+Network I/O
+Measurements Timings
+TCP
+Garbage Collection
+REST
+Storage
+Database optimization
+API
+API security
+Method Calls
+Object-Creation
+Profiling
+Client side
+SCTP
+SSH
+SFTP
+OOP
+UDP
+Streaming
+Monitoring
+Client Server Communications
+Checklist
+ping
+traceroute
+HTML
+HTML5
+Native Method Calls
+Thread pool
+Unix
+Thread Pool
+Java Optimization
+Java Tuning
+Windows
+Smart Phone
+Windows RT
+CentOS
+Python
+SMTP
+Wiki Cache
+JVM
+Linux
+Performance
+Cache Hierarchy
+Memory Hierarchy
+Wiki
+Cache Optimization
+Computer
+quickest
+App
+Applications
+Mobile Optimization
+Mobile Apps
+Hardware
+Optimization
+Benchmark
+CPU Optimization
+Registers
+Memory Manager
+URL
+Memory Management
+CEP
+Hard disk
+RAID 5
+Memory
+Disk
+Disk I/O
+Performance tuning
+Firewall optimization
+VPN
+Tuning
+Data
+Cloud
+Webserver
+VPC
+Virtual Machine
+Apache Web Server
+Web server log
+Web server
+Server security
+Optimizing software
+NetCDF
+Optimization tutorial
+FreeBSD
+Ubuntu Linux
+Cisco
+Memory optimization
+Synchronization
+Optimization manuals
+Code optimization
+Open source
+JVM optimization
+Numerical Code
+Multicore Performance Analysis
+Performance Analysis
+File
+IO
+I/O Optimization
+Java
+Windows Performance
+Threads
+Locks
+Client Server
+Windows Server 2012
+Google
+Ubuntu
+Security
+TCP/IP
+IP Address
+Firewall
+Multi-core
+Cache levels
+Level
+Management
+Performance Analysis
+Java JVM
+Windows Server
+SSH
+https
+Database
+Windows 2012
+Oracle
+MSDN
+SQL
+SQL Server 2014
+MySQL
+Oracle
+DB2
+Bit hacks
+Multiplication
+Shift
+Cache Demonstrator
+TLB
+Simulator
+Virtual Memory
+Scoreboarding
+Tomasulo's algorithm
+Loop Unrolling
+Branch
+RAID Tutorial
+Vector Processor Simulation
+VLIW
+MySQL Optimization
+WAMP
+LAMP
+e-mail
+RAID Tutorial
+Bit Shift
+Data optimization
+Network I/O
+Measurements and Timings
+TCP
+Garbage Collector
+Database optimization
+API
+Method Calls
+Object-Creation
+Profiling
+OOP
+UDP
+Monitoring
+Client Server Communications
+Checklist
+Native Method Calls
+Thread pool
+Java Optimization
+Java Tuning
+Windows
+JVM
+Linux
+Performance
+Cache
+Wiki
+Cache Optimization
+Computer
+quickest
+App
+Applications
+Mobile
+Mobile Apps
+Hardware
+Optimization
+Benchmark
+CPU
+URL
+CEP
+Hard disk
+Memory
+Disk
+Performance tuning
+Firewall optimization
+VPN
+Tuning
+Data
+Cloud
+VPC
+PHP on Apache
+IIS
+Web server
+Server security
+Optimizing software
+C++
+Optimization tutorial
+Memory optimization
+Optimization manuals
+Code
+Open source
+JVM optimization
+Numerical Code
+Multicore Performance Analysis
+Performance Analysis
+File
+IO
+I/O Optimization
+Java
+Windows Performance
+Threads
+Locks
+Client Server
+Windows Server 2012
+Google
+Ubuntu
+Security
+FreeBSD
+Cisco
+TCP/IP
+IP Address
+Firewall
+Multi-core
+Cache level optimization
+False sharing
+Cache Levels
+Management
+Performance Analysis
+Java JVM
+Windows Server
+SSH
+https
+Databse
+Windows 2012
+Oracle
+MSDN
+SQL
+SQL Server 2014
+MySQL
+Oracle
+Website
+Client side optimization
+L1 Cache
+L2 Cache
+General Purpose Registers
+Firewall optimization
+VPN
+Tuning
+Data
+Cloud
+VPC
+PHP on Apache
+IIS
+Web server
+Server security
+Optimizing software
+C++
+Optimization tutorial
+Memory optimization
+Optimization manuals
+Code
+Open source
+JVM optimization
+Numerical Code
+Multicore Performance Analysis
+Performance Analysis
+File
+IO
+I/O Optimization
+Java
+Windows Performance
+Threads
+Locks
+Client Server
+Windows Server 2012
+Google
+Ubuntu
+Security
+FreeBSD
+Cisco
+TCP/IP
+IP Address
+Firewall
+Multi-core
+Cache levels
+Level
+Management
+Performance Analysis
+Java JVM
+Windows Server
+SSH
+https
+Databse
+Windows 2012
+Oracle
+MSDN
+SQL
+SQL Server 2014
+MySQL
+Oracle
+DB2
+Bit hacks
+Multiplication
+Shift
+Cache Demonstrator
+TLB
+Simulator
+Virtual Memory
+Scoreboarding
+Tomasulo's algorithm
+Loop Unrolling
+Branch
+RAID Tutorial
+Vector Processor Simulation
+VLIW
+e-mail
+Apache
+RAID Tutorial
+Bit Shift
+Data optimization
+Network I/O
+Measurements Timings
+TCP
+Garbage Collection
+REST
+Storage
+Database optimization
+API
+API security
+Method Calls
+Object-Creation
+Profiling
+Client side
+SCTP
+SSH
+SFTP
+OOP
+UDP
+Streaming
+Monitoring
+Client Server Communications
+Checklist
+ping
+traceroute
+HTML
+HTML5
+Native Method Calls
+Thread pool
+Unix
+Thread Pool
+Java Optimization
+Java Tuning
+Windows
+Smart Phone
+Windows RT
+CentOS
+Python
+SMTP
+Wiki Cache
+JVM
+Linux
+Performance
+Cache Hierarchy
+Memory Hierarchy
+Wiki
+Cache Optimization
+Computer
+quickest
+App
+Applications
+Mobile Optimization
+Mobile Apps
+Hardware
+Optimization
+Benchmark
+CPU Optimization
+Registers
+Memory Manager
+URL
+Memory Management
+CEP
+Hard disk
+RAID 5
+Memory
+Disk
+Disk I/O
+Performance tuning
+Firewall optimization
+VPN
+Tuning
+Data
+Cloud
+Webserver
+VPC
+Virtual Machine
+Apache Web Server
+Web server log
+Web server
+Server security
+Optimizing software
+C++
+Optimization tutorial
+FreeBSD
+Ubuntu Linux
+Cisco
+Memory optimization
+Synchronization
+Optimization manuals
+Code optimization
+Open source
+JVM optimization
+Numerical Code
+Multicore Performance Analysis
+Performance Analysis
+File
+IO
+I/O Optimization
+Java
+Windows Performance
+Threads
+Locks
+Client Server
+Windows Server 2012
+Google
+Ubuntu
+Security
+TCP/IP
+IP Address
+Firewall
+Multi-core
+Cache levels
+Level
+Management
+Performance Analysis
+Java JVM
+Windows Server
+SSH
+https
+Database
+Windows 2012
+Oracle
+MSDN
+SQL
+SQL Server 2014
+MySQL
+Oracle
+DB2
+Bit hacks
+Multiplication
+Shift
+Cache Demonstrator
+TLB
+Simulator
+Virtual Memory
+Scoreboarding
+Tomasulo's algorithm
+Loop Unrolling
+Branch
+RAID Tutorial
+Vector Processor Simulation
+VLIW
+MySQL Optimization
+WAMP
+LAMP
+e-mail
+RAID Tutorial
+Bit Shift
+Data optimization
+Network I/O
+Measurements and Timings
+TCP
+Garbage Collector
+Database optimization
+API
+Method Calls
+Object-Creation
+Profiling
+OOP
+UDP
+Monitoring
+Client Server Communications
+Checklist
+Native Method Calls
+Thread pool
+Java Optimization
+Java Tuning
+Windows
+JVM
+Linux
+Performance
+Cache
+Wiki
+Cache Optimization
+Computer
+quickest
+App
+Applications
+Mobile
+Mobile Apps
+Hardware
+Optimization
+Benchmark
+CPU
+URL
+CEP
+Hard disk
+Memory
+Disk
+Performance tuning
+Firewall optimization
+VPN
+Tuning
+Data
+Cloud
+VPC
+PHP on Apache
+IIS
+Web server
+Server security
+Optimizing software
+C++
+Optimization tutorial
+Memory optimization
+Optimization manuals
+Code
+Open source
+JVM optimization
+Numerical Code
+Multicore Performance Analysis
+Performance Analysis
+File
+IO
+I/O Optimization
+Java
+Windows Performance
+Threads
+Locks
+Client Server
+Windows Server 2012
+Google
+Ubuntu
+Security
+FreeBSD
+Cisco
+TCP/IP
+IP Address
+Socket
+Computer Engineering
+TCP/IP
+IP Address
+Firewall
+Multi-core
+Cache levels
+Level
+Management
+Performance Analysis
+Java JVM
+Windows Server
+SSH
+https
+Database
+Windows 2012
+Oracle
+MSDN
+SQL
+SQL Server 2014
+MySQL
+Oracle
+DB2
+Bit hacks
+Multiplication
+Extension
+Matrix multiply
+Profiling
+Computer Architecture
+Amdahl’s law
+Immutable Objects
+Matrix Multiply with C
+x86
+SPARC
+ARM
+MIPS
+FLOPS
+Random Number Generation
+Structural hazards
+Data hazards
+Control hazards
+Management
+Performance Analysis
+Java JVM
+Windows Server
+SSH
+https
+Database
+Windows 2012
+Oracle
+MSDN
+SQL
+SQL Server 2014
+MySQL
+Java Random Number Generation
+Casandra
+Dynamo
+Amazon S3
+SaaS
+RAID Tutorial
+Bit Shift
+Data optimization
+Network I/O
+Measurements and Timings
+TCP
+Garbage Collector
+Database optimization
+API
+Method Calls
+Object-Creation
+UDP Streaming
+Monitoring
+Communication Client Server
+Tuning Java
+Windows Cluster
+Linux Cluster
+HPC
+Performance
+Cache
+Wiki
+Cache Optimization
+Computer
+quickest
+Applications
+Mobile
+Mobile Apps
+Hardware
+Optimization
+Disk Performance
+Performance tuning
+Apache PHP
+Server security
+Software Optimizing
+Tutorial Optimization
+Optimize Memory
+Manual Optimization
+optimization JVM
