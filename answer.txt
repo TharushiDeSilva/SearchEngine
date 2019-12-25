@@ -4407,3 +4407,7 @@ optimization jvm
 {http://fasterj.com/tools/gcloganalysers.shtml, http://java-performance.info/, https://blog.idrsolutions.com/2014/06/java-performance-tuning-tools/, http://java-performance.info/core-java-7-change-log/}
 
 
+total_search_latency: 	
+0.059955000000000001
+average_search_latency: 	
+5.9955000000000004e-05

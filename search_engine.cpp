@@ -6,6 +6,7 @@
 #include <map> 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
+#include <ctime>
 
 using namespace std; 
 
@@ -14,7 +15,7 @@ static std::map<string, string> inverse_index;
 const std::string index_file_name  ="inv_index.txt"; 
 const std::string answers_file_name  ="answer.txt";
 const std::string queries_file_name  ="queries.txt"; 
-
+const int query_file_length = 1000; 
 std::string ignore_words[11] = {"the", "and", "that", "which", "are", "was", "were", "will", "then", "when", "what"}; 
 char ignore_chars[21] = {'&', '.', '>', '<', '?', '#', '@', '~', '!', '$', '%', '*', '(', ')', '[', ']', ',', '{', '}', ':', ';'}; 
 
@@ -34,7 +35,6 @@ void load_inverse_index_to_memory(std::string file){
             }
             keyword = line.substr(0, url_start_point-1); 
             url_set = line.substr(url_start_point); 
-
             inverse_index.insert(std::pair<string, string>(keyword, url_set));
         }
     }
@@ -110,7 +110,16 @@ void read_queries_file(std::string filename){
 int main(){
     
     load_inverse_index_to_memory(index_file_name); 
-    read_queries_file(queries_file_name); 
+    clock_t begin = clock();
+    read_queries_file(queries_file_name);
+    clock_t end = clock();
+    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC; 
+    write_output_to_file(answers_file_name, "total_search_latency in seconds: \t"); 
+    write_output_to_file(answers_file_name, boost::lexical_cast<string>(elapsed_secs)); 
+    double average_time = elapsed_secs/query_file_length; 
+    write_output_to_file(answers_file_name, "average_search_latency in seconds: \t"); 
+    write_output_to_file(answers_file_name, boost::lexical_cast<string>(average_time)); 
+    
     return 0; 
 }
 
