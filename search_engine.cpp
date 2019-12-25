@@ -18,71 +18,27 @@ const std::string queries_file_name  ="queries.txt";
 std::string ignore_words[11] = {"the", "and", "that", "which", "are", "was", "were", "will", "then", "when", "what"}; 
 char ignore_chars[21] = {'&', '.', '>', '<', '?', '#', '@', '~', '!', '$', '%', '*', '(', ')', '[', ']', ',', '{', '}', ':', ';'}; 
 
-
-/*
-void add_word_to_local_index(std::string word){
-    std::map<std::string, int>::iterator itr; 
-    itr = keyword_map.find(word); 
-    if(itr != keyword_map.end()){
-                                                            // if the word is found previously in the map 
-        int count = itr->second; 
-        count +=1;                         // increse the number of occurances 
-        itr->second = count; 
-    }else{
-        keyword_map.insert(std::pair<string, int>(word, 1));    // first time the word is found in the file 
-    }
-
-}*/
-/*
-void clear_local_index(){
-    keyword_map.clear(); 
-}
-*/
-/*
-void update_global_index(std::string url){                      // adding the global keyword indices into index map 
-    std::map<std::string, int>::iterator itr_local;
-    for(itr_local = keyword_map.begin(); itr_local != keyword_map.end(); itr_local++){
-        std::string pre_keyword = itr_local->first; 
-        bool valid = true; 
-        for(int k=0; k < 11; k++){
-            if(pre_keyword == ignore_words[k]){
-                //std::cout<<"break word detected: "<<pre_keyword<<std::endl;
-                valid = false;  
-                break;                                       //stop word detected
-            }
-        }
-        
-        std::map<std::string, string>::iterator itr; 
-
-        if(valid){
-            itr = index_map.find(pre_keyword); 
-        
-            if(itr != index_map.end()){                     //if the keyword exists
-                std::string url_list = itr->second; 
-                url_list += ", " + url; 
-                itr->second = url_list; 
-            }else{
-                index_map.insert(std::pair<string, string>(pre_keyword, url));
-            }
-        }
-        
-                      
-    }
-}
-*/
-
-
 void load_inverse_index_to_memory(std::string file){
     std::ifstream ifile; 
     ifile.open(file.c_str(), ios::app); 
+    if(ifile.is_open()) {
+        std::string line;                                                              
+        while (std::getline(ifile, line)) {
+            line.erase(line.find_last_not_of(" \n\r\t")+1); //trim the edges 
+            string keyword = ""; string url_set = ""; int url_start_point = 0; 
+            for(int i=0; i<line.size(); i++){
+                if(line[i] =='\t'){
+                    url_start_point = i+1; 
+                    break; 
+                }
+            }
+            keyword = line.substr(0, url_start_point-1); 
+            url_set = line.substr(url_start_point); 
 
-    string keyword, url_set; 
-    while(ifile >>keyword>>url_set){
-        inverse_index.insert(std::pair<string, string>(keyword, url_set));
+            inverse_index.insert(std::pair<string, string>(keyword, url_set));
+        }
     }
-
-    ifile.close(); 
-
+    ifile.close();
 }
 
 void write_output_to_file(std::string filename, std::string content){
@@ -103,14 +59,15 @@ void read_queries_file(std::string filename){
         std::string line;                       // each new line is a search query                                                            
         bool firstline = true; 
         while (std::getline(ifile, line)) {
+              
             boost::to_lower(line); 
-            
+    
             std::string search_query[5] = {"", "", "", "", ""};                     // search words 
 
             line.erase(line.find_last_not_of(" \n\r\t")+1);
             line.erase(0, line.find_first_not_of("-& \'\"\t.><?#@~!$%*()[],"));
             write_output_to_file(answers_file_name, line); 
-
+            //std::cout<<line<<std::endl; //------------------------------------------------------------------
             std::string word = "";  
             int word_count = 0; 
             for(int i=0; i<line.size(); i++){
@@ -137,18 +94,13 @@ void read_queries_file(std::string filename){
 
             
             for(int k=0; k<5; k++){
-                if(search_query[k]==""){
-                    break; 
-                }else{
-                    std::map<std::string, string>::iterator itr;
-                    itr = inverse_index.find(search_query[k]);  
-                     
-                    if(itr != inverse_index.end()){
-                        // if the search keyword is found 
-                    }
-                } 
+                std::map<std::string, std::string>::iterator itr; 
+                itr = inverse_index.find(search_query[k]); 
+                if(itr !=inverse_index.end()){
+                    write_output_to_file(answers_file_name, itr->second); 
+                }
             }
-            write_output_to_file(answers_file_name, "\n"); 
+            write_output_to_file(answers_file_name, "\n");                
         }
     }
 
